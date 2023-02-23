@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MyEyeHealth"
+        tools:targetApi="31">
+        <activity
+            android:name=".LifestyleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WeeklyInsightActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DailyInsightActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InsightActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RemindersSaveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RemindersTimeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RemindersWeeklyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RemindersOnetimeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RemindersRepetitionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RemindersReasonActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RemindersActivity"
+            android:exported="false"
+            android:label="@string/title_activity_reminders"
+            android:theme="@style/Theme.MyEyeHealth.NoActionBar" />
+        <activity
+            android:name=".RSVPExerciseResultsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RSVPExerciseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RSVPTutorial2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".RSVPTutorial1Activity"
+            android:exported="false" />
+        <activity
+            android:name=".SaccadesExerciseResultsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SaccadesExerciseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SaccadesTutorial2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".SaccadesTutorial1Activity"
+            android:exported="false" />
+        <activity
+            android:name=".EyeSightExerciseMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AmslerGridTestResultsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AmslerGridRightEyeTestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AmslerGridLeftEyeTestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AmslerGridTutorial2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".AmslerGridTutorial1Activity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginSuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginEmailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateAccountSuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateAccountMedicalInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateAccountEmailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateAccountPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateAccountNameActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
