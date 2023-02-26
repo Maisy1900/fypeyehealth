@@ -1,9 +1,56 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.LoginActivity">
+    android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/logo_image"
+        android:layout_width="324dp"
+        android:layout_height="417dp"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/logo" />
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="#1E88E5"
+        android:backgroundTint="#1E88E5"
+        android:backgroundTintMode="src_over"
+        android:elevation="2dp"
+        android:gravity="center"
+        android:outlineProvider="background"
+        android:padding="16dp"
+        android:text="Login"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/create_account_button"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_below="@id/login_button"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="700dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="#1E88E5"
+        android:backgroundTint="#1E88E5"
+        android:backgroundTintMode="src_over"
+        android:elevation="2dp"
+        android:gravity="center"
+        android:outlineProvider="background"
+        android:padding="16dp"
+        android:text="Create account"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
