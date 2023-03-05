@@ -10,9 +10,9 @@
         android:scaleType="fitCenter"
         android:src="@drawable/logo" />
 
-
     <Button
         android:id="@+id/login_button"
+        style="@style/ButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignParentTop="true"
@@ -20,20 +20,11 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:background="#1E88E5"
-        android:backgroundTint="#1E88E5"
-        android:backgroundTintMode="src_over"
-        android:elevation="2dp"
-        android:gravity="center"
-        android:outlineProvider="background"
-        android:padding="16dp"
-        android:text="Login"
-        android:textColor="#FFFFFF"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        android:text="Login" />
 
     <Button
         android:id="@+id/create_account_button"
+        style="@style/ButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
@@ -41,16 +32,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:background="#1E88E5"
-        android:backgroundTint="#1E88E5"
-        android:backgroundTintMode="src_over"
-        android:elevation="2dp"
-        android:gravity="center"
-        android:outlineProvider="background"
-        android:padding="16dp"
-        android:text="Create account"
-        android:textColor="#FFFFFF"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        android:text="Create account" />
 
 </RelativeLayout>

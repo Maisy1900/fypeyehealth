@@ -18,33 +18,37 @@
     </style>
 
     <!-- Bottom of Screen Button -->
-    <style name="BottomButtonStyle" parent="Widget.MaterialComponents.Button">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">100dp</item>
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">80dp</item>
         <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginEnd">16dp</item>
         <item name="android:layout_marginBottom">16dp</item>
         <item name="android:background">#1E88E5</item>
         <item name="android:backgroundTint">#1E88E5</item>
         <item name="android:backgroundTintMode">src_over</item>
         <item name="android:elevation">2dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:outlineProvider">background</item>
+        <item name="android:padding">16dp</item>
         <item name="android:textColor">#FFFFFF</item>
-        <item name="android:textSize">40sp</item>
+        <item name="android:textSize">30sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="layout_constraintBottom_toBottomOf">parent</item>
-        <item name="layout_constraintEnd_toEndOf">parent</item>
-        <item name="layout_constraintStart_toStartOf">parent</item>
     </style>
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">75dp</item>
         <item name="android:layout_marginStart">24dp</item>
         <item name="android:layout_marginEnd">24dp</item>
-        <item name="android:layout_marginBottom">800dp</item>
+        <item name="android:layout_marginBottom">600dp</item>
+        <item name="android:background">@drawable/edittext_borders</item>
         <item name="android:hint">Email</item>
-        <item name="android:padding">16dp</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
+
 
 
 </resources>
