@@ -9,35 +9,35 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.ui.MainMenuActivity;
 
-public class LoginSuccessActivity extends AppCompatActivity {
+public class LoginErrorActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_success);
+        setContentView(R.layout.activity_login_error);
 
         // Initialize views
         ImageButton backButton = findViewById(R.id.back_button);
-        Button completeButton = findViewById(R.id.complete_button);
+        Button retryButton = findViewById(R.id.try_again_button);
 
         // Set click listener for back button
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Log user out here
+                // Go back to previous activity
                 finish();
             }
         });
 
-        // Set click listener for complete button
-        completeButton.setOnClickListener(new View.OnClickListener() {
+        // Set click listener for retry button
+        retryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate to MainMenuActivity
-                Intent intent = new Intent(LoginSuccessActivity.this, MainMenuActivity.class);
+                // Go back to LoginEmailActivity
+                Intent intent = new Intent(LoginErrorActivity.this, LoginEmailActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

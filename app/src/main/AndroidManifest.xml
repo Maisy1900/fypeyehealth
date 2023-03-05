@@ -12,6 +12,9 @@
         android:theme="@style/Theme.MyEyeHealth"
         tools:targetApi="31">
         <activity
+            android:name=".LoginErrorActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateAccountPassowrdsDontMatchActivity"
             android:exported="false" />
         <activity
@@ -95,28 +98,33 @@
             android:name=".AmslerGridTutorial1Activity"
             android:exported="false" />
         <activity
-            android:name=".LoginSuccessActivity"
+            android:name=".ui.login.LoginSuccessActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginPasswordActivity"
+            android:name=".ui.login.LoginPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginEmailActivity"
+            android:name=".ui.login.LoginEmailActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateAccountSuccessActivity"
+            android:name=".ui.login.LoginErrorActivity"
+            android:label="Login Error">
+        </activity>
+
+        <activity
+            android:name=".ui.account.CreateAccountSuccessActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateAccountMedicalInfoActivity"
+            android:name=".ui.account.CreateAccountMedicalInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateAccountEmailActivity"
+            android:name=".ui.account.CreateAccountEmailActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateAccountPasswordActivity"
+            android:name=".ui.account.CreateAccountPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateAccountNameActivity"
+            android:name=".ui.account.CreateAccountNameActivity"
             android:exported="false" />
         <activity
             android:name=".ProfileActivity"
