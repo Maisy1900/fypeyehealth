@@ -26,10 +26,12 @@ public class CreateAccountEmailActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailInput.getText().toString();
-                // TODO: Validate the email input and proceed to the next activity
-                Intent intent = new Intent(CreateAccountEmailActivity.this, CreateAccountPasswordActivity.class);
-                startActivity(intent);
+                if (emailInput != null) {
+                    String email = emailInput.getText().toString();
+                    // TODO: Validate the email input and proceed to the next activity
+                    Intent intent = new Intent(CreateAccountEmailActivity.this, CreateAccountPasswordActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 

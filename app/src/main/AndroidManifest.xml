@@ -116,16 +116,26 @@
             android:name=".ui.account.CreateAccountSuccessActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.account.CreateAccountMedicalInfoActivity"
-            android:exported="false" />
+            android:name=".ui.account.CreateAccountMedicalInfoActivity" />
         <activity
             android:name=".ui.account.CreateAccountEmailActivity"
             android:exported="false" />
-
+        <activity android:name=".ui.account.CreateAccountConfirmPasswordActivity" />
         <activity
             android:name=".ui.account.CreateAccountPasswordActivity"
             android:exported="false"
             />
+        <activity
+            android:name=".ui.account.CreateAccountPassowrdsDontMatchActivity"
+            android:label="Create Account Passwords Don't Match" />
+
+        <activity android:name=".ui.MainMenuActivity"
+            android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
 
         <activity
             android:name=".ProfileActivity"
@@ -145,11 +155,7 @@
         <activity
             android:name="com.example.myeyehealth.ui.SplashActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
