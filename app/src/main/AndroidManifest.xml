@@ -110,7 +110,8 @@
             android:name=".ui.login.LoginErrorActivity"
             android:label="Login Error">
         </activity>
-
+        <activity
+            android:name=".ui.account.CreateAccountNameActivity" />
         <activity
             android:name=".ui.account.CreateAccountSuccessActivity"
             android:exported="false" />
@@ -120,12 +121,12 @@
         <activity
             android:name=".ui.account.CreateAccountEmailActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.account.CreateAccountPasswordActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.account.CreateAccountNameActivity"
-            android:exported="false" />
+            android:exported="false"
+            />
+
         <activity
             android:name=".ProfileActivity"
             android:exported="false" />
