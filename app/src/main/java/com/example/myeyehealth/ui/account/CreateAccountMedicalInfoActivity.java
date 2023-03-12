@@ -1,7 +1,5 @@
 package com.example.myeyehealth.ui.account;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,7 +8,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.Database;
 import com.example.myeyehealth.ui.MainMenuActivity;
 
 public class CreateAccountMedicalInfoActivity extends AppCompatActivity {
@@ -97,14 +98,30 @@ public class CreateAccountMedicalInfoActivity extends AppCompatActivity {
         });
 
         // Set an OnClickListener for the completeButton
+// Set an OnClickListener for the completeButton
         completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String name = getIntent().getStringExtra("name");
+                String email = getIntent().getStringExtra("email");
+                String password = getIntent().getStringExtra("password");
+                String docName = docNameInput.getText().toString();
+                String docEmail = docEmailInput.getText().toString();
+                String carerName = carerNameInput.getText().toString();
+                String carerEmail = carerEmailInput.getText().toString();
+
+                // Save the user's information to the database
+                Database db = Database.getInstance(CreateAccountMedicalInfoActivity.this);
+                db.addUser(name, email, password, docName, docEmail, carerName, carerEmail);
+                db.close();
+
                 Intent intent = new Intent(CreateAccountMedicalInfoActivity.this, MainMenuActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
+
+
     }
 
     private void updateButton() {

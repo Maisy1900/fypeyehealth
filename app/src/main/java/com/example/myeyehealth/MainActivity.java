@@ -1,40 +1,40 @@
 package com.example.myeyehealth;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.myeyehealth.model.DatabaseConnection;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.sql.Connection;
+import com.example.myeyehealth.data.Database;
 
 public class MainActivity extends AppCompatActivity {
-    private Button testConnectionButton;
-    private TextView connectionResultTextView;
+
+    private Database database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Get references to UI elements
-        testConnectionButton = findViewById(R.id.test_connection_button);
-        connectionResultTextView = findViewById(R.id.connection_result_text_view);
+        // Initialize database helper object
+        database = new Database(this);
 
-        // Set click listener for testConnectionButton
-        testConnectionButton.setOnClickListener(new View.OnClickListener() {
+        Button testButton = findViewById(R.id.test_database_button);
+        testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Test database connection
-                DatabaseConnection databaseConnection = new DatabaseConnection();
-                Connection connection = databaseConnection.connect();
-                if (connection != null) {
-                    connectionResultTextView.setText("Connection Successful");
-                    databaseConnection.disconnect(connection);
+                // Test the database by adding a user and checking if it exists
+                database.addUser("John Smith", "john.smith@example.com", "password123",
+                        "Dr. Brown", "dr.brown@example.com", "Jane Doe", "jane.doe@example.com");
+                boolean userExists = database.checkUserEmailExists("john.smith@example.com");
+                if (userExists) {
+                    // User exists, display a toast message
+                    Toast.makeText(MainActivity.this, "User added successfully!", Toast.LENGTH_SHORT).show();
                 } else {
-                    connectionResultTextView.setText("Connection Failed");
+                    // User does not exist, display a toast message
+                    Toast.makeText(MainActivity.this, "Failed to add user!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

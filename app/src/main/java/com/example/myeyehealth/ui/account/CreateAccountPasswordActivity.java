@@ -1,7 +1,5 @@
 package com.example.myeyehealth.ui.account;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,10 +8,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.myeyehealth.R;
 
 public class CreateAccountPasswordActivity extends AppCompatActivity {
-
     private EditText passwordInput;
 
     @Override
@@ -32,7 +31,9 @@ public class CreateAccountPasswordActivity extends AppCompatActivity {
                 // TODO: Validate the password input and proceed to the next activity
                 if (!password.isEmpty()) {
                     Intent intent = new Intent(CreateAccountPasswordActivity.this, CreateAccountConfirmPasswordActivity.class);
-                    intent.putExtra("password", password); // pass the password to the next activity
+                    intent.putExtra("name", getIntent().getStringExtra("name"));
+                    intent.putExtra("email", getIntent().getStringExtra("email"));
+                    intent.putExtra("password", password);
                     startActivity(intent);
                 } else {
                     // Show error message to user
@@ -44,8 +45,23 @@ public class CreateAccountPasswordActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                removeExtraDataFromIntent();
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        removeExtraDataFromIntent();
+        super.onBackPressed();
+    }
+
+    private void removeExtraDataFromIntent() {
+        Intent intent = getIntent();
+        intent.removeExtra("name");
+        intent.removeExtra("email");
+        intent.removeExtra("password");
+        setIntent(intent);
     }
 }

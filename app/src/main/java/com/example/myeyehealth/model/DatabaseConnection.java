@@ -3,31 +3,27 @@ package com.example.myeyehealth.model;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.function.Consumer;
+
+import java.sql.*;
 
 public class DatabaseConnection {
-    private static final String DB_URL = "http://localhost/fypdb/dbconnect.php";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "";
+    private Connection conn;
 
-    public Connection connect() {
-        Connection connection = null;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-        return connection;
+    public DatabaseConnection(String url, String username, String password) throws SQLException {
+        this.conn = DriverManager.getConnection(url, username, password);
     }
 
-    public void disconnect(Connection connection) {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public void close() throws SQLException {
+        if (this.conn != null) {
+            this.conn.close();
         }
+    }
+
+    public ResultSet executeQuery(String query) throws SQLException {
+        Statement stmt = this.conn.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        return rs;
     }
 }
 

@@ -1,19 +1,25 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <Button
-        android:id="@+id/test_connection_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test Connection"/>
+    android:orientation="vertical"
+    android:gravity="center">
 
     <TextView
-        android:id="@+id/connection_result_text_view"
-        android:layout_width="match_parent"
+        android:id="@+id/text_view"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="Connection Result"
-        android:padding="16dp"/>
+        android:text="Test Database"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp" />
+
+    <Button
+        android:id="@+id/test_database_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test Database"
+        android:layout_marginBottom="24dp" />
+
 </LinearLayout>

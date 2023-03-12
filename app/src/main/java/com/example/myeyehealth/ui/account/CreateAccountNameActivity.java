@@ -1,13 +1,13 @@
 package com.example.myeyehealth.ui.account;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
 
@@ -29,6 +29,7 @@ public class CreateAccountNameActivity extends AppCompatActivity {
                 String name = nameInput.getText().toString();
                 // TODO: Validate the name input and proceed to the next activity
                 Intent intent = new Intent(CreateAccountNameActivity.this, CreateAccountEmailActivity.class);
+                intent.putExtra("name", name);
                 startActivity(intent);
             }
         });
@@ -36,8 +37,27 @@ public class CreateAccountNameActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // remove the "name" extra data from the Intent object before finishing the activity
+                removeExtraDataFromIntent();
                 finish();
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        // remove the "name" extra data from the Intent object before calling super.onBackPressed()
+        removeExtraDataFromIntent();
+        super.onBackPressed();
+    }
+
+    /**
+     * Removes the "name" extra data from the Intent object.
+     */
+    private void removeExtraDataFromIntent() {
+        Intent intent = getIntent();
+        intent.removeExtra("name");
+        setIntent(intent);
+    }
 }
+
