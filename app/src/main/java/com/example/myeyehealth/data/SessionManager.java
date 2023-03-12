@@ -29,8 +29,15 @@ public class SessionManager {
         int id = prefs.getInt("userId", -1);
         String name = prefs.getString("userName", "");
         String email = prefs.getString("userEmail", "");
-        return new User(id, name, email);
+        String password = prefs.getString("userPassword", "");
+        String doctorName = prefs.getString("userDoctorName", "");
+        String doctorEmail = prefs.getString("userDoctorEmail", "");
+        String carerName = prefs.getString("userCarerName", "");
+        String carerEmail = prefs.getString("userCarerEmail", "");
+        return new User(name, email, password, doctorName, doctorEmail, carerName, carerEmail);
     }
+
+
 
     public void endSession() {
         SharedPreferences.Editor editor = prefs.edit();

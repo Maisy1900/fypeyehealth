@@ -1,5 +1,6 @@
 package com.example.myeyehealth.ui.account;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -7,12 +8,18 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
 import com.example.myeyehealth.data.Database;
+import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.ui.MainMenuActivity;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CreateAccountMedicalInfoActivity extends AppCompatActivity {
 
@@ -110,16 +117,69 @@ public class CreateAccountMedicalInfoActivity extends AppCompatActivity {
                 String carerName = carerNameInput.getText().toString();
                 String carerEmail = carerEmailInput.getText().toString();
 
-                // Save the user's information to the database
+                // Check if any input fields are not empty
+                if (!docName.isEmpty() || !docEmail.isEmpty() || !carerName.isEmpty() || !carerEmail.isEmpty()) {
+                    // If any input fields are not empty, validate the inputs
+                    if (!isValidEmail(docEmail) || !isValidEmail(carerEmail) || !isValidName(docName) || !isValidName(carerName)) {
+                        Toast.makeText(CreateAccountMedicalInfoActivity.this, "Invalid input", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                } else {
+                    // If all input fields are empty, prompt the user to confirm if they want to skip medical information
+                    new AlertDialog.Builder(CreateAccountMedicalInfoActivity.this)
+                            .setTitle("Skip Medical Information")
+                            .setMessage("Are you sure you want to skip entering your medical information?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Create a new User object with the given details
+                                    User user = new User(name, email, password, null, null, null, null);
+
+                                    // Save the user's information to the database and get the ID of the newly inserted row
+                                    Database db = Database.getInstance(CreateAccountMedicalInfoActivity.this);
+                                    int id = (int) db.addUser(user);
+                                    db.close();
+
+                                    // Set the id of the user object to the generated id
+                                    user.setId(id);
+
+                                    // Start the MainMenuActivity
+                                    Intent intent = new Intent(CreateAccountMedicalInfoActivity.this, MainMenuActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Do nothing, let the user continue entering their medical information
+                                }
+                            })
+                            .show();
+                    return;
+                }
+
+                // Create a new User object with the given details
+                User user = new User(name, email, password, docName, docEmail, carerName, carerEmail);
+
+                // Save the user's information to the database and get the ID of the newly inserted row
                 Database db = Database.getInstance(CreateAccountMedicalInfoActivity.this);
-                db.addUser(name, email, password, docName, docEmail, carerName, carerEmail);
+                int id = (int) db.addUser(user);
                 db.close();
 
-                Intent intent = new Intent(CreateAccountMedicalInfoActivity.this, MainMenuActivity.class);
+                // Set the id of the user object to the generated id
+                user.setId(id);
+
+// Start the CreateAccountSuccessActivity and pass the User object as an extra
+                Intent intent = new Intent(CreateAccountMedicalInfoActivity.this, CreateAccountSuccessActivity.class);
+                intent.putExtra("user", user);
                 startActivity(intent);
                 finish();
+
             }
         });
+
+
 
 
     }
@@ -132,4 +192,24 @@ public class CreateAccountMedicalInfoActivity extends AppCompatActivity {
             completeButton.setText("Skip");
         }
     }
+    private boolean isValidEmail(String email) {
+        if (email.isEmpty()) {
+            return false;
+        }
+        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    private boolean isValidName(String name) {
+        if (name.isEmpty()) {
+            return false;
+        }
+        String nameRegex = "^[a-zA-Z\\s]+$";
+        Pattern pattern = Pattern.compile(nameRegex);
+        Matcher matcher = pattern.matcher(name);
+        return matcher.matches();
+    }
+
 }

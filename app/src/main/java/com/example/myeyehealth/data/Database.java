@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.myeyehealth.model.User;
+
 public class Database extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "mydatabase.db";
     private static final int DATABASE_VERSION = 1;
@@ -128,21 +130,22 @@ public class Database extends SQLiteOpenHelper {
     }
 
     //user
-    public void addUser(String name, String email, String password,
-                        String doctor_name, String doctor_email,
-                        String carer_name, String carer_email) {
+    public long addUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_NAME, name);
-        values.put(COLUMN_USER_EMAIL, email);
-        values.put(COLUMN_USER_PASSWORD, password);
-        values.put(COLUMN_USER_DOCTOR_NAME, doctor_name);
-        values.put(COLUMN_USER_DOCTOR_EMAIL, doctor_email);
-        values.put(COLUMN_USER_CARER_NAME, carer_name);
-        values.put(COLUMN_USER_CARER_EMAIL, carer_email);
-        db.insert(TABLE_USER, null, values);
+        values.put(COLUMN_USER_NAME, user.getName());
+        values.put(COLUMN_USER_EMAIL, user.getEmail());
+        values.put(COLUMN_USER_PASSWORD, user.getPassword());
+        values.put(COLUMN_USER_DOCTOR_NAME, user.getDoctorName());
+        values.put(COLUMN_USER_DOCTOR_EMAIL, user.getDoctorEmail());
+        values.put(COLUMN_USER_CARER_NAME, user.getCarerName());
+        values.put(COLUMN_USER_CARER_EMAIL, user.getCarerEmail());
+        long id = db.insert(TABLE_USER, null, values);
         db.close();
+        return id;
     }
+
+
 
     public boolean checkUserEmailExists(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -168,4 +171,48 @@ public class Database extends SQLiteOpenHelper {
         db.insert(TABLE_SACCADES, null, values);
         db.close();
     }
+    public User getUserByEmail(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {
+                COLUMN_USER_ID,
+                COLUMN_USER_NAME,
+                COLUMN_USER_EMAIL,
+                COLUMN_USER_PASSWORD,
+                COLUMN_USER_DOCTOR_NAME,
+                COLUMN_USER_DOCTOR_EMAIL,
+                COLUMN_USER_CARER_NAME,
+                COLUMN_USER_CARER_EMAIL
+        };
+        String selection = COLUMN_USER_EMAIL + " = ?";
+        String[] selectionArgs = {email};
+        Cursor cursor = db.query(TABLE_USER, columns, selection, selectionArgs, null, null, null);
+        User user = null;
+        if (cursor.moveToFirst()) {
+            int nameIndex = cursor.getColumnIndex(COLUMN_USER_NAME);
+            int emailIndex = cursor.getColumnIndex(COLUMN_USER_EMAIL);
+            int passwordIndex = cursor.getColumnIndex(COLUMN_USER_PASSWORD);
+            int doctorNameIndex = cursor.getColumnIndex(COLUMN_USER_DOCTOR_NAME);
+            int doctorEmailIndex = cursor.getColumnIndex(COLUMN_USER_DOCTOR_EMAIL);
+            int carerNameIndex = cursor.getColumnIndex(COLUMN_USER_CARER_NAME);
+            int carerEmailIndex = cursor.getColumnIndex(COLUMN_USER_CARER_EMAIL);
+            if (nameIndex >= 0 && emailIndex >= 0 && passwordIndex >= 0 &&
+                    doctorNameIndex >= 0 && doctorEmailIndex >= 0 && carerNameIndex >= 0 && carerEmailIndex >= 0) {
+                String name = cursor.getString(nameIndex);
+                String userEmail = cursor.getString(emailIndex);
+                String password = cursor.getString(passwordIndex);
+                String doctorName = cursor.getString(doctorNameIndex);
+                String doctorEmail = cursor.getString(doctorEmailIndex);
+                String carerName = cursor.getString(carerNameIndex);
+                String carerEmail = cursor.getString(carerEmailIndex);
+                user = new User(name, userEmail, password, doctorName, doctorEmail, carerName, carerEmail);
+            }
+        }
+        cursor.close();
+        db.close();
+        return user;
+    }
+
+
+
+
 }
