@@ -188,6 +188,7 @@ public class Database extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_USER, columns, selection, selectionArgs, null, null, null);
         User user = null;
         if (cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex(COLUMN_USER_ID);
             int nameIndex = cursor.getColumnIndex(COLUMN_USER_NAME);
             int emailIndex = cursor.getColumnIndex(COLUMN_USER_EMAIL);
             int passwordIndex = cursor.getColumnIndex(COLUMN_USER_PASSWORD);
@@ -195,8 +196,9 @@ public class Database extends SQLiteOpenHelper {
             int doctorEmailIndex = cursor.getColumnIndex(COLUMN_USER_DOCTOR_EMAIL);
             int carerNameIndex = cursor.getColumnIndex(COLUMN_USER_CARER_NAME);
             int carerEmailIndex = cursor.getColumnIndex(COLUMN_USER_CARER_EMAIL);
-            if (nameIndex >= 0 && emailIndex >= 0 && passwordIndex >= 0 &&
+            if (idIndex >= 0 && nameIndex >= 0 && emailIndex >= 0 && passwordIndex >= 0 &&
                     doctorNameIndex >= 0 && doctorEmailIndex >= 0 && carerNameIndex >= 0 && carerEmailIndex >= 0) {
+                int userId = cursor.getInt(idIndex);
                 String name = cursor.getString(nameIndex);
                 String userEmail = cursor.getString(emailIndex);
                 String password = cursor.getString(passwordIndex);
@@ -204,13 +206,61 @@ public class Database extends SQLiteOpenHelper {
                 String doctorEmail = cursor.getString(doctorEmailIndex);
                 String carerName = cursor.getString(carerNameIndex);
                 String carerEmail = cursor.getString(carerEmailIndex);
-                user = new User(name, userEmail, password, doctorName, doctorEmail, carerName, carerEmail);
+                user = new User(userId, name, userEmail, password, doctorName, doctorEmail, carerName, carerEmail);
             }
         }
         cursor.close();
         db.close();
         return user;
     }
+    public User getUserById(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {
+                COLUMN_USER_ID,
+                COLUMN_USER_NAME,
+                COLUMN_USER_EMAIL,
+                COLUMN_USER_PASSWORD,
+                COLUMN_USER_DOCTOR_NAME,
+                COLUMN_USER_DOCTOR_EMAIL,
+                COLUMN_USER_CARER_NAME,
+                COLUMN_USER_CARER_EMAIL
+        };
+        String selection = COLUMN_USER_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(userId)};
+        Cursor cursor = db.query(TABLE_USER, columns, selection, selectionArgs, null, null, null);
+        User user = null;
+        if (cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex(COLUMN_USER_ID);
+            int nameIndex = cursor.getColumnIndex(COLUMN_USER_NAME);
+            int emailIndex = cursor.getColumnIndex(COLUMN_USER_EMAIL);
+            int passwordIndex = cursor.getColumnIndex(COLUMN_USER_PASSWORD);
+            int doctorNameIndex = cursor.getColumnIndex(COLUMN_USER_DOCTOR_NAME);
+            int doctorEmailIndex = cursor.getColumnIndex(COLUMN_USER_DOCTOR_EMAIL);
+            int carerNameIndex = cursor.getColumnIndex(COLUMN_USER_CARER_NAME);
+            int carerEmailIndex = cursor.getColumnIndex(COLUMN_USER_CARER_EMAIL);
+            if (idIndex >= 0 && nameIndex >= 0 && emailIndex >= 0 && passwordIndex >= 0 &&
+                    doctorNameIndex >= 0 && doctorEmailIndex >= 0 && carerNameIndex >= 0 && carerEmailIndex >= 0) {
+                int id = cursor.getInt(idIndex);
+                String name = cursor.getString(nameIndex);
+                String userEmail = cursor.getString(emailIndex);
+                String password = cursor.getString(passwordIndex);
+                String doctorName = cursor.getString(doctorNameIndex);
+                String doctorEmail = cursor.getString(doctorEmailIndex);
+                String carerName = cursor.getString(carerNameIndex);
+                String carerEmail = cursor.getString(carerEmailIndex);
+                user = new User(id, name, userEmail, password, doctorName, doctorEmail, carerName, carerEmail);
+            }
+        }
+        cursor.close();
+        db.close();
+        return user;
+    }
+    public void clearUserTable() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_USER);
+        db.close();
+    }
+
 
 
 

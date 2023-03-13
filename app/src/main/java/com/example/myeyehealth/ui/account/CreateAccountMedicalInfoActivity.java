@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myeyehealth.R;
 import com.example.myeyehealth.data.Database;
 import com.example.myeyehealth.model.User;
-import com.example.myeyehealth.ui.MainMenuActivity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -106,6 +105,7 @@ public class CreateAccountMedicalInfoActivity extends AppCompatActivity {
 
         // Set an OnClickListener for the completeButton
 // Set an OnClickListener for the completeButton
+// Set an OnClickListener for the completeButton
         completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,14 +117,8 @@ public class CreateAccountMedicalInfoActivity extends AppCompatActivity {
                 String carerName = carerNameInput.getText().toString();
                 String carerEmail = carerEmailInput.getText().toString();
 
-                // Check if any input fields are not empty
-                if (!docName.isEmpty() || !docEmail.isEmpty() || !carerName.isEmpty() || !carerEmail.isEmpty()) {
-                    // If any input fields are not empty, validate the inputs
-                    if (!isValidEmail(docEmail) || !isValidEmail(carerEmail) || !isValidName(docName) || !isValidName(carerName)) {
-                        Toast.makeText(CreateAccountMedicalInfoActivity.this, "Invalid input", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                } else {
+                // Check if all input fields are empty
+                if (docName.isEmpty() && docEmail.isEmpty() && carerName.isEmpty() && carerEmail.isEmpty()) {
                     // If all input fields are empty, prompt the user to confirm if they want to skip medical information
                     new AlertDialog.Builder(CreateAccountMedicalInfoActivity.this)
                             .setTitle("Skip Medical Information")
@@ -133,18 +127,19 @@ public class CreateAccountMedicalInfoActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     // Create a new User object with the given details
-                                    User user = new User(name, email, password, null, null, null, null);
+                                    User user = new User(-1, name, email, password, docName, docEmail, carerName, carerEmail);
 
                                     // Save the user's information to the database and get the ID of the newly inserted row
                                     Database db = Database.getInstance(CreateAccountMedicalInfoActivity.this);
-                                    int id = (int) db.addUser(user);
+                                    int userId = (int) db.addUser(user);
                                     db.close();
 
                                     // Set the id of the user object to the generated id
-                                    user.setId(id);
+                                    user.setId(userId);
 
-                                    // Start the MainMenuActivity
-                                    Intent intent = new Intent(CreateAccountMedicalInfoActivity.this, MainMenuActivity.class);
+                                    // Start the CreateAccountSuccessActivity and pass the user ID as an extra
+                                    Intent intent = new Intent(CreateAccountMedicalInfoActivity.this, CreateAccountSuccessActivity.class);
+                                    intent.putExtra("user_id", userId);
                                     startActivity(intent);
                                     finish();
                                 }
@@ -156,28 +151,30 @@ public class CreateAccountMedicalInfoActivity extends AppCompatActivity {
                                 }
                             })
                             .show();
-                    return;
+                } else {
+                    // If any input fields are not empty, validate the inputs
+                    if (!isValidEmail(docEmail) || !isValidEmail(carerEmail) || !isValidName(docName) || !isValidName(carerName)) {
+                        Toast.makeText(CreateAccountMedicalInfoActivity.this, "Invalid input", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    // Create a new User object with the given details
+                    User user = new User(-1, name, email, password, docName, docEmail, carerName, carerEmail);
+
+                    // Save the user's information to the database and get the ID of the newly inserted row
+                    Database db = Database.getInstance(CreateAccountMedicalInfoActivity.this);
+                    int userId = (int) db.addUser(user);
+                    db.close();
+
+                    // Start the CreateAccountSuccessActivity and pass the user ID as an extra
+                    Intent intent = new Intent(CreateAccountMedicalInfoActivity.this, CreateAccountSuccessActivity.class);
+                    intent.putExtra("user_id", userId);
+                    startActivity(intent);
+                    finish();
                 }
-
-                // Create a new User object with the given details
-                User user = new User(name, email, password, docName, docEmail, carerName, carerEmail);
-
-                // Save the user's information to the database and get the ID of the newly inserted row
-                Database db = Database.getInstance(CreateAccountMedicalInfoActivity.this);
-                int id = (int) db.addUser(user);
-                db.close();
-
-                // Set the id of the user object to the generated id
-                user.setId(id);
-
-// Start the CreateAccountSuccessActivity and pass the User object as an extra
-                Intent intent = new Intent(CreateAccountMedicalInfoActivity.this, CreateAccountSuccessActivity.class);
-                intent.putExtra("user", user);
-                startActivity(intent);
-                finish();
-
             }
         });
+
 
 
 

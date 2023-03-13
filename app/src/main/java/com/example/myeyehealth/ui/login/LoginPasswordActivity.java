@@ -10,11 +10,14 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.Database;
+import com.example.myeyehealth.model.User;
 
 public class LoginPasswordActivity extends AppCompatActivity {
     EditText passwordInput;
     Button loginButton;
     ImageButton backButton;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +29,22 @@ public class LoginPasswordActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.confirm_button);
         backButton = findViewById(R.id.back_button);
 
+        // Get the email from the previous activity
+        email = getIntent().getStringExtra("email");
+
         // Set click listener for login button
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Check password here against database
+                // Check email and password here against database
                 String password = passwordInput.getText().toString().trim();
-                if (password.equals("password123")) {
+
+                // Lookup user in the database
+                Database db = Database.getInstance(LoginPasswordActivity.this);
+                User user = db.getUserByEmail(email);
+
+                // Check if user exists and if password matches
+                if (user != null && password.equals(user.getPassword())) {
                     // Password is correct, go to LoginSuccessActivity
                     Intent intent = new Intent(LoginPasswordActivity.this, LoginSuccessActivity.class);
                     startActivity(intent);
@@ -41,6 +53,7 @@ public class LoginPasswordActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginPasswordActivity.this, LoginErrorActivity.class);
                     startActivity(intent);
                 }
+                db.close();
             }
         });
 

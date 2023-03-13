@@ -6,20 +6,35 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.Database;
 
 import java.util.regex.Pattern;
 
 public class CreateAccountEmailActivity extends AppCompatActivity {
     private EditText emailInput;
+
     private boolean isValidEmail(String email) {
         // Use a regular expression to validate the email format
         String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         Pattern pattern = Pattern.compile(emailRegex);
-        return pattern.matcher(email).matches();
+
+        if (!pattern.matcher(email).matches()) {
+            return false;
+        }
+
+        // Check if the email already exists in the database
+        Database db = Database.getInstance(CreateAccountEmailActivity.this);
+        if (db.getUserByEmail(email) != null) {
+            Toast.makeText(CreateAccountEmailActivity.this, "Email address already in use", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 
     @Override

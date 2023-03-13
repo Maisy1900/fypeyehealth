@@ -1,13 +1,14 @@
 package com.example.myeyehealth.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ProgressBar;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.SessionManager;
 
 /**
  * This activity displays a splash screen with a logo and a loading bar. The loading bar updates
@@ -68,9 +69,20 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 }
 
-                // Once the progress bar is finished, start the next activity
-                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                startActivity(intent);
+                // Once the progress bar is finished, check if the user is already logged in
+                SessionManager sessionManager = new SessionManager(SplashActivity.this);
+                if (sessionManager.isLoggedIn()) {
+                    // User is already logged in, start the MainMenuActivity
+                    Intent intent = new Intent(SplashActivity.this, MainMenuActivity.class);
+                    intent.putExtra("user", sessionManager.getUser());
+                    startActivity(intent);
+                } else {
+                    // User is not logged in, start the LoginActivity
+                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+
+                // Finish this activity
                 finish();
             }
         }).start();

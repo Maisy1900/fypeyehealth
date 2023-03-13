@@ -17,6 +17,11 @@ public class SessionManager {
         editor.putInt("userId", user.getId());
         editor.putString("userName", user.getName());
         editor.putString("userEmail", user.getEmail());
+        editor.putString("userPassword", user.getPassword());
+        editor.putString("userDoctorName", user.getDoctorName());
+        editor.putString("userDoctorEmail", user.getDoctorEmail());
+        editor.putString("userCarerName", user.getCarerName());
+        editor.putString("userCarerEmail", user.getCarerEmail());
         editor.putBoolean("isLoggedIn", true);
         editor.apply();
     }
@@ -34,10 +39,8 @@ public class SessionManager {
         String doctorEmail = prefs.getString("userDoctorEmail", "");
         String carerName = prefs.getString("userCarerName", "");
         String carerEmail = prefs.getString("userCarerEmail", "");
-        return new User(name, email, password, doctorName, doctorEmail, carerName, carerEmail);
+        return new User(id, name, email, password, doctorName, doctorEmail, carerName, carerEmail);
     }
-
-
 
     public void endSession() {
         SharedPreferences.Editor editor = prefs.edit();

@@ -13,7 +13,8 @@ public class User implements Parcelable {
     private String carerName;
     private String carerEmail;
 
-    public User(String name, String email, String password, String doctorName, String doctorEmail, String carerName, String carerEmail) {
+    public User(int id, String name, String email, String password, String doctorName, String doctorEmail, String carerName, String carerEmail) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -22,6 +23,7 @@ public class User implements Parcelable {
         this.carerName = carerName;
         this.carerEmail = carerEmail;
     }
+
 
     protected User(Parcel in) {
         id = in.readInt();
@@ -96,5 +98,19 @@ public class User implements Parcelable {
 
     public String getCarerEmail() {
         return carerEmail;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", docName='" + doctorName + '\'' +
+                ", docEmail='" + doctorEmail + '\'' +
+                ", carerName='" + carerName + '\'' +
+                ", carerEmail='" + carerEmail + '\'' +
+                '}';
     }
 }

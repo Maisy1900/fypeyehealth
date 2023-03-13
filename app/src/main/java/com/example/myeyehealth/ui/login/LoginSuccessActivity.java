@@ -9,14 +9,21 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.SessionManager;
+import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.ui.MainMenuActivity;
 
 public class LoginSuccessActivity extends AppCompatActivity {
+
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_success);
+
+        // Initialize session manager
+        sessionManager = new SessionManager(this);
 
         // Initialize views
         ImageButton backButton = findViewById(R.id.back_button);
@@ -27,6 +34,7 @@ public class LoginSuccessActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Log user out here
+                sessionManager.endSession();
                 finish();
             }
         });
@@ -35,6 +43,8 @@ public class LoginSuccessActivity extends AppCompatActivity {
         completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Start session with the logged in user
+                User user = sessionManager.getUser();
                 // Navigate to MainMenuActivity
                 Intent intent = new Intent(LoginSuccessActivity.this, MainMenuActivity.class);
                 startActivity(intent);

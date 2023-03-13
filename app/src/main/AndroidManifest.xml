@@ -126,6 +126,7 @@
         <activity
             android:name=".ui.account.CreateAccountSuccessActivity"
             android:exported="false" />
+
         <activity android:name=".ui.account.CreateAccountMedicalInfoActivity" />
         <activity
             android:name=".ui.account.CreateAccountEmailActivity"

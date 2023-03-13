@@ -35,10 +35,10 @@ public class LoginEmailActivity extends AppCompatActivity {
                 // get the email input text
                 String email = emailInput.getText().toString().trim();
 
-                // TODO: Check the email against the database to validate it
-
                 // create an intent to navigate to the LoginPasswordActivity
                 Intent intent = new Intent(LoginEmailActivity.this, LoginPasswordActivity.class);
+                // put the email as an extra in the intent
+                intent.putExtra("email", email);
                 startActivity(intent);
             }
         });
@@ -53,4 +53,3 @@ public class LoginEmailActivity extends AppCompatActivity {
         });
     }
 }
-
