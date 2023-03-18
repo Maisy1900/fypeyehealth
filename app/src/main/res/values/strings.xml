@@ -14,6 +14,7 @@
         <string name="button_3_text">Button 3</string>
         <string name="button_4_text">Button 4</string>
         <string name="button_5_text">Button 5</string>
-
+        <string name="profile_button_text">Profile</string>
+        <string name="settings_button_text">Settings</string>
 
 </resources>

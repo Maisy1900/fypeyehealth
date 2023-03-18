@@ -7,6 +7,10 @@
     <solid android:color="@color/colorPrimary" />
 
     <size
-        android:width="32dp"
+        android:width="match_parent"
         android:height="32dp" />
+
+    <stroke
+        android:color="@color/borderColor"
+        android:width="2dp" />
 </shape>
