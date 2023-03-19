@@ -25,7 +25,9 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    buildFeatures {
+        dataBinding true
+    }
     sourceSets {
         main {
             java.srcDirs = ['src/main/java']

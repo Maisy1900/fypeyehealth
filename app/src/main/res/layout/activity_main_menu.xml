@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:background="@drawable/profile_button"
         android:text="@string/profile_button_text"
         android:textColor="@color/black" />
 
@@ -124,10 +123,13 @@
                     android:id="@+id/scroll_up_button"
                     android:layout_width="70dp"
                     android:layout_height="0dp"
+                    android:layout_margin="10dp"
                     android:layout_weight="0.5"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/up_arrow"
-                    android:layout_margin="10dp" />
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/up_arrow" />
+
 
                 <View
                     android:layout_width="match_parent"
@@ -140,6 +142,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="0.5"
                     android:adjustViewBounds="true"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerInside"
                     android:src="@drawable/down_arrow"
                     android:layout_margin="10dp" />
 
@@ -161,7 +165,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/settings_button"
         android:text="@string/settings_button_text"
         android:textColor='#020202' />
 

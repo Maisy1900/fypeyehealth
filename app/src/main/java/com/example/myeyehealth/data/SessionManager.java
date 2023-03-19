@@ -8,6 +8,8 @@ import com.example.myeyehealth.model.User;
 public class SessionManager {
     private SharedPreferences prefs;
 
+    private static final String LINE_THICKNESS_KEY = "line_thickness";
+
     public SessionManager(Context context) {
         prefs = context.getSharedPreferences("session", Context.MODE_PRIVATE);
     }
@@ -46,5 +48,15 @@ public class SessionManager {
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
         editor.apply();
+    }
+
+    public void setLineThickness(float thickness) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putFloat(LINE_THICKNESS_KEY, thickness);
+        editor.apply();
+    }
+
+    public float getLineThickness() {
+        return prefs.getFloat(LINE_THICKNESS_KEY, 2); // 2 is the default thickness
     }
 }
