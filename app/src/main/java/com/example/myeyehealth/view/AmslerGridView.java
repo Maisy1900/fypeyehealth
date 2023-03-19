@@ -30,7 +30,6 @@ public class AmslerGridView extends View {
         setBackgroundColor(Color.WHITE);
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -59,9 +58,5 @@ public class AmslerGridView extends View {
         paint.setColor(Color.RED);
         paint.setStrokeWidth(8);
         canvas.drawPoint(gridSize / 2, gridSize / 2, paint);
-
-        invalidate(); // Add this line
     }
-
-    // Add any additional methods for handling user interaction or updating the view
 }
