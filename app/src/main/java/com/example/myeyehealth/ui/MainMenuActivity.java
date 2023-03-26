@@ -5,8 +5,9 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.SessionActivity;
 import com.example.myeyehealth.model.User;
-public class MainMenuActivity extends com.example.myeyehealth.ui.LoggedIn {
+public class MainMenuActivity extends SessionActivity {
 
     private ScrollView mScrollView;
     private ImageButton mScrollUpButton;
