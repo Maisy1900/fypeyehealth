@@ -1,11 +1,201 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.reminders.RemindersActivity">
+    android:layout_height="match_parent">
 
-    <!-- Add your views here -->
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_width="107dp"
+        android:layout_height="121dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/back_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:text="Reminders"
+        android:textColor="@android:color/black"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/subtitle_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/back_button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.512" />
+
+    <TextView
+        android:id="@+id/subtitle_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Scheduled"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/back_button" />
+
+    <ScrollView
+        android:id="@+id/weekdays_scroll_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_box"
+        android:fillViewport="true"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@id/new_reminder_button"
+        app:layout_constraintEnd_toStartOf="@id/scroll_up_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subtitle_text">
+
+    <LinearLayout
+        android:id="@+id/weekdays_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Monday"
+        android:textSize="18sp"
+        android:textColor="@android:color/black" />
+
+    <LinearLayout
+        android:id="@+id/monday_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tuesday"
+        android:textSize="18sp"
+        android:textColor="@android:color/black" />
+
+    <LinearLayout
+        android:id="@+id/tuesday_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wednesday"
+        android:textSize="18sp"
+        android:textColor="@android:color/black" />
+
+    <LinearLayout
+        android:id="@+id/wednesday_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thursday"
+        android:textSize="18sp"
+        android:textColor="@android:color/black" />
+
+    <LinearLayout
+        android:id="@+id/thursday_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Friday"
+        android:textSize="18sp"
+        android:textColor="@android:color/black" />
+
+    <LinearLayout
+        android:id="@+id/friday_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Saturday"
+        android:textSize="18sp"
+        android:textColor="@android:color/black" />
+
+    <LinearLayout
+        android:id="@+id/saturday_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sunday"
+        android:textSize="18sp"
+        android:textColor="@android:color/black" />
+
+        <LinearLayout
+            android:id="@+id/sunday_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+
+    </LinearLayout>
+    </ScrollView>
+    <ImageButton
+        android:id="@+id/scroll_up_button"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/up_arrow"
+        android:contentDescription="Scroll Up"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tutorial_scroll_view" />
+
+    <ImageButton
+        android:id="@+id/scroll_down_button"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/down_arrow"
+        android:contentDescription="Scroll Down"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="@id/tutorial_scroll_view"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/new_reminder_button"
+        style="@style/ButtonStyle"
+        android:text="+ New Reminder"
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+

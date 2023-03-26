@@ -1,12 +1,11 @@
 package com.example.myeyehealth.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.SessionActivity;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends SessionActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

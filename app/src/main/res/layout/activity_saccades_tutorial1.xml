@@ -1,9 +1,116 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.exercise.saccades.SaccadesTutorial1Activity">
+    android:layout_height="match_parent">
 
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_width="107dp"
+        android:layout_height="121dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/back_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:text="Saccades Exercise"
+        android:textColor="@android:color/black"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/tutorial_subtitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/back_button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.512" />
+
+    <ImageButton
+        android:id="@+id/speaker_button"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/speaker"
+        android:contentDescription="Speaker"
+        android:scaleType="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/title_text" />
+
+    <TextView
+        android:id="@+id/tutorial_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Tutorial"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/back_button" />
+
+    <ScrollView
+        android:id="@+id/tutorial_scroll_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_box"
+        android:fillViewport="true"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@id/start_test_button"
+        app:layout_constraintEnd_toStartOf="@id/scroll_up_button"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tutorial_subtitle"
+        app:layout_constraintVertical_bias="1.0">
+
+        <TextView
+            android:id="@+id/tutorial_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="This is the tutorial text.It will explain how to perform the Saccades Exercise. You can scroll through the text if you prefer to read it yourself." />
+    </ScrollView>
+
+    <ImageButton
+        android:id="@+id/scroll_up_button"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/up_arrow"
+        android:contentDescription="Scroll Up"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tutorial_scroll_view" />
+
+    <ImageButton
+        android:id="@+id/scroll_down_button"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/down_arrow"
+        android:contentDescription="Scroll Down"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="@id/tutorial_scroll_view"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <Button
+        android:id="@+id/start_test_button"
+        style="@style/ButtonStyle"
+        android:text="Start Exercise"
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

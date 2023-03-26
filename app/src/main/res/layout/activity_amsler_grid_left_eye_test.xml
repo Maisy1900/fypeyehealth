@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.512" />
 
-    <com.example.myeyehealth.view.AmslerGridView
+    <com.example.myeyehealth.view.InteractiveAmslerGridView
         android:id="@+id/amsler_grid_view"
         android:layout_width="0dp"
         android:layout_height="0dp"

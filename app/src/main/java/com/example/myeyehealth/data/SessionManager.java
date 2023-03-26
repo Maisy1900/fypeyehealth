@@ -6,14 +6,22 @@ import android.content.SharedPreferences;
 import com.example.myeyehealth.model.User;
 
 public class SessionManager {
+    private static SessionManager instance;
     private SharedPreferences prefs;
 
     private static final String LINE_THICKNESS_KEY = "line_thickness";
 
+    public static synchronized SessionManager getInstance(Context context) {
+        if (instance == null) {
+            instance = new SessionManager(context.getApplicationContext());
+        }
+        return instance;
+    }
+
+    // Change the access modifier from private to public
     public SessionManager(Context context) {
         prefs = context.getSharedPreferences("session", Context.MODE_PRIVATE);
     }
-
     public void startSession(User user) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("userId", user.getId());

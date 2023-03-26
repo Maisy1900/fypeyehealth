@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
-        android:text="Saccades Exercise"
+        android:text="Amsler Grid Test"
         android:textColor="@android:color/black"
         android:textSize="34sp"
         app:layout_constraintBottom_toTopOf="@+id/secondary_title"
@@ -32,6 +32,7 @@
         app:layout_constraintStart_toEndOf="@+id/back_button"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.512" />
+
     <TextView
         android:id="@+id/secondary_title"
         android:layout_width="wrap_content"
@@ -78,7 +79,6 @@
         android:text="Based on your performance in the most recent test, we have observed a X% improvement in accuracy compared to your last 5 tests."
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/graph" />
-
     <!-- Export Results Button -->
     <Button
         android:id="@+id/export_results_button"
@@ -103,4 +103,3 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
-
