@@ -46,8 +46,8 @@ public class AmslerGridView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = resolveSize(gridSize, widthMeasureSpec);
-        int height = resolveSize(gridSize, heightMeasureSpec);
+        int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
+        int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
 
         setMeasuredDimension(width, height);
     }
@@ -56,18 +56,25 @@ public class AmslerGridView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        Rect gridRect = new Rect(0, 0, gridSize, gridSize);
+        int width = getWidth();
+        int height = getHeight();
+        int gridSize = getGridSize();
+
+        float gridLeft = (width - gridSize) / 2.0f;
+        float gridTop = (height - gridSize) / 2.0f;
+        Rect gridRect = new Rect((int) gridLeft, (int) gridTop, (int) (gridLeft + gridSize), (int) (gridTop + gridSize));
 
         // Draw horizontal lines
         for (int i = 0; i <= numLines; i++) {
-            float yPos = i * lineSpacing;
+            float yPos = gridTop + i * lineSpacing;
             canvas.drawLine(gridRect.left, yPos, gridRect.right, yPos, gridPaint);
         }
 
         // Draw vertical lines
         for (int i = 0; i <= numLines; i++) {
-            float xPos = i * lineSpacing;
+            float xPos = gridLeft + i * lineSpacing;
             canvas.drawLine(xPos, gridRect.top, xPos, gridRect.bottom, gridPaint);
         }
     }
+
 }

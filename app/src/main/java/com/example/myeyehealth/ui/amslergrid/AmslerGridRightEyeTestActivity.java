@@ -24,21 +24,26 @@ public class AmslerGridRightEyeTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_amsler_grid_right_eye_test);
 
-        InteractiveAmslerGridView amslerGridView = findViewById(R.id.amsler_grid_view);
+        final InteractiveAmslerGridView amslerGridView = findViewById(R.id.amsler_grid_view);
 
         // get the number of distortions from the InteractiveAmslerGridView
         numDistortions = amslerGridView.getNumDistortions();
 
         amslerGridView.setOnCompleteListener(new InteractiveAmslerGridView.OnCompleteListener() {
             @Override
-            public void onComplete() {
+            public void onComplete(ArrayList<ArrayList<Float>> distortionCoordinates) {
+                System.out.println("Right Eye onComplete called");
                 // save distortion coordinates and go to next activity
-                for (int i = 0; i < numDistortions; i++) {
-                    distortionCoordinates.put("rightEyeDistortion" + (i + 1), amslerGridView.getDistortionCoordinates(i));
+                for (int i = 0; i < distortionCoordinates.size(); i++) {
+                    ArrayList<Float> coordinates = distortionCoordinates.get(i);
+                    System.out.println("Right Eye Distortion " + (i + 1) + ": " + coordinates);
+                    AmslerGridRightEyeTestActivity.this.distortionCoordinates.put("distortion" + (i + 1), coordinates);
                 }
+                System.out.println("Right Eye Distortion Coordinates: " + AmslerGridRightEyeTestActivity.this.distortionCoordinates);
+
                 Intent intent = new Intent(AmslerGridRightEyeTestActivity.this, AmslerGridTestResultsActivity.class);
                 intent.putExtra("leftEyeDistortionCoordinates", getIntent().getSerializableExtra("leftEyeDistortionCoordinates"));
-                intent.putExtra("rightEyeDistortionCoordinates", distortionCoordinates);
+                intent.putExtra("rightEyeDistortionCoordinates", AmslerGridRightEyeTestActivity.this.distortionCoordinates);
                 startActivity(intent);
             }
         });
@@ -55,12 +60,10 @@ public class AmslerGridRightEyeTestActivity extends AppCompatActivity {
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AmslerGridRightEyeTestActivity.this, AmslerGridTestResultsActivity.class);
-                intent.putExtra("leftEyeDistortionCoordinates", getIntent().getSerializableExtra("leftEyeDistortionCoordinates"));
-                intent.putExtra("rightEyeDistortionCoordinates", distortionCoordinates);
-                startActivity(intent);
+                amslerGridView.callOnComplete();
             }
         });
+
     }
     @Override
     public void onBackPressed() {

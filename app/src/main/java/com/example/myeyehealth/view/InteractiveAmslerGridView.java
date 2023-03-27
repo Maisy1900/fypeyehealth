@@ -47,25 +47,6 @@ public class InteractiveAmslerGridView extends AmslerGridView {
             return null;
         }
     }
-    public HashMap<String, Float> calculateDistortionPercentages() {
-        int gridSize = getGridSize();
-        int sections = 6; // Assuming 6 sections in total
-        int[] sectionsDistortedPoints = new int[sections];
-
-        for (PointF point : coloredPoints) {
-            int section = getSectionFromCoordinates(point.x / getWidth(), point.y / getHeight());
-            sectionsDistortedPoints[section]++;
-        }
-
-        HashMap<String, Float> distortionPercentages = new HashMap<>();
-        for (int i = 0; i < sections; i++) {
-            float percentage = (sectionsDistortedPoints[i] / (float) (gridSize * gridSize)) * 100;
-            String sectionName = getSectionName(i);
-            distortionPercentages.put(sectionName, percentage);
-        }
-
-        return distortionPercentages;
-    }
 
     private int getSectionFromCoordinates(float x, float y) {
         int horizontalSection = x < 0.5f ? 0 : 1;
@@ -102,20 +83,146 @@ public class InteractiveAmslerGridView extends AmslerGridView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            coloredPoints.add(new PointF(event.getX(), event.getY()));
-            invalidate();
-            return true;
+            float x = event.getX();
+            float y = event.getY();
+
+            int width = getWidth();
+            int height = getHeight();
+            int gridSize = getGridSize();
+
+            float gridLeft = (width - gridSize) / 2.0f;
+            float gridTop = (height - gridSize) / 2.0f;
+            float gridRight = gridLeft + gridSize;
+            float gridBottom = gridTop + gridSize;
+
+            if (x >= gridLeft && x <= gridRight && y >= gridTop && y <= gridBottom) {
+                coloredPoints.add(new PointF(x, y));
+                System.out.println("Point added: (" + x + ", " + y + ")");
+                invalidate();
+                saveDistortionCoordinates();
+                return true;
+            }
         }
 
         return super.onTouchEvent(event);
     }
+
+
+
     public interface OnCompleteListener {
-        void onComplete();
+        void onComplete(ArrayList<ArrayList<Float>> distortionCoordinates);
     }
+
 
     private OnCompleteListener onCompleteListener;
 
     public void setOnCompleteListener(OnCompleteListener listener) {
         this.onCompleteListener = listener;
     }
+
+    public void callOnComplete() {
+        ArrayList<ArrayList<Float>> coordinates = saveDistortionCoordinates();
+
+        if (onCompleteListener != null) {
+            System.out.println("Calling onCompleteListener.onComplete()");
+            onCompleteListener.onComplete(coordinates);
+        }
+    }
+
+
+
+    public ArrayList<ArrayList<Float>> saveDistortionCoordinates() {
+        distortionCoordinatesList = new ArrayList<>();
+
+        for (PointF point : coloredPoints) {
+            ArrayList<Float> coordinates = new ArrayList<>();
+            coordinates.add(point.x);
+            coordinates.add(point.y);
+            distortionCoordinatesList.add(coordinates);
+        }
+
+        return distortionCoordinatesList;
+    }
+
+    public HashMap<String, Float> calculateQuadrantDistortions(ArrayList<ArrayList<Float>> distortionCoordinates) {
+        float gridWidth = getGridSize();
+        float gridHeight = getGridSize();
+        float quadrantWidth = gridWidth / 2;
+        float quadrantHeight = gridHeight / 2;
+        float quadrantArea = quadrantWidth * quadrantHeight;
+
+        HashMap<String, Float> distortedAreas = new HashMap<>();
+        distortedAreas.put("upperLeft", 0f);
+        distortedAreas.put("upperRight", 0f);
+        distortedAreas.put("lowerLeft", 0f);
+        distortedAreas.put("lowerRight", 0f);
+
+        HashMap<String, List<ArrayList<Float>>> pointsInQuadrant = new HashMap<>();
+        pointsInQuadrant.put("upperLeft", new ArrayList<>());
+        pointsInQuadrant.put("upperRight", new ArrayList<>());
+        pointsInQuadrant.put("lowerLeft", new ArrayList<>());
+        pointsInQuadrant.put("lowerRight", new ArrayList<>());
+
+        for (ArrayList<Float> coordinates : distortionCoordinates) {
+            float x = coordinates.get(0);
+            float y = coordinates.get(1);
+
+            String quadrant;
+            if (x <= quadrantWidth && y <= quadrantHeight) {
+                quadrant = "upperLeft";
+            } else if (x > quadrantWidth && y <= quadrantHeight) {
+                quadrant = "upperRight";
+            } else if (x <= quadrantWidth && y > quadrantHeight) {
+                quadrant = "lowerLeft";
+            } else {
+                quadrant = "lowerRight";
+            }
+
+            System.out.println("Coordinates (x, y): (" + x + ", " + y + "), Quadrant: " + quadrant);
+
+            List<ArrayList<Float>> pointsInSameQuadrant = pointsInQuadrant.get(quadrant);
+            boolean overlap = false;
+            for (ArrayList<Float> point : pointsInSameQuadrant) {
+                float dx = x - point.get(0);
+                float dy = y - point.get(1);
+                float distance = (float) Math.sqrt(dx * dx + dy * dy);
+                float minDistance = 10; // Define the minimum distance between two points to be considered not overlapping
+                if (distance < minDistance) {
+                    overlap = true;
+                    break;
+                }
+            }
+
+            float distortionRadius = 5; // Define the radius for each distortion point (e.g., 5 pixels)
+            float distortedArea = (float) (Math.PI * Math.pow(distortionRadius, 2));
+            if (overlap) {
+                distortedArea /= 2; // Divide the distorted area by 2 if there is an overlap
+            }
+
+            System.out.println("Overlap: " + overlap + ", Distorted Area: " + distortedArea);
+
+            distortedAreas.put(quadrant, distortedAreas.get(quadrant) + distortedArea);
+            pointsInSameQuadrant.add(coordinates);
+
+            System.out.println("Updated distortedAreas: " + distortedAreas);
+        }
+
+        // Calculate distortion percentages
+        HashMap<String, Float> distortionPercentages = new HashMap<>();
+        for (String quadrant : distortedAreas.keySet()) {
+            float distortedArea = distortedAreas.get(quadrant);
+            float distortionPercentage = (distortedArea / quadrantArea) * 100;
+            distortionPercentages.put(quadrant, distortionPercentage);
+        }
+
+        System.out.println("Distorted Areas: " + distortedAreas);
+        System.out.println("Distortion Percentages: " + distortionPercentages);
+
+        return distortionPercentages;
+    }
+
+
+
+
+
 }

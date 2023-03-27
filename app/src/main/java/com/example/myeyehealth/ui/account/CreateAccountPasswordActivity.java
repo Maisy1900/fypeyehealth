@@ -28,7 +28,6 @@ public class CreateAccountPasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String password = passwordInput.getText().toString();
-                // TODO: Validate the password input and proceed to the next activity
                 if (!password.isEmpty()) {
                     Intent intent = new Intent(CreateAccountPasswordActivity.this, CreateAccountConfirmPasswordActivity.class);
                     intent.putExtra("name", getIntent().getStringExtra("name"));
