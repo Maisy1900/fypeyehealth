@@ -65,8 +65,8 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_box"
-        android:fillViewport="true"
-        android:padding="10dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         app:layout_constraintBottom_toTopOf="@id/start_test_button"
         app:layout_constraintEnd_toStartOf="@id/scroll_up_button"
         app:layout_constraintHorizontal_bias="0.0"
@@ -74,13 +74,23 @@
         app:layout_constraintTop_toBottomOf="@id/tutorial_subtitle"
         app:layout_constraintVertical_bias="1.0">
 
-        <TextView
-            android:id="@+id/tutorial_text"
+        <FrameLayout
+            android:id="@+id/frame_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="This is the tutorial text. It will explain how to take the Amsler Grid Test. You can scroll through the text if you prefer to read it yourself." />
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
+            <TextView
+                android:id="@+id/tutorial_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="This is the tutorial text. It will explain how to take the Amsler Grid Test. You can scroll through the text if you prefer to read it yourself." />
+
+        </FrameLayout>
     </ScrollView>
+
 
     <ImageButton
         android:id="@+id/scroll_up_button"

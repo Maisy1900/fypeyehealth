@@ -24,23 +24,30 @@ public class AmslerGridLeftEyeTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_amsler_grid_left_eye_test);
 
-        InteractiveAmslerGridView amslerGridView = findViewById(R.id.amsler_grid_view);
+        final InteractiveAmslerGridView amslerGridView = findViewById(R.id.amsler_grid_view);
 
         // get the number of distortions from the InteractiveAmslerGridView
         numDistortions = amslerGridView.getNumDistortions();
 
         amslerGridView.setOnCompleteListener(new InteractiveAmslerGridView.OnCompleteListener() {
             @Override
-            public void onComplete() {
+            public void onComplete(ArrayList<ArrayList<Float>> distortionCoordinates) {
+                System.out.println("Left Eye onComplete called");
                 // save distortion coordinates and go to next activity
-                for (int i = 0; i < numDistortions; i++) {
-                    distortionCoordinates.put("distortion" + (i + 1), amslerGridView.getDistortionCoordinates(i));
+                for (int i = 0; i < distortionCoordinates.size(); i++) {
+                    ArrayList<Float> coordinates = distortionCoordinates.get(i);
+                    System.out.println("Left Eye Distortion " + (i + 1) + ": " + coordinates);
+                    AmslerGridLeftEyeTestActivity.this.distortionCoordinates.put("distortion" + (i + 1), coordinates);
                 }
+                System.out.println("Left Eye Distortion Coordinates: " + AmslerGridLeftEyeTestActivity.this.distortionCoordinates);
+
                 Intent intent = new Intent(AmslerGridLeftEyeTestActivity.this, AmslerGridRightEyeTestActivity.class);
-                intent.putExtra("leftEyeDistortionCoordinates", distortionCoordinates);
+                intent.putExtra("leftEyeDistortionCoordinates", AmslerGridLeftEyeTestActivity.this.distortionCoordinates);
                 startActivity(intent);
             }
         });
+
+
 
         ImageButton backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -54,13 +61,14 @@ public class AmslerGridLeftEyeTestActivity extends AppCompatActivity {
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AmslerGridLeftEyeTestActivity.this, AmslerGridRightEyeTestActivity.class);
-                intent.putExtra("leftEyeDistortionCoordinates", distortionCoordinates);
-
-                startActivity(intent);
+                amslerGridView.callOnComplete(); // Add this line
             }
         });
+
+
+
     }
+
     @Override
     public void onBackPressed() {
         removeExtraDataFromIntent();

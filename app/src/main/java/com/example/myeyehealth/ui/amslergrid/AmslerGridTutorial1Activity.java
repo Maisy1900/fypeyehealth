@@ -14,6 +14,9 @@ import com.example.myeyehealth.R;
 
 public class AmslerGridTutorial1Activity extends AppCompatActivity {
 
+    private ScrollView tutorialScrollView;
+    private TextView tutorialText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,13 +30,14 @@ public class AmslerGridTutorial1Activity extends AppCompatActivity {
             }
         });
 
-        ScrollView tutorialScrollView = findViewById(R.id.tutorial_scroll_view);
+        tutorialScrollView = findViewById(R.id.tutorial_scroll_view);
+        tutorialText = findViewById(R.id.tutorial_text);
 
         ImageButton scrollUpButton = findViewById(R.id.scroll_up_button);
         scrollUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tutorialScrollView.fullScroll(ScrollView.FOCUS_UP);
+                scrollText(-50); // Change -50 to the desired scroll amount
             }
         });
 
@@ -41,7 +45,7 @@ public class AmslerGridTutorial1Activity extends AppCompatActivity {
         scrollDownButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tutorialScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                scrollText(50); // Change 50 to the desired scroll amount
             }
         });
 
@@ -54,12 +58,30 @@ public class AmslerGridTutorial1Activity extends AppCompatActivity {
             }
         });
 
-        TextView tutorialText = findViewById(R.id.tutorial_text);
         tutorialText.setText("Be in a place with good lighting and a steady surface to put your device.\n\n"
                 + "Hold the device at a comfortable distance from your face, make sure the screen is centred and not angled.\n\n"
                 + "Cover the specified eye with your hand or an eye patch.\n\n"
                 + "Look at the centre of the grid on the screen with your eye.\n\n"
                 + "Check for any distorted or missing areas on the grid.\n\n"
                 + "If you see any distorted or missing areas, touch or click on the matching spot on the grid.");
+        tutorialText.setPadding(0, 500, 0, 500);
+        tutorialScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                tutorialScrollView.scrollTo(0, 500); // Adjust the initial scroll position
+            }
+        });
     }
+
+    private void scrollText(int dy) {
+        int maxScrollY = tutorialText.getHeight() - tutorialScrollView.getHeight();
+        int targetY = tutorialScrollView.getScrollY() + dy;
+        if (targetY < 0) {
+            targetY = 0;
+        } else if (targetY > maxScrollY) {
+            targetY = maxScrollY;
+        }
+        tutorialScrollView.scrollTo(0, targetY);
+    }
+
 }

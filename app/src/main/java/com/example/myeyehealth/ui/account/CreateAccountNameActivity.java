@@ -38,7 +38,6 @@ public class CreateAccountNameActivity extends AppCompatActivity {
                     Toast.makeText(CreateAccountNameActivity.this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                // TODO: Validate the name input and proceed to the next activity
                 Intent intent = new Intent(CreateAccountNameActivity.this, CreateAccountEmailActivity.class);
                 intent.putExtra("name", name);
                 startActivity(intent);

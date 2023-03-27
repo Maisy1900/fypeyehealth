@@ -39,7 +39,7 @@ public class CreateAccountSuccessActivity extends AppCompatActivity {
                 userDetailsTextView.setText(user.toString());
 
                 // Start session with the newly created user
-                SessionManager sessionManager = new SessionManager(this);
+                SessionManager sessionManager = SessionManager.getInstance(this);
                 sessionManager.startSession(user);
             } else {
                 // User not found in the database, display an error message

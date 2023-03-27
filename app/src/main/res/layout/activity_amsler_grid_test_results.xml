@@ -75,7 +75,6 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_box"
-
         app:layout_constraintTop_toBottomOf="@id/secondary_title"
         app:layout_constraintBottom_toTopOf="@id/continue_button"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +82,7 @@
         android:padding="10dp"
         android:fillViewport="true">
 
-        <TextView
+        <com.example.myeyehealth.view.AmslerResultsTextView
             android:id="@+id/results_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

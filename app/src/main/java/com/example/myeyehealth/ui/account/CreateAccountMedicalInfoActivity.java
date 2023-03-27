@@ -104,8 +104,6 @@ public class CreateAccountMedicalInfoActivity extends AppCompatActivity {
         });
 
         // Set an OnClickListener for the completeButton
-// Set an OnClickListener for the completeButton
-// Set an OnClickListener for the completeButton
         completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,6 +164,9 @@ public class CreateAccountMedicalInfoActivity extends AppCompatActivity {
                     int userId = (int) db.addUser(user);
                     db.close();
 
+                    // Set the id of the user object to the generated id
+                    user.setId(userId);
+
                     // Start the CreateAccountSuccessActivity and pass the user ID as an extra
                     Intent intent = new Intent(CreateAccountMedicalInfoActivity.this, CreateAccountSuccessActivity.class);
                     intent.putExtra("user_id", userId);
@@ -174,11 +175,6 @@ public class CreateAccountMedicalInfoActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
-
-
     }
 
     private void updateButton() {
@@ -189,6 +185,7 @@ public class CreateAccountMedicalInfoActivity extends AppCompatActivity {
             completeButton.setText("Skip");
         }
     }
+
     private boolean isValidEmail(String email) {
         if (email.isEmpty()) {
             return false;
@@ -208,5 +205,4 @@ public class CreateAccountMedicalInfoActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(name);
         return matcher.matches();
     }
-
 }

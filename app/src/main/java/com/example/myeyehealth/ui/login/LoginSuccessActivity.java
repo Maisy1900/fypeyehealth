@@ -23,7 +23,8 @@ public class LoginSuccessActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login_success);
 
         // Initialize session manager
-        sessionManager = new SessionManager(this);
+        SessionManager sessionManager = SessionManager.getInstance(this);
+
 
         // Initialize views
         ImageButton backButton = findViewById(R.id.back_button);

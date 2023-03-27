@@ -16,5 +16,12 @@
         <string name="button_5_text">Button 5</string>
         <string name="profile_button_text">Profile</string>
         <string name="settings_button_text">Settings</string>
+    <string-array name="menu_button_texts">
+        <item>AmslerGrid</item>
+        <item>SaccadesExercise</item>
+        <item>Reminders</item>
+        <item>Settings</item>
+        <item>Profile</item>
+    </string-array>
 
 </resources>

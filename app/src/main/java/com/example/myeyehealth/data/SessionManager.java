@@ -19,9 +19,10 @@ public class SessionManager {
     }
 
     // Change the access modifier from private to public
-    public SessionManager(Context context) {
+    private SessionManager(Context context) {
         prefs = context.getSharedPreferences("session", Context.MODE_PRIVATE);
     }
+
     public void startSession(User user) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("userId", user.getId());
