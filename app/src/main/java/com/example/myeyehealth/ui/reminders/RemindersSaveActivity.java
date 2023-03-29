@@ -13,7 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.Database;
+import com.example.myeyehealth.data.ReminderMethods;
 import com.example.myeyehealth.data.SessionManager;
 import com.example.myeyehealth.model.Reminder;
 
@@ -29,13 +29,13 @@ public class RemindersSaveActivity extends AppCompatActivity {
     private int hour = -1;
     private int minute = -1;
     private SessionManager sessionManager;
-    private Database database;
+    private ReminderMethods reminderMethods;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sessionManager = SessionManager.getInstance(this);
-        database = new Database(this);
+        reminderMethods = new ReminderMethods(this);
 
         setContentView(R.layout.activity_reminders_save);
 
@@ -119,7 +119,7 @@ public class RemindersSaveActivity extends AppCompatActivity {
                     // Get the user ID from the SessionManager and include it in the Reminder constructor
                     int userId = sessionManager.getUser().getId();
                     Reminder reminder = new Reminder(-1, userId, dayOfWeek, hour, minute, reason); // Set the id to -1 initially
-                    int reminderId = database.addReminder(reminder, RemindersSaveActivity.this);
+                    int reminderId = reminderMethods.addReminder(reminder, RemindersSaveActivity.this);
                     reminder.setId(reminderId); // Set the ID for the reminder object
 
                     // Set the alarm for the reminder
@@ -137,4 +137,3 @@ public class RemindersSaveActivity extends AppCompatActivity {
 
     }
 }
-

@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.Database;
+import com.example.myeyehealth.data.ReminderMethods;
 import com.example.myeyehealth.model.Reminder;
 import com.example.myeyehealth.ui.reminders.ReminderAlarmScheduler;
 
@@ -50,8 +50,8 @@ public class ReminderItemView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 // Remove the reminder from the database
-                Database database = Database.getInstance(getContext());
-                database.deleteReminder(reminder.getId());
+                ReminderMethods reminderMethods = new ReminderMethods(getContext());
+                reminderMethods.deleteReminder(reminder.getId());
 
                 // Remove the reminder from the alarm scheduler
                 ReminderAlarmScheduler reminderAlarmScheduler = new ReminderAlarmScheduler(getContext());
@@ -84,4 +84,3 @@ public class ReminderItemView extends LinearLayout {
         return timeFormat.format(calendar.getTime());
     }
 }
-

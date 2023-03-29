@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.Database;
+import com.example.myeyehealth.data.AmslerGridMethods;
 import com.example.myeyehealth.data.SessionManager;
 import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.ui.MainMenuActivity;
@@ -38,25 +38,29 @@ public class AmslerGridGraphActivity extends AppCompatActivity {
         setContentView(R.layout.activity_amsler_grid_graph);
 
         // Initialize the database and user
-        Database database = Database.getInstance(this);
+        AmslerGridMethods database = new AmslerGridMethods(this);
         SessionManager sessionManager = SessionManager.getInstance(this);
 
         User user = sessionManager.getUser();
         int userId = user.getId();
         System.out.println("userid" +user.getId());
-        // Get distortion coordinates and percentages from the intent
+// Get distortion coordinates and percentages from the intent
+        System.out.println("Fetching distortion coordinates and percentages from the intent");
         ArrayList<ArrayList<Float>> leftEyeDistortionCoordinates = (ArrayList<ArrayList<Float>>) getIntent().getSerializableExtra("leftEyeDistortionCoordinates");
         ArrayList<ArrayList<Float>> rightEyeDistortionCoordinates = (ArrayList<ArrayList<Float>>) getIntent().getSerializableExtra("rightEyeDistortionCoordinates");
         HashMap<String, Float> leftEyeDistortionPercentages = (HashMap<String, Float>) getIntent().getSerializableExtra("leftEyeDistortionPercentages");
         HashMap<String, Float> rightEyeDistortionPercentages = (HashMap<String, Float>) getIntent().getSerializableExtra("rightEyeDistortionPercentages");
 
-        // Save the Amsler Grid results to the database
+// Save the Amsler Grid results to the database
+        System.out.println("Saving Amsler Grid results to the database for user ID: " + userId);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String currentDate = sdf.format(new Date());
         if (leftEyeDistortionCoordinates != null) {
+            System.out.println("Saving left eye distortion coordinates for user ID: " + userId);
             database.saveAmslerGridData(userId, currentDate, convertToHashMap(leftEyeDistortionCoordinates));
         }
         if (rightEyeDistortionCoordinates != null) {
+            System.out.println("Saving right eye distortion coordinates for user ID: " + userId);
             database.saveAmslerGridData(userId, currentDate, convertToHashMap(rightEyeDistortionCoordinates));
         }
 

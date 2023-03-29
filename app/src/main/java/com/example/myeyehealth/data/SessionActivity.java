@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.ui.LoginActivity;
-
+//abstract class that extends AppCompatActivity and handles the logic related to checking the user's login status. It uses the SessionManager to determine whether a user is logged in and retrieves the logged-in user's information.
 public abstract class SessionActivity extends AppCompatActivity {
 
     private SessionManager sessionManager;

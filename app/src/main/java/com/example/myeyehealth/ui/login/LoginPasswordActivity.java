@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.Database;
+import com.example.myeyehealth.data.UserMethods;
 import com.example.myeyehealth.model.User;
 
 public class LoginPasswordActivity extends AppCompatActivity {
@@ -40,8 +40,9 @@ public class LoginPasswordActivity extends AppCompatActivity {
                 String password = passwordInput.getText().toString().trim();
 
                 // Lookup user in the database
-                Database db = Database.getInstance(LoginPasswordActivity.this);
-                User user = db.getUserByEmail(email);
+                UserMethods userMethods = new UserMethods(LoginPasswordActivity.this);
+                User user = userMethods.getUserByEmail(email);
+
 
                 // Check if user exists and if password matches
                 if (user != null && password.equals(user.getPassword())) {
@@ -53,7 +54,7 @@ public class LoginPasswordActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginPasswordActivity.this, LoginErrorActivity.class);
                     startActivity(intent);
                 }
-                db.close();
+
             }
         });
 

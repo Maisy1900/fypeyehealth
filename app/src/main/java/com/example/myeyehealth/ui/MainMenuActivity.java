@@ -8,6 +8,8 @@ import android.widget.ImageButton;
 import com.example.myeyehealth.R;
 import com.example.myeyehealth.data.Database;
 import com.example.myeyehealth.data.SessionActivity;
+import com.example.myeyehealth.data.SessionManager;
+import com.example.myeyehealth.data.UserMethods;
 import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.ui.amslergrid.AmslerGridTutorial1Activity;
 import com.example.myeyehealth.ui.exercise.saccades.SaccadesTutorial1Activity;
@@ -20,55 +22,62 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
     private Button[] mMenuButtons;
 
     protected void onLoggedIn(User user) {
-        if (user == null) {
-            user = new User(-1, "John Doe", "john.doe@example.com", "password123", "Dr. Jane Smith", "dr.jane@example.com", "Carer Alice", "carer.alice@example.com");
-            Database database = Database.getInstance(this);
-            int userId = (int) database.addUser(user);
-            user.setId(userId);
-        }
-        System.out.println("userid" +user.getId());
-        setContentView(R.layout.activity_main_menu);
+        int specificUserId = 21;
 
+        // Fetch the user with the specific ID from the database
+        Database database = Database.getInstance(this);
+        UserMethods userMethods = database.getUserMethods();
+        user = userMethods.getUserById(specificUserId);
+        if (user != null) {
+            // Create a session for the specific user
+            SessionManager sessionManager = SessionManager.getInstance(this);
+            sessionManager.createLoginSession(user);
 
+            System.out.println("userid: " + user.getId());
+            setContentView(R.layout.activity_main_menu);
 
-        // Get references to the ImageButtons and menu buttons
-        mScrollUpButton = findViewById(R.id.scroll_up_button);
-        mScrollDownButton = findViewById(R.id.scroll_down_button);
+            // Get references to the ImageButtons and menu buttons
+            mScrollUpButton = findViewById(R.id.scroll_up_button);
+            mScrollDownButton = findViewById(R.id.scroll_down_button);
 
-        mMenuButtons = new Button[]{
-                findViewById(R.id.button1),
-                findViewById(R.id.button2),
-                findViewById(R.id.button3),
-                findViewById(R.id.button4),
-                findViewById(R.id.button5)
-        };
+            mMenuButtons = new Button[]{
+                    findViewById(R.id.button1),
+                    findViewById(R.id.button2),
+                    findViewById(R.id.button3),
+                    findViewById(R.id.button4),
+                    findViewById(R.id.button5)
+            };
 
-        // Initialize the menu buttons' tags and texts
-        String[] buttonTexts = getResources().getStringArray(R.array.menu_button_texts);
-        for (int i = 0; i < mMenuButtons.length; i++) {
-            mMenuButtons[i].setTag(i);
-            mMenuButtons[i].setText(buttonTexts[i]);
-        }
-
-        // Set click listeners for the menu buttons
-        for (Button button : mMenuButtons) {
-            button.setOnClickListener(this);
-        }
-
-        // Set click listeners for the up and down buttons
-        mScrollDownButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                scrollMenu(-1);
+            // Initialize the menu buttons' tags and texts
+            String[] buttonTexts = getResources().getStringArray(R.array.menu_button_texts);
+            for (int i = 0; i < mMenuButtons.length; i++) {
+                mMenuButtons[i].setTag(i);
+                mMenuButtons[i].setText(buttonTexts[i]);
             }
-        });
 
-        mScrollUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                scrollMenu(1);
+            // Set click listeners for the menu buttons
+            for (Button button : mMenuButtons) {
+                button.setOnClickListener(this);
             }
-        });
+
+            // Set click listeners for the up and down buttons
+            mScrollDownButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    scrollMenu(-1);
+                }
+            });
+
+            mScrollUpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    scrollMenu(1);
+                }
+            });
+        } else {
+            // Handle the case when the user is not found
+            // You can display an error message or create a new user here
+        }
     }
 
     @Override
@@ -131,4 +140,5 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
             startActivity(intent);
         }
     }
+
 }

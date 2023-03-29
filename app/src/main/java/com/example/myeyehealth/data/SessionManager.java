@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.myeyehealth.model.User;
-
+//singleton class that helps manage the user session. It is responsible for starting and ending user sessions, checking if a user is logged in, and getting user information from the SharedPreferences.
 public class SessionManager {
     private static SessionManager instance;
     private SharedPreferences prefs;
@@ -35,6 +35,11 @@ public class SessionManager {
         editor.putString("userCarerEmail", user.getCarerEmail());
         editor.putBoolean("isLoggedIn", true);
         editor.apply();
+    }
+
+    // Add this method to create a login session
+    public void createLoginSession(User user) {
+        startSession(user);
     }
 
     public boolean isLoggedIn() {

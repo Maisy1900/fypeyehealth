@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.Database;
+import com.example.myeyehealth.data.UserMethods;
 
 import java.util.regex.Pattern;
 
@@ -28,8 +28,8 @@ public class CreateAccountEmailActivity extends AppCompatActivity {
         }
 
         // Check if the email already exists in the database
-        Database db = Database.getInstance(CreateAccountEmailActivity.this);
-        if (db.getUserByEmail(email) != null) {
+        UserMethods userMethods = new UserMethods(CreateAccountEmailActivity.this);
+        if (userMethods.checkUserEmailExists(email)) {
             Toast.makeText(CreateAccountEmailActivity.this, "Email address already in use", Toast.LENGTH_SHORT).show();
             return false;
         }

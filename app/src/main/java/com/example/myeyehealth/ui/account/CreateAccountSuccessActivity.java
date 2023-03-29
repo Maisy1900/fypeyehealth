@@ -8,8 +8,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.Database;
 import com.example.myeyehealth.data.SessionManager;
+import com.example.myeyehealth.data.UserMethods;
 import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.ui.MainMenuActivity;
 
@@ -30,9 +30,9 @@ public class CreateAccountSuccessActivity extends AppCompatActivity {
 
         if (userId != -1) {
             // Fetch the user object from the database
-            Database db = Database.getInstance(this);
-            User user = db.getUserById(userId);
-            db.close();
+            UserMethods userMethods = new UserMethods(this);
+            User user = userMethods.getUserById(userId);
+
 
             if (user != null) {
                 // Display the user details in the TextView
@@ -60,4 +60,3 @@ public class CreateAccountSuccessActivity extends AppCompatActivity {
         finish();
     }
 }
-

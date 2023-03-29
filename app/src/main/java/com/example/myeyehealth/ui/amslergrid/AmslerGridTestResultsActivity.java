@@ -52,13 +52,8 @@ public class AmslerGridTestResultsActivity extends AppCompatActivity {
         System.out.println("Right Eye Distortion Percentages: " + rightEyeDistortionPercentages);
 
         // Display the results
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView resultsText = findViewById(R.id.results_text);
-                resultsText.setText(formatResults(leftEyeDistortionPercentages, rightEyeDistortionPercentages));
-            }
-        });
+        TextView resultsText = findViewById(R.id.results_text);
+        resultsText.setText(formatResults(leftEyeDistortionPercentages, rightEyeDistortionPercentages));
 
         // Set up back button and continue button
         ImageButton backButton = findViewById(R.id.back_button);

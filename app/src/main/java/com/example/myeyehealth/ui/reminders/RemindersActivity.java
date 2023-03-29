@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
 import com.example.myeyehealth.data.Database;
+import com.example.myeyehealth.data.ReminderMethods;
 import com.example.myeyehealth.model.Reminder;
 import com.example.myeyehealth.view.ReminderItemView;
 
@@ -28,7 +29,9 @@ public class RemindersActivity extends AppCompatActivity {
 
     private void populateReminders() {
         // Get the reminders from the database
-        List<Reminder> reminders = database.getAllReminders(getApplicationContext());
+        ReminderMethods reminderMethods = new ReminderMethods(getApplicationContext());
+        List<Reminder> reminders = reminderMethods.getAllReminders(getApplicationContext());
+
 
         // Iterate through the reminders and create ReminderItemView instances for each
         for (Reminder reminder : reminders) {

@@ -14,7 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.Database;
+import com.example.myeyehealth.data.UserMethods;
 import com.example.myeyehealth.model.User;
 
 import java.util.regex.Matcher;
@@ -128,9 +128,9 @@ public class CreateAccountMedicalInfoActivity extends AppCompatActivity {
                                     User user = new User(-1, name, email, password, docName, docEmail, carerName, carerEmail);
 
                                     // Save the user's information to the database and get the ID of the newly inserted row
-                                    Database db = Database.getInstance(CreateAccountMedicalInfoActivity.this);
-                                    int userId = (int) db.addUser(user);
-                                    db.close();
+                                    UserMethods userMethods = new UserMethods(CreateAccountMedicalInfoActivity.this);
+                                    int userId = (int) userMethods.addUser(user);
+
 
                                     // Set the id of the user object to the generated id
                                     user.setId(userId);
@@ -160,9 +160,8 @@ public class CreateAccountMedicalInfoActivity extends AppCompatActivity {
                     User user = new User(-1, name, email, password, docName, docEmail, carerName, carerEmail);
 
                     // Save the user's information to the database and get the ID of the newly inserted row
-                    Database db = Database.getInstance(CreateAccountMedicalInfoActivity.this);
-                    int userId = (int) db.addUser(user);
-                    db.close();
+                    UserMethods userMethods = new UserMethods(CreateAccountMedicalInfoActivity.this);
+                    int userId = (int) userMethods.addUser(user);
 
                     // Set the id of the user object to the generated id
                     user.setId(userId);
