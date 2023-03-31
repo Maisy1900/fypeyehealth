@@ -3,6 +3,7 @@ package com.example.myeyehealth.ui.amslergrid;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,165 +16,186 @@ import com.example.myeyehealth.data.AmslerGridMethods;
 import com.example.myeyehealth.data.SessionManager;
 import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.ui.MainMenuActivity;
-import com.github.mikephil.charting.charts.LineChart;
+import com.example.myeyehealth.view.InteractiveAmslerGridView;
+import com.github.mikephil.charting.charts.CombinedChart;
+import com.github.mikephil.charting.charts.ScatterChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 public class AmslerGridGraphActivity extends AppCompatActivity {
-    private TextView comparisonText; // Add this declaration
+    private InteractiveAmslerGridView interactiveAmslerGridView;
+    private TextView comparisonText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_amsler_grid_graph);
 
-        // Initialize the database and user
-        AmslerGridMethods database = new AmslerGridMethods(this);
-        SessionManager sessionManager = SessionManager.getInstance(this);
-
-        User user = sessionManager.getUser();
-        int userId = user.getId();
-        System.out.println("userid" +user.getId());
-// Get distortion coordinates and percentages from the intent
-        System.out.println("Fetching distortion coordinates and percentages from the intent");
+        interactiveAmslerGridView = new InteractiveAmslerGridView(this);
         ArrayList<ArrayList<Float>> leftEyeDistortionCoordinates = (ArrayList<ArrayList<Float>>) getIntent().getSerializableExtra("leftEyeDistortionCoordinates");
         ArrayList<ArrayList<Float>> rightEyeDistortionCoordinates = (ArrayList<ArrayList<Float>>) getIntent().getSerializableExtra("rightEyeDistortionCoordinates");
         HashMap<String, Float> leftEyeDistortionPercentages = (HashMap<String, Float>) getIntent().getSerializableExtra("leftEyeDistortionPercentages");
         HashMap<String, Float> rightEyeDistortionPercentages = (HashMap<String, Float>) getIntent().getSerializableExtra("rightEyeDistortionPercentages");
 
-// Save the Amsler Grid results to the database
-        System.out.println("Saving Amsler Grid results to the database for user ID: " + userId);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String currentDate = sdf.format(new Date());
-        if (leftEyeDistortionCoordinates != null) {
-            System.out.println("Saving left eye distortion coordinates for user ID: " + userId);
-            database.saveAmslerGridData(userId, currentDate, convertToHashMap(leftEyeDistortionCoordinates));
-        }
-        if (rightEyeDistortionCoordinates != null) {
-            System.out.println("Saving right eye distortion coordinates for user ID: " + userId);
-            database.saveAmslerGridData(userId, currentDate, convertToHashMap(rightEyeDistortionCoordinates));
-        }
+        SessionManager sessionManager = SessionManager.getInstance(this);
+        User user = sessionManager.getUser();
+        int userID= user.getId();
+        long currentDate = System.currentTimeMillis();
 
-        // Fetch the Amsler Grid results from the database
-        List<Entry> previousResults = database.getAmslerGridResults(userId);
-        System.out.println("Fetched Amsler Grid results from the database: " + previousResults);
+        AmslerGridMethods amslerResultMethods = new AmslerGridMethods(this);
+        HashMap<Integer, List<HashMap<String, String>>> pastFiveTests = amslerResultMethods.getPastFiveTests(userID);
+        HashMap<String, Float> averageDistortionPercentages = interactiveAmslerGridView.getAverageDistortionPercentages(pastFiveTests);
 
-        // Initialize the graph with the fetched data and compare distortions
-        initGraph(previousResults, leftEyeDistortionPercentages, rightEyeDistortionPercentages);
+        initGraph(leftEyeDistortionPercentages, rightEyeDistortionPercentages, averageDistortionPercentages);
         comparisonText = findViewById(R.id.comparison_text);
-        compareDistortions(leftEyeDistortionPercentages, rightEyeDistortionPercentages, previousResults);
 
-        // Set up the save button
+        // Call the compareDistortions method
+        compareDistortions(userID, leftEyeDistortionCoordinates, rightEyeDistortionCoordinates);
+
         Button saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Save the current Amsler Grid results to the database
-                database.saveAmslerGridData(userId, currentDate, convertToHashMap(leftEyeDistortionCoordinates));
-                database.saveAmslerGridData(userId, currentDate, convertToHashMap(rightEyeDistortionCoordinates));
 
-                System.out.println("Results saved successfully by the save button.");
+                // Pass both left and right eye HashMaps to the updated saveAmslerGridData() method
+                amslerResultMethods.saveAmslerGridData(userID, currentDate, convertToHashMap(leftEyeDistortionCoordinates), convertToHashMap(rightEyeDistortionCoordinates));
 
+                Log.d("AmslerGridGraph", "Results saved successfully by the save button.foruser" + userID);
                 Toast.makeText(AmslerGridGraphActivity.this, "Results saved successfully", Toast.LENGTH_SHORT).show();
 
                 // Return to the main menu activity
                 Intent mainMenuIntent = new Intent(AmslerGridGraphActivity.this, MainMenuActivity.class);
                 startActivity(mainMenuIntent);
+
             }
         });
     }
 
 
-    private void initGraph(List<Entry> previousResults, HashMap<String, Float> leftEyeDistortionPercentages, HashMap<String, Float> rightEyeDistortionPercentages){
-        LineDataSet previousDataSet = null;
+    private void initGraph(HashMap<String, Float> leftEyeDistortionPercentages, HashMap<String, Float> rightEyeDistortionPercentages, HashMap<String, Float> averageDistortionPercentages) {
 
-        if (previousResults != null && !previousResults.isEmpty()) {
-            previousDataSet = new LineDataSet(previousResults, "Previous Results");
-            // Customize the previousDataSet appearance (e.g., colors, line width, etc.)
-            previousDataSet.setColor(Color.BLUE);
-            previousDataSet.setLineWidth(2f);
-            previousDataSet.setCircleColor(Color.BLUE);
-            previousDataSet.setCircleRadius(4f);
-            previousDataSet.setDrawCircleHole(false);
-        }
-
-        List<Entry> leftEyeResultEntries = new ArrayList<>();
-        int leftEyeIndex = 0;
+        List<BarEntry> leftEyeResultEntries = new ArrayList<>();
+        List<BarEntry> rightEyeResultEntries = new ArrayList<>();
+        int index = 0;
         for (String quadrant : leftEyeDistortionPercentages.keySet()) {
-            leftEyeResultEntries.add(new Entry(leftEyeIndex, leftEyeDistortionPercentages.get(quadrant)));
-            leftEyeIndex++;
+            leftEyeResultEntries.add(new BarEntry(index * 2, leftEyeDistortionPercentages.get(quadrant)));
+            rightEyeResultEntries.add(new BarEntry(index * 2 + 1, rightEyeDistortionPercentages.get(quadrant)));
+            index++;
         }
 
-        List<Entry> rightEyeResultEntries = new ArrayList<>();
-        int rightEyeIndex = 0;
-        for (String quadrant : rightEyeDistortionPercentages.keySet()) {
-            rightEyeResultEntries.add(new Entry(rightEyeIndex, rightEyeDistortionPercentages.get(quadrant)));
-            rightEyeIndex++;
-        }
-
-        LineDataSet leftEyeDataSet = new LineDataSet(leftEyeResultEntries, "Left Eye Test");
+        BarDataSet leftEyeDataSet = new BarDataSet(leftEyeResultEntries, "Left Eye Test");
         leftEyeDataSet.setColor(Color.RED);
-        leftEyeDataSet.setLineWidth(2f);
-        leftEyeDataSet.setCircleColor(Color.RED);
-        leftEyeDataSet.setCircleRadius(4f);
-        leftEyeDataSet.setDrawCircleHole(false);
+        leftEyeDataSet.setDrawValues(false);
 
-        LineDataSet rightEyeDataSet = new LineDataSet(rightEyeResultEntries, "Right Eye Test");
-        rightEyeDataSet.setColor(Color.GREEN);
-        rightEyeDataSet.setLineWidth(2f);
-        rightEyeDataSet.setCircleColor(Color.GREEN);
-        rightEyeDataSet.setCircleRadius(4f);
-        rightEyeDataSet.setDrawCircleHole(false);
+        BarDataSet rightEyeDataSet = new BarDataSet(rightEyeResultEntries, "Right Eye Test");
+        rightEyeDataSet.setColor(Color.BLUE);
+        rightEyeDataSet.setDrawValues(false);
 
+        BarData barData = new BarData(leftEyeDataSet, rightEyeDataSet);
 
-        LineData lineData;
-        if (previousDataSet != null) {
-            lineData = new LineData(previousDataSet, leftEyeDataSet, rightEyeDataSet);
-        } else {
-            lineData = new LineData(leftEyeDataSet, rightEyeDataSet);
-        }
-
-
-        LineChart chart = findViewById(R.id.graph);
-        chart.setData(lineData);
-
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setValueFormatter(new DateFormatter());
+        CombinedChart combinedChart = findViewById(R.id.combined_chart);
+        XAxis xAxis = combinedChart.getXAxis();
+        xAxis.setValueFormatter(new QuadrantFormatter());
         xAxis.setGranularity(1f);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
-        YAxis leftAxis = chart.getAxisLeft();
+        YAxis leftAxis = combinedChart.getAxisLeft();
         leftAxis.setAxisMinimum(0f);
 
-        YAxis rightAxis = chart.getAxisRight();
+        YAxis rightAxis = combinedChart.getAxisRight();
         rightAxis.setEnabled(false);
 
-        chart.getDescription().setEnabled(false);
+        combinedChart.getDescription().setEnabled(false);
 
-        chart.invalidate();
+        ScatterData scatterData = generateScatterData(averageDistortionPercentages);
+
+        CombinedData combinedData = new CombinedData();
+        combinedData.setData(barData);
+        combinedData.setData(scatterData);
+
+        combinedChart.setData(combinedData);
+        combinedChart.invalidate();
     }
 
-
-    private static class DateFormatter extends ValueFormatter {
-        private final SimpleDateFormat dateFormat;
-
-        DateFormatter() {
-            dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+    private ScatterData generateScatterData(HashMap<String, Float> averageDistortionPercentages) {
+        List<Entry> leftEyeEntries = new ArrayList<>();
+        List<Entry> rightEyeEntries = new ArrayList<>();
+        int index = 0;
+        for (String quadrant : averageDistortionPercentages.keySet()) {
+            leftEyeEntries.add(new Entry(index * 2, averageDistortionPercentages.get(quadrant)));
+            rightEyeEntries.add(new Entry(index * 2 + 1, averageDistortionPercentages.get(quadrant)));
+            index++;
         }
+        ScatterDataSet leftEyeScatterDataSet = new ScatterDataSet(leftEyeEntries, "Left Eye Average");
+        leftEyeScatterDataSet.setColor(Color.GREEN);
+        leftEyeScatterDataSet.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
+        leftEyeScatterDataSet.setDrawValues(false);
+
+        ScatterDataSet rightEyeScatterDataSet = new ScatterDataSet(rightEyeEntries, "Right Eye Average");
+        rightEyeScatterDataSet.setColor(Color.MAGENTA);
+        rightEyeScatterDataSet.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
+        rightEyeScatterDataSet.setDrawValues(false);
+        ScatterData scatterData = new ScatterData(leftEyeScatterDataSet, rightEyeScatterDataSet);
+        return scatterData;
+    }
+
+    private class QuadrantFormatter extends ValueFormatter {
+        private final String[] quadrantNames = {"Upper Left", "Upper Right", "Lower Left", "Lower Right"};
 
         @Override
-        public String getFormattedValue(float value) {
-            return dateFormat.format(new Date((long) value));
+        public String getAxisLabel(float value, AxisBase axis) {
+            if (value >= 0 && value < quadrantNames.length * 2) {
+                return quadrantNames[(int) (value / 2)];
+            }
+            return "";
+        }
+    }
+    private void compareDistortions(int userId, ArrayList<ArrayList<Float>> leftEyeDistortionCoordinates, ArrayList<ArrayList<Float>> rightEyeDistortionCoordinates) {
+        InteractiveAmslerGridView interactiveAmslerGridView = new InteractiveAmslerGridView(this);
+
+        // Calculate the percentage of distortion for each eye
+        HashMap<String, Float> leftEyeDistortionPercentages = interactiveAmslerGridView.calculateQuadrantDistortions(leftEyeDistortionCoordinates);
+        HashMap<String, Float> rightEyeDistortionPercentages = interactiveAmslerGridView.calculateQuadrantDistortions(rightEyeDistortionCoordinates);
+
+        // Fetch the Amsler Grid results from the database
+        AmslerGridMethods database = new AmslerGridMethods(this);
+        HashMap<Integer, List<HashMap<String, String>>> pastFiveTests = database.getPastFiveTests(userId);
+
+        // Calculate the average distortions from the past 5 tests
+        HashMap<String, Float> averageDistortions = interactiveAmslerGridView.getAverageDistortionPercentages(pastFiveTests);
+
+        // Compare the current distortion percentages with the average of the 5 previous tests
+        if (averageDistortions != null) {
+            boolean significantChangeDetected = false;
+            for (String quadrant : averageDistortions.keySet()) {
+                float leftEyeDifference = Math.abs(leftEyeDistortionPercentages.get(quadrant) - averageDistortions.get(quadrant));
+                float rightEyeDifference = Math.abs(rightEyeDistortionPercentages.get(quadrant) - averageDistortions.get(quadrant));
+                if (leftEyeDifference > 10 || rightEyeDifference > 10) {
+                    significantChangeDetected = true;
+                    break;
+                }
+            }
+
+            if (significantChangeDetected) {
+                comparisonText.setText("Significant change in vision detected. Seek medical assistance.");
+            } else {
+                comparisonText.setText("No significant change in vision detected. Continue monitoring.");
+            }
+        } else {
+            comparisonText.setText("Not enough previous results to compare with. Continue monitoring.");
         }
     }
     private HashMap<String, ArrayList<Float>> convertToHashMap(ArrayList<ArrayList<Float>> coordinates) {
@@ -184,41 +206,6 @@ public class AmslerGridGraphActivity extends AppCompatActivity {
         return result;
     }
 
-    private void compareDistortions(HashMap<String, Float> leftEyeDistortionPercentages, HashMap<String, Float> rightEyeDistortionPercentages, List<Entry> previousResults) {
-        // Implement the logic to compare the current and previous distortion percentages
-        // and update the 'comparisonText' TextView accordingly.
-
-        // Example:
-        if (previousResults == null || previousResults.isEmpty()) {
-            comparisonText.setText("This is your first Amsler Grid test. There are no previous results to compare.");
-        } else {
-            // Compare the distortion percentages and update the text accordingly
-            float currentLeftEyeDistortion = 0;
-            for (Float value : leftEyeDistortionPercentages.values()) {
-                currentLeftEyeDistortion += value;
-            }
-
-            float currentRightEyeDistortion = 0;
-            for (Float value : rightEyeDistortionPercentages.values()) {
-                currentRightEyeDistortion += value;
-            }
-
-            float previousLeftEyeDistortion = 0;
-            float previousRightEyeDistortion = 0;
-            // Assuming the last Entry in previousResults has the most recent distortion percentages
-            if (!previousResults.isEmpty()) {
-                Entry lastEntry = previousResults.get(previousResults.size() - 1);
-                previousLeftEyeDistortion = lastEntry.getY();
-                previousRightEyeDistortion = lastEntry.getY();
-            }
-
-            if (currentLeftEyeDistortion > previousLeftEyeDistortion || currentRightEyeDistortion > previousRightEyeDistortion) {
-                comparisonText.setText("Significant reduction in vision detected. Seek medical assistance.");
-            } else if (currentLeftEyeDistortion < previousLeftEyeDistortion || currentRightEyeDistortion < previousRightEyeDistortion) {
-                comparisonText.setText("Vision improvement detected. Continue monitoring.");
-            } else {
-                comparisonText.setText("Similar vision compared to the previous test. Continue monitoring.");
-            }
-        }
-    }
 }
+
+

@@ -16,15 +16,6 @@
             android:enabled="true"
             android:exported="true" />
 
-        <!-- MainMenuActivity -->
-        <activity
-            android:name=".ui.MainMenuActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <!-- Login-related activities -->
         <activity
@@ -118,6 +109,15 @@
         <activity
             android:name=".ui.reminders.RemindersSaveActivity"
             android:exported="false" />
+        <!-- MainMenuActivity -->
+        <activity
+            android:name=".ui.MainMenuActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <!-- SplashScreen and MainActivity -->
         <activity

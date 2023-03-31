@@ -5,15 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/profile_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:text="@string/profile_button_text"
-        android:textColor="@color/black" />
-
     <ImageView
         android:id="@+id/logo"
         android:layout_width="100dp"
@@ -158,15 +149,6 @@
             android:layout_weight="15" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/settings_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:text="@string/settings_button_text"
-        android:textColor='#020202' />
 
 </RelativeLayout>
 

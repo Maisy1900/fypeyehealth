@@ -56,17 +56,18 @@
         app:layout_constraintTop_toTopOf="@id/title_text" />
 
     <!-- Graph view -->
-    <com.github.mikephil.charting.charts.LineChart
+    <com.github.mikephil.charting.charts.ScatterChart
         android:id="@+id/graph"
         android:layout_width="321dp"
         android:layout_height="298dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="0dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toTopOf="@+id/performance_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/secondary_title" />
+        app:layout_constraintTop_toBottomOf="@+id/secondary_title"
+        app:layout_constraintHeight_percent="0.40"/>
 
     <!-- Performance Text -->
     <TextView
@@ -75,32 +76,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Based on your performance in the most recent test, we have observed a X% improvement in accuracy compared to your last 5 tests."
+        android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/graph" />
 
-    <!-- Export Results Button -->
-    <Button
-        android:id="@+id/export_results_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Export Results"
-        app:layout_constraintTop_toBottomOf="@+id/performance_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <!-- Save Button -->
+
     <Button
         android:id="@+id/save_button"
         style="@style/ButtonStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:text="Save"
         app:layout_constraintWidth_percent="0.7"
         app:layout_constraintHeight_percent="0.08"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

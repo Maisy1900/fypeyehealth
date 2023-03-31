@@ -6,11 +6,11 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/reminder_weekday"
+        android:id="@+id/reminder_reason"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Weekday"
+        android:text="Reason"
         android:textSize="18sp" />
 
     <TextView
@@ -23,8 +23,8 @@
 
     <ImageButton
         android:id="@+id/delete_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:src="@drawable/delete" />
 
 </LinearLayout>

@@ -13,7 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myeyehealth.R;
 
 public class SaccadesTutorial1Activity extends AppCompatActivity {
-
+    private ScrollView tutorialScrollView;
+    private TextView tutorialText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,13 +28,15 @@ public class SaccadesTutorial1Activity extends AppCompatActivity {
             }
         });
 
-        ScrollView tutorialScrollView = findViewById(R.id.tutorial_scroll_view);
+        tutorialScrollView = findViewById(R.id.tutorial_scroll_view);
+        tutorialText = findViewById(R.id.tutorial_text);
+
 
         ImageButton scrollUpButton = findViewById(R.id.scroll_up_button);
         scrollUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tutorialScrollView.fullScroll(ScrollView.FOCUS_UP);
+                scrollText(-50);
             }
         });
 
@@ -41,7 +44,7 @@ public class SaccadesTutorial1Activity extends AppCompatActivity {
         scrollDownButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tutorialScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                scrollText(50);
             }
         });
 
@@ -61,5 +64,24 @@ public class SaccadesTutorial1Activity extends AppCompatActivity {
                 + "Smaller peripheral dots will appear around the central dot.\n\n"
                 + "Tap the first indicated dot, then quickly move your gaze to the next indicated dot as it changes colour.\n\n"
                 + "Tap on each consecutive dot in the sequence to complete the exercise.");
+        tutorialText.setPadding(0, 500, 0, 500);
+        tutorialScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                tutorialScrollView.scrollTo(0, 500); // Adjust the initial scroll position
+            }
+        });
+
     }
+    private void scrollText(int dy) {
+        int maxScrollY = tutorialText.getHeight() - tutorialScrollView.getHeight();
+        int targetY = tutorialScrollView.getScrollY() + dy;
+        if (targetY < 0) {
+            targetY = 0;
+        } else if (targetY > maxScrollY) {
+            targetY = maxScrollY;
+        }
+        tutorialScrollView.scrollTo(0, targetY);
+    }
+
 }

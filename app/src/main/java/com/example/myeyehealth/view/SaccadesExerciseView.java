@@ -6,9 +6,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.example.myeyehealth.data.SessionManager;
 import com.example.myeyehealth.model.SaccadesPeripheralDot;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class SaccadesExerciseView extends View {
     private List<Long> tapTimes;
     private List<Float> tapDistances;
     private long lastTapTime;
+    private SessionManager sessionManager;
 
     public interface OnExerciseCompleteListener {
         void onExerciseComplete();
@@ -31,18 +34,22 @@ public class SaccadesExerciseView extends View {
 
     public SaccadesExerciseView(Context context) {
         super(context);
+        sessionManager = SessionManager.getInstance(context);
         init();
     }
 
     public SaccadesExerciseView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        sessionManager = SessionManager.getInstance(context);
         init();
     }
 
     public SaccadesExerciseView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        sessionManager = SessionManager.getInstance(context);
         init();
     }
+
 
     private void init() {
         // Initialize paint objects for the central dot
@@ -57,7 +64,9 @@ public class SaccadesExerciseView extends View {
         lastTapTime = System.currentTimeMillis();
 
         generatePeripheralDotSequence();
+
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -72,22 +81,34 @@ public class SaccadesExerciseView extends View {
             canvas.drawCircle(position.x, position.y, 15, dot.getPaint());
         }
     }
-
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        generatePeripheralDotSequence();
+    }
     private void generatePeripheralDotSequence() {
         // Generate the sequence of peripheral dots and their positions
-        // You can use random positions or follow a specific pattern
-        // In this example, we create 8 random peripheral dots
 
         Random random = new Random();
+        int width = getWidth();
+        int height = getHeight();
+        int padding = 40;
+
+        if (width <= 0 || height <= 0) {
+            return;
+        }
+        peripheralDots.clear();
+
         for (int i = 0; i < 8; i++) {
-            float x = random.nextInt(getWidth());
-            float y = random.nextInt(getHeight());
+            float x = padding + random.nextInt(width - 2 * padding);
+            float y = padding + random.nextInt(height - 2 * padding);
             SaccadesPeripheralDot dot = new SaccadesPeripheralDot(x, y, Color.BLACK);
             peripheralDots.add(dot);
         }
         peripheralDots.get(currentActiveDotIndex).setActive(true);
-        peripheralDots.get(currentActiveDotIndex).getPaint().setColor(Color.RED);
+        updateActiveDotColor(); // Update this line to use the updateActiveDotColor() method
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -103,11 +124,16 @@ public class SaccadesExerciseView extends View {
                 tapTimes.add(currentTime - lastTapTime);
                 lastTapTime = currentTime;
 
+                Log.d("SaccadesExercise", "Tapped on dot " + currentActiveDotIndex + " at position " + tapPosition.toString());
+
                 // Record tap distance
                 if (currentActiveDotIndex > 0) {
                     SaccadesPeripheralDot lastDot = peripheralDots.get(currentActiveDotIndex - 1);
                     PointF lastDotPosition = lastDot.getPosition();
-                    tapDistances.add(distanceBetween(activeDotPosition, lastDotPosition));
+                    float distance = distanceBetween(activeDotPosition, lastDotPosition);
+                    tapDistances.add(distance);
+
+                    Log.d("SaccadesExercise", "Distance between dot " + (currentActiveDotIndex - 1) + " and " + currentActiveDotIndex + ": " + distance);
                 }
 
                 // Update the active dot
@@ -122,14 +148,28 @@ public class SaccadesExerciseView extends View {
                 } else {
                     SaccadesPeripheralDot nextActiveDot = peripheralDots.get(currentActiveDotIndex);
                     nextActiveDot.setActive(true);
-                    nextActiveDot.getPaint().setColor(Color.RED);
+                    updateActiveDotColor(); // Call this method here instead of setting the color directly
                     invalidate();
                 }
+            } else {
+                // If the user clicks outside of the constraints, do nothing and don't store anything
+                Log.d("SaccadesExercise", "Tapped outside the active dot at position " + tapPosition.toString());
+                return true;
             }
         }
 
         return true;
     }
+
+    private void updateActiveDotColor() {
+        String color = sessionManager.getSaccadesColor();
+        int parsedColor = Color.parseColor(color);
+        SaccadesPeripheralDot activeDot = peripheralDots.get(currentActiveDotIndex);
+        activeDot.getPaint().setColor(parsedColor);
+        invalidate();
+    }
+
+
 
     private float distanceBetween(PointF p1, PointF p2) {
         return (float) Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));

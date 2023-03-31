@@ -23,5 +23,11 @@
         <item>Settings</item>
         <item>Profile</item>
     </string-array>
-
+    <array name="menu_button_icons">
+        <item>@drawable/grid</item>
+        <item>@drawable/view</item>
+        <item>@drawable/calendar</item>
+        <item>@drawable/settings</item>
+        <item>@drawable/user</item>
+    </array>
 </resources>

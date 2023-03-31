@@ -220,8 +220,46 @@ public class InteractiveAmslerGridView extends AmslerGridView {
 
         return distortionPercentages;
     }
+    public HashMap<String, Float> getAverageDistortionPercentages(HashMap<Integer, List<HashMap<String, String>>> pastFiveTests) {
+        HashMap<String, Float> sumDistortionPercentages = new HashMap<>();
+        sumDistortionPercentages.put("upperLeft", 0f);
+        sumDistortionPercentages.put("upperRight", 0f);
+        sumDistortionPercentages.put("lowerLeft", 0f);
+        sumDistortionPercentages.put("lowerRight", 0f);
 
+        int testCount = 0;
 
+        for (int testId : pastFiveTests.keySet()) {
+            List<HashMap<String, String>> testResults = pastFiveTests.get(testId);
+            ArrayList<ArrayList<Float>> distortionCoordinates = new ArrayList<>();
+
+            for (HashMap<String, String> result : testResults) {
+                float xCoord = Float.parseFloat(result.get("xCoord"));
+                float yCoord = Float.parseFloat(result.get("yCoord"));
+                ArrayList<Float> coordinates = new ArrayList<>();
+                coordinates.add(xCoord);
+                coordinates.add(yCoord);
+                distortionCoordinates.add(coordinates);
+            }
+
+            HashMap<String, Float> distortionPercentages = calculateQuadrantDistortions(distortionCoordinates);
+
+            for (String quadrant : distortionPercentages.keySet()) {
+                float percentage = distortionPercentages.get(quadrant);
+                sumDistortionPercentages.put(quadrant, sumDistortionPercentages.get(quadrant) + percentage);
+            }
+
+            testCount++;
+        }
+
+        HashMap<String, Float> averageDistortionPercentages = new HashMap<>();
+        for (String quadrant : sumDistortionPercentages.keySet()) {
+            float sumPercentage = sumDistortionPercentages.get(quadrant);
+            averageDistortionPercentages.put(quadrant, sumPercentage / testCount);
+        }
+
+        return averageDistortionPercentages;
+    }
 
 
 

@@ -8,6 +8,9 @@ import com.example.myeyehealth.model.User;
 public class SessionManager {
     private static SessionManager instance;
     private SharedPreferences prefs;
+    private static final String FONT_SIZE_KEY = "font_size";
+    private static final String GRID_THICKNESS_KEY = "grid_thickness";
+    private static final String SACCADES_COLOR_KEY = "saccades_color";
 
     private static final String LINE_THICKNESS_KEY = "line_thickness";
 
@@ -72,5 +75,34 @@ public class SessionManager {
 
     public float getLineThickness() {
         return prefs.getFloat(LINE_THICKNESS_KEY, 2); // 2 is the default thickness
+    }
+    public void setFontSize(String fontSize) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(FONT_SIZE_KEY, fontSize);
+        editor.apply();
+    }
+
+    public String getFontSize() {
+        return prefs.getString(FONT_SIZE_KEY, "M"); // M is the default font size
+    }
+
+    public void setGridThickness(String thickness) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(GRID_THICKNESS_KEY, thickness);
+        editor.apply();
+    }
+
+    public String getGridThickness() {
+        return prefs.getString(GRID_THICKNESS_KEY, "M"); // M is the default grid thickness
+    }
+
+    public void setSaccadesColor(String color) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(SACCADES_COLOR_KEY, color);
+        editor.apply();
+    }
+
+    public String getSaccadesColor() {
+        return prefs.getString(SACCADES_COLOR_KEY, "red"); // red is the default saccades color
     }
 }

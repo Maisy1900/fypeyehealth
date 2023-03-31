@@ -92,25 +92,25 @@ public class RemindersSaveActivity extends AppCompatActivity {
                     if (weekday != null) {
                         switch (weekday.toLowerCase()) {
                             case "sunday":
-                                dayOfWeek = 1;
+                                dayOfWeek = 7; // Changed from 1
                                 break;
                             case "monday":
-                                dayOfWeek = 2;
+                                dayOfWeek = 1; // Changed from 2
                                 break;
                             case "tuesday":
-                                dayOfWeek = 3;
+                                dayOfWeek = 2; // Changed from 3
                                 break;
                             case "wednesday":
-                                dayOfWeek = 4;
+                                dayOfWeek = 3; // Changed from 4
                                 break;
                             case "thursday":
-                                dayOfWeek = 5;
+                                dayOfWeek = 4; // Changed from 5
                                 break;
                             case "friday":
-                                dayOfWeek = 6;
+                                dayOfWeek = 5; // Changed from 6
                                 break;
                             case "saturday":
-                                dayOfWeek = 7;
+                                dayOfWeek = 6; // Changed from 7
                                 break;
                         }
                     }

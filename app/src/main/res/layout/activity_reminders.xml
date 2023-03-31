@@ -175,7 +175,7 @@
         android:contentDescription="Scroll Up"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tutorial_scroll_view" />
+        app:layout_constraintTop_toTopOf="@id/weekdays_scroll_view" />
 
     <ImageButton
         android:id="@+id/scroll_down_button"
@@ -185,7 +185,7 @@
         android:background="@drawable/down_arrow"
         android:contentDescription="Scroll Down"
         android:scaleType="centerInside"
-        app:layout_constraintBottom_toBottomOf="@id/tutorial_scroll_view"
+        app:layout_constraintBottom_toBottomOf="@id/weekdays_scroll_view"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button

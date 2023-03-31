@@ -32,7 +32,8 @@ public class AmslerGridLeftEyeTestActivity extends AppCompatActivity {
         amslerGridView.setOnCompleteListener(new InteractiveAmslerGridView.OnCompleteListener() {
             @Override
             public void onComplete(ArrayList<ArrayList<Float>> distortionCoordinates) {
-                System.out.println("Left Eye onComplete called");
+                System.out.println("Left Eye onComplete called"); // Add this line for debugging
+
                 // save distortion coordinates and go to next activity
                 for (int i = 0; i < distortionCoordinates.size(); i++) {
                     ArrayList<Float> coordinates = distortionCoordinates.get(i);
@@ -46,6 +47,7 @@ public class AmslerGridLeftEyeTestActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
 
 

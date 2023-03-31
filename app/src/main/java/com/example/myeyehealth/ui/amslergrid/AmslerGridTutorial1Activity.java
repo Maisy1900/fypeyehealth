@@ -37,7 +37,7 @@ public class AmslerGridTutorial1Activity extends AppCompatActivity {
         scrollUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scrollText(-50); // Change -50 to the desired scroll amount
+                scrollText(-50);
             }
         });
 
@@ -45,7 +45,7 @@ public class AmslerGridTutorial1Activity extends AppCompatActivity {
         scrollDownButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scrollText(50); // Change 50 to the desired scroll amount
+                scrollText(50);
             }
         });
 

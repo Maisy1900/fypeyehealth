@@ -20,7 +20,7 @@ import java.util.Locale;
 
 public class ReminderItemView extends LinearLayout {
 
-    private TextView reminderWeekday;
+    private TextView reminderReason;
     private TextView reminderTime;
     private ImageButton deleteButton;
     private Reminder reminder;
@@ -42,9 +42,16 @@ public class ReminderItemView extends LinearLayout {
 
     private void init(Context context) {
         LayoutInflater.from(context).inflate(R.layout.reminder_item_view, this, true);
-        reminderWeekday = findViewById(R.id.reminder_weekday);
+        reminderReason = findViewById(R.id.reminder_reason);
         reminderTime = findViewById(R.id.reminder_time);
         deleteButton = findViewById(R.id.delete_button);
+
+        // Add the following lines
+        int buttonSize = Math.max(reminderReason.getLineHeight(), reminderTime.getLineHeight());
+        ViewGroup.LayoutParams layoutParams = deleteButton.getLayoutParams();
+        layoutParams.width = buttonSize;
+        layoutParams.height = buttonSize;
+        deleteButton.setLayoutParams(layoutParams);
 
         deleteButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -63,18 +70,22 @@ public class ReminderItemView extends LinearLayout {
         });
     }
 
+
     public void setReminder(Reminder reminder) {
         this.reminder = reminder;
-        reminderWeekday.setText(getWeekdayFromDayOfWeek(reminder.getDayOfWeek()));
         reminderTime.setText(getTimeAsString(reminder.getHour(), reminder.getMinute()));
+        reminderReason.setText(reminder.getReason()); // Add this line to set the reminder reason text
     }
 
     private String getWeekdayFromDayOfWeek(int dayOfWeek) {
         Calendar calendar = Calendar.getInstance();
+        // Adjust the dayOfWeek value
+        dayOfWeek = dayOfWeek % 7 + 1;
         calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
         return dateFormat.format(calendar.getTime());
     }
+
 
     private String getTimeAsString(int hour, int minute) {
         Calendar calendar = Calendar.getInstance();

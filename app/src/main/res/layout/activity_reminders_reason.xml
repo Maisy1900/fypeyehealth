@@ -63,12 +63,13 @@
         app:layout_constraintStart_toEndOf="@+id/amsler_test_button"
         app:layout_constraintTop_toTopOf="@+id/amsler_test_button" />
 
+
     <Button
         android:id="@+id/next_button"
         style="@style/ButtonStyle"
         android:text="Next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintHeight_percent="0.08"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

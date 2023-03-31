@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -31,7 +32,8 @@ public class RemindersReasonActivity extends AppCompatActivity {
                 mReason = mAmslerTestButton.getText().toString();
                 mAmslerTestButton.setBackgroundColor(ContextCompat.getColor(RemindersReasonActivity.this, R.color.colorAccent));
                 mSaccadesExerciseButton.setBackgroundColor(ContextCompat.getColor(RemindersReasonActivity.this, R.color.grey));
-                mSaccadesExerciseButton.setEnabled(false);
+                mSaccadesExerciseButton.setEnabled(true);
+                mAmslerTestButton.setEnabled(false);
             }
         });
 
@@ -41,7 +43,8 @@ public class RemindersReasonActivity extends AppCompatActivity {
                 mReason = mSaccadesExerciseButton.getText().toString();
                 mSaccadesExerciseButton.setBackgroundColor(ContextCompat.getColor(RemindersReasonActivity.this, R.color.colorAccent));
                 mAmslerTestButton.setBackgroundColor(ContextCompat.getColor(RemindersReasonActivity.this, R.color.grey));
-                mAmslerTestButton.setEnabled(false);
+                mAmslerTestButton.setEnabled(true);
+                mSaccadesExerciseButton.setEnabled(false);
             }
         });
 
@@ -53,5 +56,14 @@ public class RemindersReasonActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        ImageButton backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 }
+

@@ -25,14 +25,10 @@
         android:text="Saccades Exercise"
         android:textColor="@android:color/black"
         android:textSize="34sp"
-        app:layout_constraintBottom_toTopOf="@+id/tutorial_subtitle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/back_button"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.512" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Replace this with your custom view for the Saccades Exercise -->
     <com.example.myeyehealth.view.SaccadesExerciseView
         android:id="@+id/saccades_exercise_view"
         android:layout_width="0dp"
@@ -40,8 +36,7 @@
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/back_button" />
-
+        app:layout_constraintTop_toBottomOf="@+id/title_text" />
     <TextView
         android:id="@+id/prompt_text"
         android:layout_width="wrap_content"
@@ -52,16 +47,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/saccades_exercise_view"
         app:layout_constraintVertical_bias="0.2" />
-
     <Button
         android:id="@+id/finish_button"
         style="@style/ButtonStyle"
         android:text="Finish"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintHeight_percent="0.08"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.08"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.7"
-        app:layout_constraintTop_toBottomOf="@+id/prompt_text" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

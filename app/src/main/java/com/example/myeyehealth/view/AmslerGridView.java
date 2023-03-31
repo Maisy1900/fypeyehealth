@@ -9,12 +9,15 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.example.myeyehealth.data.SessionManager;
+
 public class AmslerGridView extends View {
 
     private Paint gridPaint;
     private int gridSize;
     private int numLines;
     private int lineSpacing;
+    private SessionManager sessionManager;
 
     public AmslerGridView(Context context) {
         super(context);
@@ -34,15 +37,42 @@ public class AmslerGridView extends View {
     public int getGridSize() {
         return gridSize;
     }
+    private float getGridThicknessValue() {
+        String gridThickness = sessionManager.getGridThickness();
+        float thicknessValue;
+
+        switch (gridThickness) {
+            case "S":
+                thicknessValue = 2.0f;
+                break;
+            case "M":
+                thicknessValue = 4.0f;
+                break;
+            case "L":
+                thicknessValue = 6.0f;
+                break;
+            default:
+                thicknessValue = 4.0f; // Default to medium thickness
+                break;
+        }
+
+        return thicknessValue;
+    }
+
     private void init() {
+        sessionManager = SessionManager.getInstance(getContext());
+
         gridPaint = new Paint();
         gridPaint.setColor(0xFF000000); // black color
-        gridPaint.setStrokeWidth(2);
+
+        float thickness = getGridThicknessValue();
+        gridPaint.setStrokeWidth(thickness);
 
         gridSize = 800; // set the grid size
         numLines = 20; // set the number of lines
         lineSpacing = gridSize / numLines; // set the spacing between the lines
     }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

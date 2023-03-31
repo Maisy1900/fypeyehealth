@@ -42,15 +42,31 @@ public class ReminderMethods {
 
         return (int) id;
     }
-    public List<Reminder> getAllReminders(Context context) {
+    public List<Reminder> getAllReminders(int userId) {
         List<Reminder> reminders = new ArrayList<>();
         Database database = Database.getInstance(context);
         SQLiteDatabase db = database.getReadableDatabase();
 
-        SessionManager sessionManager = SessionManager.getInstance(context);
-        User user = sessionManager.getUser();
+        String[] projection = {
+                Database.COLUMN_REMINDER_ID,
+                Database.COLUMN_REMINDER_DAY_OF_WEEK,
+                Database.COLUMN_REMINDER_HOUR,
+                Database.COLUMN_REMINDER_MINUTE,
+                Database.COLUMN_REMINDER_REASON
+        };
 
-        Cursor cursor = db.query(Database.TABLE_REMINDER, null, Database.COLUMN_REMINDER_USER_ID + " = ?", new String[]{String.valueOf(user.getId())}, null, null, null);
+        String selection = Database.COLUMN_REMINDER_USER_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(userId) };
+
+        Cursor cursor = db.query(
+                Database.TABLE_REMINDER,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
 
         if (cursor.moveToFirst()) {
             do {
@@ -60,8 +76,7 @@ public class ReminderMethods {
                 int minute = cursor.getInt(cursor.getColumnIndexOrThrow(Database.COLUMN_REMINDER_MINUTE));
                 String reason = cursor.getString(cursor.getColumnIndexOrThrow(Database.COLUMN_REMINDER_REASON));
 
-                // Update the constructor call to match the Reminder class constructor
-                Reminder reminder = new Reminder(id, user.getId(), dayOfWeek, hour, minute, reason);
+                Reminder reminder = new Reminder(id, userId, dayOfWeek, hour, minute, reason);
                 reminders.add(reminder);
             } while (cursor.moveToNext());
         }
@@ -69,6 +84,36 @@ public class ReminderMethods {
         cursor.close();
         db.close();
         return reminders;
+    }
+    public void clearRemindersTable() {
+        Database database = Database.getInstance(context);
+        SQLiteDatabase db = database.getReadableDatabase();
+        db.delete(Database.TABLE_REMINDER, null, null);
+        db.close();
+    }
+
+
+    public Reminder getReminderById(Context context, int reminderId) {
+        Database database = Database.getInstance(context);
+        SQLiteDatabase db = database.getReadableDatabase();
+
+        Cursor cursor = db.query(Database.TABLE_REMINDER, null, Database.COLUMN_REMINDER_ID + " = ?", new String[]{String.valueOf(reminderId)}, null, null, null);
+
+        Reminder reminder = null;
+        if (cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndexOrThrow(Database.COLUMN_REMINDER_ID));
+            int userId = cursor.getInt(cursor.getColumnIndexOrThrow(Database.COLUMN_REMINDER_USER_ID));
+            int dayOfWeek = cursor.getInt(cursor.getColumnIndexOrThrow(Database.COLUMN_REMINDER_DAY_OF_WEEK));
+            int hour = cursor.getInt(cursor.getColumnIndexOrThrow(Database.COLUMN_REMINDER_HOUR));
+            int minute = cursor.getInt(cursor.getColumnIndexOrThrow(Database.COLUMN_REMINDER_MINUTE));
+            String reason = cursor.getString(cursor.getColumnIndexOrThrow(Database.COLUMN_REMINDER_REASON));
+
+            reminder = new Reminder(id, userId, dayOfWeek, hour, minute, reason);
+        }
+
+        cursor.close();
+        db.close();
+        return reminder;
     }
 
 
