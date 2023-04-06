@@ -42,11 +42,11 @@ public class ReminderItemView extends LinearLayout {
 
     private void init(Context context) {
         LayoutInflater.from(context).inflate(R.layout.reminder_item_view, this, true);
-        reminderReason = findViewById(R.id.reminder_reason);
-        reminderTime = findViewById(R.id.reminder_time);
-        deleteButton = findViewById(R.id.delete_button);
 
-        // Add the following lines
+        reminderReason = findViewById(R.id.tv_reminder_reason);
+        reminderTime = findViewById(R.id.tv_reminder_time);
+        deleteButton = findViewById(R.id.btn_delete);
+
         int buttonSize = Math.max(reminderReason.getLineHeight(), reminderTime.getLineHeight());
         ViewGroup.LayoutParams layoutParams = deleteButton.getLayoutParams();
         layoutParams.width = buttonSize;
@@ -56,36 +56,30 @@ public class ReminderItemView extends LinearLayout {
         deleteButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Remove the reminder from the database
                 ReminderMethods reminderMethods = new ReminderMethods(getContext());
                 reminderMethods.deleteReminder(reminder.getId());
 
-                // Remove the reminder from the alarm scheduler
                 ReminderAlarmScheduler reminderAlarmScheduler = new ReminderAlarmScheduler(getContext());
                 reminderAlarmScheduler.cancelReminderAlarm(reminder);
 
-                // Remove the ReminderItemView from the parent LinearLayout
                 ((ViewGroup) getParent()).removeView(ReminderItemView.this);
             }
         });
     }
 
-
     public void setReminder(Reminder reminder) {
         this.reminder = reminder;
         reminderTime.setText(getTimeAsString(reminder.getHour(), reminder.getMinute()));
-        reminderReason.setText(reminder.getReason()); // Add this line to set the reminder reason text
+        reminderReason.setText(reminder.getReason());
     }
 
     private String getWeekdayFromDayOfWeek(int dayOfWeek) {
         Calendar calendar = Calendar.getInstance();
-        // Adjust the dayOfWeek value
         dayOfWeek = dayOfWeek % 7 + 1;
         calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
         return dateFormat.format(calendar.getTime());
     }
-
 
     private String getTimeAsString(int hour, int minute) {
         Calendar calendar = Calendar.getInstance();

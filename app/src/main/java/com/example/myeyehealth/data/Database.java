@@ -18,8 +18,8 @@ public class Database extends SQLiteOpenHelper {
     public static final String COLUMN_AG_GRID = "grid";
     public static final String COLUMN_AG_X_COORD = "x_coord";
     public static final String COLUMN_AG_Y_COORD = "y_coord";
-
     public static final String COLUMN_AG_CREATED_DATE = "created_date";
+
 
     // User table
     public static final String TABLE_USER = "usertable";
@@ -33,25 +33,23 @@ public class Database extends SQLiteOpenHelper {
     public static final String COLUMN_USER_CARER_EMAIL = "carer_email";
 
     // Saccades table
-// Saccades table
     public static final String TABLE_SACCADES = "saccadestable";
     public static final String COLUMN_SACCADES_ID = "id";
     public static final String COLUMN_SACCADES_USER_ID = "user_id";
     public static final String COLUMN_SACCADES_TEST_NUMBER = "test_number";
     public static final String COLUMN_SACCADES_TIME_TAKEN = "time_taken";
     public static final String COLUMN_SACCADES_DISTANCE = "distance";
-
     public static final String COLUMN_SACCADES_TEST_DATE = "test_date";
 
     public static final String TABLE_REMINDER = "remindertable";
     public static final String COLUMN_REMINDER_ID = "id";
     public static final String COLUMN_REMINDER_USER_ID = "user_id";
     public static final String COLUMN_REMINDER_DAY_OF_WEEK = "day_of_week";
-
     public static final String COLUMN_REMINDER_HOUR = "hour";
-
     public static final String COLUMN_REMINDER_MINUTE = "minute";
     public static final String COLUMN_REMINDER_REASON = "reason";
+    public static final String COLUMN_REMINDER_COMPLETED = "completed";
+
 
     //Table Methods
     private static Database instance;
@@ -67,27 +65,25 @@ public class Database extends SQLiteOpenHelper {
     public static synchronized Database getInstance(Context context) {
         if (instance == null) {
             instance = new Database(context.getApplicationContext());
-            instance.addTestDateColumnIfNeeded(); // Add this line
-            instance.addDayOfWeekColumnIfNeeded();
-            instance.addHourColumnIfNeeded();
-            instance.addMinuteColumnIfNeeded();
-            instance.addReasonColumnIfNeeded();
-            instance.addUserIdColumnIfNeeded();
         }
         return instance;
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create Amsler Grid table
-        String CREATE_AMSLER_GRID_TABLE = "CREATE TABLE " + TABLE_AMSLER_GRID + " (" +
-                COLUMN_AG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + // Unique identifier for each row
-                COLUMN_AG_USER_ID + " INTEGER," + // Foreign key reference to the user who completed the test
-                COLUMN_AG_TEST_ID + " INTEGER," + // Identifier of the specific test taken by the user
-                COLUMN_AG_TEST_DATE + " TEXT," + // Date the test was completed
-                COLUMN_AG_GRID + " VARCHAR(1)," + // Represents the left or right eye for the Amsler grid test
-                COLUMN_AG_X_COORD + " INTEGER," + // X-coordinate of a point on the Amsler grid
-                COLUMN_AG_Y_COORD + " INTEGER" + // Y-coordinate of a point on the Amsler grid
-                ");";
+// Create Amsler Grid table
+        String CREATE_AMSLER_GRID_TABLE = "CREATE TABLE " + TABLE_AMSLER_GRID +
+                "(" +
+                COLUMN_AG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                COLUMN_AG_USER_ID + " INTEGER," +
+                COLUMN_AG_TEST_ID + " INTEGER," +
+                COLUMN_AG_TEST_DATE + " TEXT," +
+                COLUMN_AG_GRID + " TEXT," +
+                COLUMN_AG_X_COORD + " INTEGER," +
+                COLUMN_AG_Y_COORD + " INTEGER," +
+                COLUMN_AG_CREATED_DATE + " TEXT" + // Add this line to include the created_date column
+                ")";
 
 
 
@@ -125,12 +121,13 @@ public class Database extends SQLiteOpenHelper {
                 COLUMN_REMINDER_DAY_OF_WEEK + " INTEGER," +
                 COLUMN_REMINDER_HOUR + " INTEGER," +
                 COLUMN_REMINDER_MINUTE + " INTEGER," +
-                COLUMN_REMINDER_REASON + " TEXT" +
+                COLUMN_REMINDER_REASON + " TEXT," +
+                COLUMN_REMINDER_COMPLETED + " INTEGER" + // Add this line
                 ")";
+
+
         db.execSQL(CREATE_REMINDER_TABLE);
 
-
-        addTestDateColumnIfNeeded();
     }
 
 
@@ -250,6 +247,31 @@ public class Database extends SQLiteOpenHelper {
     }
     public void addUserIdColumnIfNeeded() {
         addColumnIfNeeded(TABLE_REMINDER, "user_id", "INTEGER");
+    }
+    public void addCompletedColumnIfNeeded() {
+        addColumnIfNeeded(TABLE_REMINDER, "completed", "INTEGER");
+    }
+    public void recreateRemindersTable() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Drop reminders table if it exists
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_REMINDER);
+
+        // Create reminders table
+        String CREATE_REMINDER_TABLE = "CREATE TABLE " + TABLE_REMINDER +
+                "(" +
+                COLUMN_REMINDER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                COLUMN_REMINDER_USER_ID + " INTEGER," +
+                COLUMN_REMINDER_DAY_OF_WEEK + " INTEGER," +
+                COLUMN_REMINDER_HOUR + " INTEGER," +
+                COLUMN_REMINDER_MINUTE + " INTEGER," +
+                COLUMN_REMINDER_REASON + " TEXT," +
+                COLUMN_REMINDER_COMPLETED + " INTEGER" +
+                ")";
+
+        db.execSQL(CREATE_REMINDER_TABLE);
+
+        db.close();
     }
 
 }

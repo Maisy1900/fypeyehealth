@@ -38,12 +38,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Scheduled"
+        android:text="Today"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/back_button" />
-
     <ScrollView
         android:id="@+id/weekdays_scroll_view"
         android:layout_width="0dp"
@@ -54,118 +53,19 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounded_box"
         android:fillViewport="true"
-        android:padding="10dp"
         app:layout_constraintBottom_toTopOf="@id/new_reminder_button"
         app:layout_constraintEnd_toStartOf="@id/scroll_up_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/subtitle_text">
 
-    <LinearLayout
-        android:id="@+id/weekdays_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Monday"
-        android:textSize="18sp"
-        android:textColor="@android:color/black" />
-
-    <LinearLayout
-        android:id="@+id/monday_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tuesday"
-        android:textSize="18sp"
-        android:textColor="@android:color/black" />
-
-    <LinearLayout
-        android:id="@+id/tuesday_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Wednesday"
-        android:textSize="18sp"
-        android:textColor="@android:color/black" />
-
-    <LinearLayout
-        android:id="@+id/wednesday_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Thursday"
-        android:textSize="18sp"
-        android:textColor="@android:color/black" />
-
-    <LinearLayout
-        android:id="@+id/thursday_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Friday"
-        android:textSize="18sp"
-        android:textColor="@android:color/black" />
-
-    <LinearLayout
-        android:id="@+id/friday_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Saturday"
-        android:textSize="18sp"
-        android:textColor="@android:color/black" />
-
-    <LinearLayout
-        android:id="@+id/saturday_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sunday"
-        android:textSize="18sp"
-        android:textColor="@android:color/black" />
 
         <LinearLayout
-            android:id="@+id/sunday_list"
+            android:id="@+id/weekdays_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-        </LinearLayout>
-
-    </LinearLayout>
+            android:orientation="vertical" />
     </ScrollView>
+
     <ImageButton
         android:id="@+id/scroll_up_button"
         android:layout_width="70dp"

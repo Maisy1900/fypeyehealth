@@ -31,6 +31,7 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
+
         // Get references to the ImageButtons and menu buttons
         ScrollUpButton = findViewById(R.id.scroll_up_button);
         ScrollDownButton = findViewById(R.id.scroll_down_button);

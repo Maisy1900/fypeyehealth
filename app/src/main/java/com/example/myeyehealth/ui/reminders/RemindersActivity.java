@@ -1,17 +1,19 @@
 package com.example.myeyehealth.ui.reminders;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.Database;
 import com.example.myeyehealth.data.ReminderMethods;
 import com.example.myeyehealth.data.SessionManager;
 import com.example.myeyehealth.model.Reminder;
@@ -19,49 +21,42 @@ import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.ui.MainMenuActivity;
 import com.example.myeyehealth.view.ReminderItemView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class RemindersActivity extends AppCompatActivity {
 
-    private Database database;
     private ScrollView weekdaysScrollView;
-
     private LinearLayout weekdays_container;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminders);
-
-        // Add the following lines
         weekdaysScrollView = findViewById(R.id.weekdays_scroll_view);
         weekdays_container = findViewById(R.id.weekdays_container);
         ImageButton scrollUpButton = findViewById(R.id.scroll_up_button);
         ImageButton scrollDownButton = findViewById(R.id.scroll_down_button);
 
-        // Set padding
-
-
-        // Scroll to the desired position
         weekdaysScrollView.post(new Runnable() {
             @Override
             public void run() {
-                weekdaysScrollView.scrollTo(0, 500); // Adjust the initial scroll position
+                weekdaysScrollView.scrollTo(0, 500);
             }
         });
 
         scrollUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scrollWeekdays(-50); // Change -50 to the desired scroll amount
+                scrollWeekdays(-50);
             }
         });
 
         scrollDownButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scrollWeekdays(50); // Change 50 to the desired scroll amount
+                scrollWeekdays(50);
             }
         });
 
@@ -80,7 +75,6 @@ public class RemindersActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Replace MainMenuActivity.class with your actual main menu activity class
                 Intent mainMenuIntent = new Intent(RemindersActivity.this, MainMenuActivity.class);
                 mainMenuIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(mainMenuIntent);
@@ -88,8 +82,6 @@ public class RemindersActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     private void scrollWeekdays(int dy) {
         int maxScrollY = weekdaysScrollView.getChildAt(0).getMeasuredHeight() - weekdaysScrollView.getHeight();
@@ -101,48 +93,92 @@ public class RemindersActivity extends AppCompatActivity {
         }
         weekdaysScrollView.scrollTo(0, targetY);
     }
+
     private void populateReminders() {
         SessionManager sessionManager = SessionManager.getInstance(getApplicationContext());
         User user = sessionManager.getUser();
 
-        // Get the reminders for the current user from the database
         ReminderMethods reminderMethods = new ReminderMethods(getApplicationContext());
         List<Reminder> reminders = reminderMethods.getAllReminders(user.getId());
 
-        // Iterate through the reminders and create ReminderItemView instances for each
-        for (Reminder reminder : reminders) {
-            ReminderItemView reminderItemView = new ReminderItemView(this);
-            reminderItemView.setReminder(reminder);
+        // Sort the reminders by day of the week and time
+        Collections.sort(reminders, new Comparator<Reminder>() {
+            @Override
+            public int compare(Reminder r1, Reminder r2) {
+                int dayComparison = Integer.compare(r1.getDayOfWeek(), r2.getDayOfWeek());
+                if (dayComparison == 0) {
+                    return (r1.getHour() * 60 + r1.getMinute()) - (r2.getHour() * 60 + r2.getMinute());
+                } else {
+                    return dayComparison;
+                }
+            }
+        });
 
-            // Determine the appropriate day list to add the reminder to
-            LinearLayout dayList = getDayList(reminder.getDayOfWeek());
+        LayoutInflater inflater = LayoutInflater.from(this);
+        LinearLayout weekdaysContainer = findViewById(R.id.weekdays_container);
+        String[] dayNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
-            // Add the ReminderItemView to the appropriate LinearLayout
-            dayList.addView(reminderItemView);
+        for (int i = 0; i < 7; i++) {
+            // Create container for reminders on this day
+            LinearLayout dayContainer = new LinearLayout(this);
+            dayContainer.setOrientation(LinearLayout.VERTICAL);
+            weekdaysContainer.addView(dayContainer);
+
+            boolean hasReminderForThisDay = false;
+
+            // Add reminders for this day
+            for (Reminder reminder : reminders) {
+                if (reminder.getDayOfWeek() == i) {
+                    if (!hasReminderForThisDay) {
+                        // Create day title
+                        TextView dayTitle = new TextView(this);
+                        dayTitle.setText(dayNames[i]);
+                        dayTitle.setTextSize(18);
+                        dayTitle.setTextColor(Color.BLACK);
+                        dayContainer.addView(dayTitle);
+                        hasReminderForThisDay = true;
+                    }
+
+                    ReminderItemView reminderItemView = new ReminderItemView(this);
+                    reminderItemView.setReminder(reminder);
+
+
+                    TextView reminderReason = reminderItemView.findViewById(R.id.tv_reminder_reason);
+                    TextView reminderTime = reminderItemView.findViewById(R.id.tv_reminder_time);
+
+                    reminderReason.setText(reminder.getReason());
+                    reminderTime.setText(reminder.getTimeString());
+
+                    dayContainer.addView(reminderItemView);
+                }
+            }
         }
     }
 
 
 
-    private LinearLayout getDayList(int dayOfWeek) {
+    private String getDayLabel(int dayOfWeek) {
         switch (dayOfWeek) {
             case 0:
-                return findViewById(R.id.sunday_list);
+                return "Sunday";
             case 1:
-                return findViewById(R.id.monday_list);
+                return "Monday";
             case 2:
-                return findViewById(R.id.tuesday_list);
+                return "Tuesday";
             case 3:
-                return findViewById(R.id.wednesday_list);
+                return "Wednesday";
             case 4:
-                return findViewById(R.id.thursday_list);
+                return "Thursday";
             case 5:
-                return findViewById(R.id.friday_list);
+                return "Friday";
             case 6:
-                return findViewById(R.id.saturday_list);
+                return "Saturday";
             default:
-                return null;
+                return "";
         }
     }
 
+
 }
+
+

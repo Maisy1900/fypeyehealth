@@ -56,20 +56,103 @@
         app:layout_constraintTop_toBottomOf="@+id/email_input"
         app:layout_constraintVertical_bias="0.892" />
 
-    <EditText
-        android:id="@+id/email_input"
-        style="@style/EditTextStyle"
-        android:hint="Weekday"
-        android:inputType="textEmailAddress"
-        android:maxLines="1"
-        android:minWidth="200dp"
+    <GridLayout
+        android:id="@+id/days_of_week_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:columnCount="3"
+        android:rowCount="3"
         app:layout_constraintBottom_toTopOf="@+id/continue_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/subtitle_text"
-        app:layout_constraintVertical_bias="0.022"
-        app:layout_constraintWidth_percent="0.8" />
+        app:layout_constraintHeight_percent="0.35"
+        app:layout_constraintTop_toBottomOf="@id/subtitle_text">
+
+        <Button
+            android:id="@+id/monday_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/weekday_button_background"
+            android:textColor="@android:color/white"
+            android:text="Monday"
+            android:textSize="18sp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/tuesday_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/weekday_button_background"
+            android:textColor="@android:color/white"
+            android:text="Tuesday"
+            android:textSize="18sp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/wednesday_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/weekday_button_background"
+            android:textColor="@android:color/white"
+            android:text="Wednesday"
+            android:textSize="18sp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/thursday_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/weekday_button_background"
+            android:textColor="@android:color/white"
+            android:text="Thursday"
+            android:textSize="18sp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/friday_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/weekday_button_background"
+            android:textColor="@android:color/white"
+            android:text="Friday"
+            android:textSize="18sp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/saturday_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/weekday_button_background"
+            android:textColor="@android:color/white"
+            android:text="Saturday"
+            android:textSize="18sp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1" />
+
+        <Button
+            android:id="@+id/sunday_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/weekday_button_background"
+            android:textColor="@android:color/white"
+            android:text="Sunday"
+            android:textSize="18sp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1" />
+
+    </GridLayout>
 
     <Button
         android:id="@+id/continue_button"

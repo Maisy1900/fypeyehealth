@@ -118,8 +118,8 @@ public class RemindersSaveActivity extends AppCompatActivity {
                     // Save the reminder to the local database
                     // Get the user ID from the SessionManager and include it in the Reminder constructor
                     int userId = sessionManager.getUser().getId();
-                    Reminder reminder = new Reminder(-1, userId, dayOfWeek, hour, minute, reason); // Set the id to -1 initially
-                    int reminderId = reminderMethods.addReminder(reminder, RemindersSaveActivity.this);
+                    Reminder reminder = new Reminder(-1, userId, dayOfWeek, hour, minute, reason, false); // Set the id to -1 initially, and confirmed to false
+                    int reminderId = reminderMethods.addReminder(reminder);
                     reminder.setId(reminderId); // Set the ID for the reminder object
 
                     // Set the alarm for the reminder
