@@ -6,18 +6,26 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RemindersWeeklyActivity extends AppCompatActivity {
 
-    private ImageButton mBackButton;
-    private Button mContinueButton;
+    private TextView mAmslerTestButton;
+    private TextView mSaccadesExerciseButton;
+    private Button mNextButton;
     private Button[] weekdayButtons;
-    private String mReason;
+    private LinearLayout mAmslerTestLayout;
+    private LinearLayout mSaccadesExerciseLayout;
+    private List<String> mReasons;
     private String selectedWeekday = null;
 
     @Override
@@ -25,8 +33,11 @@ public class RemindersWeeklyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminders_weekly);
 
-        mBackButton = findViewById(R.id.back_button);
-        mContinueButton = findViewById(R.id.continue_button);
+        mAmslerTestLayout = findViewById(R.id.amsler_test_button);
+        mSaccadesExerciseLayout = findViewById(R.id.saccades_exercise_button);
+        mAmslerTestButton = mAmslerTestLayout.findViewById(R.id.amsler_test_text);
+        mSaccadesExerciseButton = mSaccadesExerciseLayout.findViewById(R.id.saccades_exercise_text);
+        mNextButton = findViewById(R.id.next_button);
         weekdayButtons = new Button[]{
                 findViewById(R.id.monday_button),
                 findViewById(R.id.tuesday_button),
@@ -37,28 +48,60 @@ public class RemindersWeeklyActivity extends AppCompatActivity {
                 findViewById(R.id.sunday_button)
         };
 
-        // Get the reason passed from ReminderReasonActivity
-        Intent intent = getIntent();
-        mReason = intent.getStringExtra("reason");
+        mReasons = new ArrayList<>();
 
-        mBackButton.setOnClickListener(new View.OnClickListener() {
+        List<View> exerciseButtons = new ArrayList<>();
+        exerciseButtons.add(mAmslerTestLayout);
+        exerciseButtons.add(mSaccadesExerciseLayout);
+
+        for (View view : exerciseButtons) {
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LinearLayout selectedLayout = (LinearLayout) v;
+                    TextView selectedTextView = (TextView) selectedLayout.getChildAt(1);
+                    String reason = selectedTextView.getText().toString().trim().toLowerCase();
+
+                    if (mReasons.contains(reason)) {
+                        mReasons.remove(reason);
+                    } else {
+                        mReasons.add(reason);
+                    }
+
+                    for (View otherView : exerciseButtons) {
+                        LinearLayout otherLayout = (LinearLayout) otherView;
+                        TextView otherTextView = (TextView) otherLayout.getChildAt(1);
+
+                        if (otherView == v) {
+                            otherTextView.setTextColor(Color.WHITE);
+                            otherView.setClickable(false);
+                        } else {
+                            otherTextView.setTextColor(Color.GRAY);
+                            otherView.setClickable(true);
+                        }
+                    }
+                }
+            });
+        }
+
+        mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-            }
-        });
-
-        mContinueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (selectedWeekday != null) {
+                if (selectedWeekday != null && !mReasons.isEmpty()) {
                     Intent nextActivityIntent = new Intent(RemindersWeeklyActivity.this, RemindersSaveActivity.class);
-                    nextActivityIntent.putExtra("reason", mReason);
+                    nextActivityIntent.putStringArrayListExtra("reasons", new ArrayList<>(mReasons));
                     nextActivityIntent.putExtra("weekday", selectedWeekday);
                     startActivity(nextActivityIntent);
                 } else {
-                    Toast.makeText(RemindersWeeklyActivity.this, "Select a day of the week", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RemindersWeeklyActivity.this, "Select a day of the week and at least one reason", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        ImageButton backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
 
