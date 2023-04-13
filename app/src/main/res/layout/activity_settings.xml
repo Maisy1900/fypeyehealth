@@ -24,7 +24,7 @@
         android:text="Settings"
         android:textColor="@android:color/black"
         android:textSize="34sp"
-        app:layout_constraintBottom_toTopOf="@+id/tutorial_subtitle"
+        app:layout_constraintBottom_toTopOf="@+id/results_subtitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/back_button"
@@ -32,7 +32,7 @@
         app:layout_constraintVertical_bias="0.512" />
 
     <TextView
-        android:id="@+id/tutorial_subtitle"
+        android:id="@+id/results_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -57,7 +57,7 @@
         app:layout_constraintEnd_toStartOf="@id/scroll_up_button"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tutorial_subtitle"
+        app:layout_constraintTop_toBottomOf="@id/results_subtitle"
         app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout

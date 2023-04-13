@@ -1,6 +1,9 @@
 package com.example.myeyehealth.ui;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +33,7 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
-
+        createNotificationChannel();
 
         // Get references to the ImageButtons and menu buttons
         ScrollUpButton = findViewById(R.id.scroll_up_button);
@@ -253,7 +256,18 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
             testNumber++;
         }
     }
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Reminder Channel";
+            String description = "Channel for reminder notifications";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("reminder_channel", name, importance);
+            channel.setDescription(description);
 
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
 
 
 }

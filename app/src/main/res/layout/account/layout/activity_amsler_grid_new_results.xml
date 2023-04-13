@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -16,14 +17,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
         android:id="@+id/title_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
-        android:text="Saccades Exercise"
+        android:text="Amsler Grid Test"
         android:textColor="@android:color/black"
         android:textSize="34sp"
         app:layout_constraintBottom_toTopOf="@+id/results_subtitle"
@@ -50,23 +50,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Tutorial"
+        android:text="Results"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/back_button" />
-
     <ScrollView
-        android:id="@+id/tutorial_scroll_view"
+        android:id="@+id/results_scroll_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/rounded_box"
-        android:fillViewport="true"
-        android:padding="10dp"
         app:layout_constraintBottom_toTopOf="@id/start_test_button"
         app:layout_constraintEnd_toStartOf="@id/scroll_up_button"
         app:layout_constraintHorizontal_bias="0.0"
@@ -74,12 +70,46 @@
         app:layout_constraintTop_toBottomOf="@id/results_subtitle"
         app:layout_constraintVertical_bias="1.0">
 
-        <TextView
-            android:id="@+id/tutorial_text"
+        <LinearLayout
+            android:id="@+id/results_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="This is the tutorial text.It will explain how to perform the Saccades Exercise. You can scroll through the text if you prefer to read it yourself." />
+            android:orientation="vertical">
+
+            <!-- Circular progress bars for left and right eyes -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+
+                <fr.castorflex.android.circularprogressbar.CircularProgressBar
+                    android:id="@+id/left_eye_progress"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:cpb_thickness="5dp"
+                    app:cpb_progress="0" />
+
+                <fr.castorflex.android.circularprogressbar.CircularProgressBar
+                    android:id="@+id/right_eye_progress"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:cpb_thickness="5dp"
+                    app:cpb_progress="0" />
+            </LinearLayout>
+
+            <!-- TextView to display the results text -->
+            <TextView
+                android:id="@+id/results_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:padding="16dp"
+                android:text="" />
+
+        </LinearLayout>
     </ScrollView>
+
 
     <ImageButton
         android:id="@+id/scroll_up_button"
@@ -103,14 +133,15 @@
         app:layout_constraintBottom_toBottomOf="@id/tutorial_scroll_view"
         app:layout_constraintEnd_toEndOf="parent" />
 
-
     <Button
         android:id="@+id/start_test_button"
         style="@style/ButtonStyle"
-        android:text="Start Exercise"
+        android:text="Start Test"
         app:layout_constraintWidth_percent="0.7"
         app:layout_constraintHeight_percent="0.08"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+

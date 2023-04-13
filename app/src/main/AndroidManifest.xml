@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,13 +15,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyEyeHealth"
         tools:targetApi="31">
+        <activity
+            android:name=".AmslerResults"
+            android:exported="false" />
+        <activity
+            android:name=".AmslerGridNewResults"
+            android:exported="false" />
+
         <receiver
-            android:name=".ui.reminders.ReminderReciever"
+            android:name=".ui.reminders.ReminderReceiver"
             android:enabled="true"
-            android:exported="true" />
-
-
-        <!-- Login-related activities -->
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver> <!-- Login-related activities -->
         <activity
             android:name=".ui.LoginActivity"
             android:exported="true" />
@@ -32,10 +44,8 @@
             android:exported="false" />
         <activity
             android:name=".ui.login.LoginErrorActivity"
-            android:label="Login Error"
-            android:exported="false" />
-
-        <!-- Account creation activities -->
+            android:exported="false"
+            android:label="Login Error" /> <!-- Account creation activities -->
         <activity
             android:name=".ui.account.CreateAccountNameActivity"
             android:exported="false" />
@@ -56,17 +66,13 @@
             android:exported="false" />
         <activity
             android:name=".ui.account.CreateAccountSuccessActivity"
-            android:exported="false" />
-
-        <!-- Profile and Settings activities -->
+            android:exported="false" /> <!-- Profile and Settings activities -->
         <activity
             android:name=".ui.ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".ui.SettingsActivity"
-            android:exported="false" />
-
-        <!-- Amsler Grid activities -->
+            android:exported="false" /> <!-- Amsler Grid activities -->
         <activity
             android:name=".ui.amslergrid.AmslerGridTutorial1Activity"
             android:exported="false" />
@@ -81,9 +87,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.amslergrid.AmslerGridGraphActivity"
-            android:exported="false" />
-
-        <!-- Saccades activities -->
+            android:exported="false" /> <!-- Saccades activities -->
         <activity
             android:name=".ui.exercise.saccades.SaccadesTutorial1Activity"
             android:exported="false" />
@@ -92,9 +96,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.exercise.saccades.SaccadesExerciseResultsActivity"
-            android:exported="false" />
-
-        <!-- Reminders activities -->
+            android:exported="false" /> <!-- Reminders activities -->
         <activity
             android:name=".ui.reminders.RemindersActivity"
             android:exported="false"
@@ -108,18 +110,16 @@
             android:exported="false" />
         <activity
             android:name=".ui.reminders.RemindersSaveActivity"
-            android:exported="false" />
-        <!-- MainMenuActivity -->
+            android:exported="false" /> <!-- MainMenuActivity -->
         <activity
             android:name=".ui.MainMenuActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- SplashScreen and MainActivity -->
+        </activity> <!-- SplashScreen and MainActivity -->
         <activity
             android:name=".ui.SplashActivity"
             android:exported="true" />

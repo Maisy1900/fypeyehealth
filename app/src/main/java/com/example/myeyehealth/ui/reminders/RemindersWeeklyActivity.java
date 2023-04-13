@@ -2,6 +2,7 @@ package com.example.myeyehealth.ui.reminders;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,8 +36,6 @@ public class RemindersWeeklyActivity extends AppCompatActivity {
 
         mAmslerTestLayout = findViewById(R.id.amsler_test_button);
         mSaccadesExerciseLayout = findViewById(R.id.saccades_exercise_button);
-        mAmslerTestButton = mAmslerTestLayout.findViewById(R.id.amsler_test_text);
-        mSaccadesExerciseButton = mSaccadesExerciseLayout.findViewById(R.id.saccades_exercise_text);
         mNextButton = findViewById(R.id.next_button);
         weekdayButtons = new Button[]{
                 findViewById(R.id.monday_button),
@@ -64,21 +63,10 @@ public class RemindersWeeklyActivity extends AppCompatActivity {
 
                     if (mReasons.contains(reason)) {
                         mReasons.remove(reason);
+                        v.getBackground().clearColorFilter();
                     } else {
                         mReasons.add(reason);
-                    }
-
-                    for (View otherView : exerciseButtons) {
-                        LinearLayout otherLayout = (LinearLayout) otherView;
-                        TextView otherTextView = (TextView) otherLayout.getChildAt(1);
-
-                        if (otherView == v) {
-                            otherTextView.setTextColor(Color.WHITE);
-                            otherView.setClickable(false);
-                        } else {
-                            otherTextView.setTextColor(Color.GRAY);
-                            otherView.setClickable(true);
-                        }
+                        v.getBackground().setColorFilter(Color.argb(100, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
                     }
                 }
             });
@@ -97,6 +85,7 @@ public class RemindersWeeklyActivity extends AppCompatActivity {
                 }
             }
         });
+
         ImageButton backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,13 +98,20 @@ public class RemindersWeeklyActivity extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    selectedWeekday = ((Button) v).getText().toString().trim().toLowerCase();
+                    Button selectedButton = (Button) v;
+                    selectedWeekday = selectedButton.getText().toString().trim().toLowerCase();
+
+                    if (!selectedButton.isClickable()) {
+                        selectedButton.getBackground().clearColorFilter();
+                        selectedButton.setClickable(true);
+                    } else {
+                        selectedButton.getBackground().setColorFilter(Color.argb(100, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
+                        selectedButton.setClickable(false);
+                    }
+
                     for (Button otherButton : weekdayButtons) {
-                        if (otherButton == v) {
-                            otherButton.setTextColor(Color.WHITE);
-                            otherButton.setClickable(false);
-                        } else {
-                            otherButton.setTextColor(Color.GRAY);
+                        if (otherButton != v) {
+                            otherButton.getBackground().clearColorFilter();
                             otherButton.setClickable(true);
                         }
                     }

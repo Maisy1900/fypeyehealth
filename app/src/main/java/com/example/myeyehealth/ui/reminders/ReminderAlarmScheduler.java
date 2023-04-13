@@ -4,13 +4,18 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.util.Log;
 
 import com.example.myeyehealth.model.Reminder;
+
+import java.util.Calendar;
 
 public class ReminderAlarmScheduler {
 
     private Context context;
     private AlarmManager alarmManager;
+    private static final String TAG = "ReminderAlarmScheduler";
 
     public ReminderAlarmScheduler(Context context) {
         this.context = context;
@@ -18,58 +23,59 @@ public class ReminderAlarmScheduler {
     }
 
     public void setReminderAlarm(Reminder reminder) {
-        Intent intent = new Intent(context, ReminderReciever.class);
+        Intent intent = new Intent(context, ReminderReceiver.class);
         intent.putExtra("reminderId", reminder.getId());
         intent.putExtra("reminderReason", reminder.getReason());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reminder.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         long reminderTimeMillis = getReminderTimeInMillis(reminder);
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, reminderTimeMillis, pendingIntent);
+
+        // Set repeating alarm
+        long interval = AlarmManager.INTERVAL_DAY * 7;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, reminderTimeMillis, interval, pendingIntent);
+        } else {
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, reminderTimeMillis, interval, pendingIntent);
+        }
+
+        // Debug log
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(reminderTimeMillis);
+        Log.d(TAG, "Alarm set: " + reminder.toString() + ", time: " + calendar.getTime().toString());
     }
+
+
 
     public void cancelReminderAlarm(Reminder reminder) {
-        Intent intent = new Intent(context, ReminderReciever.class);
+        Intent intent = new Intent(context, ReminderReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reminder.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.cancel(pendingIntent);
-    }
 
+        Log.d(TAG, "Alarm canceled for reminder: " + reminder.toString());
+    }
+//issues
     private long getReminderTimeInMillis(Reminder reminder) {
-        long currentTimeMillis = System.currentTimeMillis();
-        int currentDayOfWeek = getDayOfWeek(currentTimeMillis);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, reminder.getHour());
+        calendar.set(Calendar.MINUTE, reminder.getMinute());
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
 
-        long reminderTimeMillis = currentTimeMillis + getTimeDifferenceMillis(currentDayOfWeek, reminder.getDayOfWeek(), reminder.getHour(), reminder.getMinute());
-        if (reminderTimeMillis <= currentTimeMillis) {
-            reminderTimeMillis += AlarmManager.INTERVAL_DAY * 7;
-        }
-        return reminderTimeMillis;
-    }
+        int currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        int daysUntilReminder = (reminder.getDayOfWeek() + 1 - currentDayOfWeek + 7) % 7;
 
-    private int getDayOfWeek(long timeMillis) {
-        return ((int) ((timeMillis / (1000 * 60 * 60 * 24)) + 4) % 7) + 1;
-    }
+        calendar.add(Calendar.DAY_OF_YEAR, daysUntilReminder);
 
-    private long getTimeDifferenceMillis(int currentDayOfWeek, int reminderDayOfWeek, int reminderHour, int reminderMinute) {
-        long timeDifferenceMillis = 0;
-
-        int daysUntilReminder = reminderDayOfWeek - currentDayOfWeek;
-        if (daysUntilReminder < 0) {
-            daysUntilReminder += 7;
+        // If the reminder time is in the past, schedule it for the next week
+        if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
+            calendar.add(Calendar.DATE, 7);
         }
 
-        timeDifferenceMillis += daysUntilReminder * AlarmManager.INTERVAL_DAY;
+        Log.d(TAG, "Reminder time calculated: " + calendar.getTime().toString());
 
-        long currentTimeMillis = System.currentTimeMillis();
-        long reminderTimeMillis = currentTimeMillis + timeDifferenceMillis;
-
-        int reminderTimeHour = (int) (reminderTimeMillis / (1000 * 60 * 60)) % 24;
-        int reminderTimeMinute = (int) (reminderTimeMillis / (1000 * 60)) % 60;
-
-        long hourDifferenceMillis = (reminderHour - reminderTimeHour) * (1000 * 60 * 60);
-        long minuteDifferenceMillis = (reminderMinute - reminderTimeMinute) * (1000 * 60);
-
-        timeDifferenceMillis += hourDifferenceMillis + minuteDifferenceMillis;
-
-        return timeDifferenceMillis;
+        return calendar.getTimeInMillis();
     }
+
+
 }

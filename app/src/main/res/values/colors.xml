@@ -16,5 +16,8 @@
     <color name="green">#008000</color>
     <color name="yellow">#FFFF00</color>
     <color name="grey">#474747</color>
-
+    <color name="yellow_background">#FFFF00</color>
+    <color name="black_text">#000000</color>
+    <color name="high_contrast_button_color">#FFFFFF</color>
+    <color name="pale_yellow">#FFF9C4</color>
 </resources>

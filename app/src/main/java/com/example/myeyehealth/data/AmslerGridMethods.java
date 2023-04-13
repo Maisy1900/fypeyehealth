@@ -290,7 +290,62 @@ public class AmslerGridMethods {
         cursor.close();
     }
 
+    public HashMap<String, Entry> getBaselineAmslerGridResults(int userId) {
+        Log.d("BaselineAmslerGridResults", "Getting baseline Amsler grid results for user: " + userId);
 
+        HashMap<String, Entry> baselineResults = new HashMap<>();
+        String[] columns = {
+                Database.COLUMN_AG_TEST_ID,
+                Database.COLUMN_AG_TEST_DATE,
+                Database.COLUMN_AG_GRID,
+                Database.COLUMN_AG_X_COORD,
+                Database.COLUMN_AG_Y_COORD
+        };
+        String selection = COLUMN_AG_USER_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(userId)};
+        String orderBy = Database.COLUMN_AG_TEST_DATE + " ASC";
+        Cursor cursor = db.query(TABLE_AMSLER_GRID, columns, selection, selectionArgs, null, null, orderBy);
+        Log.d("BaselineAmslerGridResults", "Cursor rows: " + cursor.getCount());
+
+        int testIdIndex = cursor.getColumnIndex(Database.COLUMN_AG_TEST_ID);
+        int testDateIndex = cursor.getColumnIndex(Database.COLUMN_AG_TEST_DATE);
+        int gridIndex = cursor.getColumnIndex(Database.COLUMN_AG_GRID);
+        int xCoordIndex = cursor.getColumnIndex(Database.COLUMN_AG_X_COORD);
+        int yCoordIndex = cursor.getColumnIndex(Database.COLUMN_AG_Y_COORD);
+
+        int currentTestId = -1;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
+        while (cursor.moveToNext()) {
+            int testId = cursor.getInt(testIdIndex);
+            if (currentTestId == -1) {
+                currentTestId = testId;
+            } else if (testId != currentTestId) {
+                break;
+            }
+
+            String testDate = cursor.getString(testDateIndex);
+            String grid = cursor.getString(gridIndex);
+            int xCoord = cursor.getInt(xCoordIndex);
+            int yCoord = cursor.getInt(yCoordIndex);
+
+            try {
+                Date date = dateFormat.parse(testDate);
+                if (date != null) {
+                    long timeInMillis = date.getTime();
+                    float xAxisValue = (float) timeInMillis;
+                    float yAxisValue = (float) Math.sqrt(xCoord * xCoord + yCoord * yCoord); // Calculate the distance from the origin.
+                    baselineResults.put(grid, new Entry(xAxisValue, yAxisValue));
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        cursor.close();
+        Log.d("BaselineAmslerGridResults", "Baseline results found: " + baselineResults.size());
+
+        return baselineResults;
+    }
 
     public void close() {
         if (db != null) {

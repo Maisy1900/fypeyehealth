@@ -3,6 +3,7 @@ package com.example.myeyehealth.ui.reminders;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -17,6 +18,7 @@ import com.example.myeyehealth.data.ReminderMethods;
 import com.example.myeyehealth.data.SessionManager;
 import com.example.myeyehealth.model.Reminder;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class RemindersSaveActivity extends AppCompatActivity {
@@ -24,7 +26,7 @@ public class RemindersSaveActivity extends AppCompatActivity {
     private ImageButton backButton;
     private TextView timeInput;
     private Button saveButton;
-    private String reason;
+    private ArrayList<String> reasons;
     private String weekday;
     private int hour = -1;
     private int minute = -1;
@@ -43,9 +45,9 @@ public class RemindersSaveActivity extends AppCompatActivity {
         timeInput = findViewById(R.id.time_input);
         saveButton = findViewById(R.id.save_button);
 
-        // Get the reason and weekday passed from previous activities
+        // Get the reasons and weekday passed from previous activities
         Intent intent = getIntent();
-        reason = intent.getStringExtra("reason");
+        reasons = intent.getStringArrayListExtra("reasons");
         weekday = intent.getStringExtra("weekday");
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -82,51 +84,52 @@ public class RemindersSaveActivity extends AppCompatActivity {
             }
         });
 
-
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (hour != -1 && minute != -1) {
-                    // Convert the weekday to an integer (assuming Sunday is 1, Monday is 2, and so on)
                     int dayOfWeek = -1;
                     if (weekday != null) {
-                        switch (weekday.toLowerCase()) {
+                        switch (weekday) {
                             case "sunday":
-                                dayOfWeek = 7; // Changed from 1
+                                dayOfWeek = 7;
                                 break;
                             case "monday":
-                                dayOfWeek = 1; // Changed from 2
+                                dayOfWeek = 1;
                                 break;
                             case "tuesday":
-                                dayOfWeek = 2; // Changed from 3
+                                dayOfWeek = 2;
                                 break;
                             case "wednesday":
-                                dayOfWeek = 3; // Changed from 4
+                                dayOfWeek = 3;
                                 break;
                             case "thursday":
-                                dayOfWeek = 4; // Changed from 5
+                                dayOfWeek = 4;
                                 break;
                             case "friday":
-                                dayOfWeek = 5; // Changed from 6
+                                dayOfWeek = 5;
                                 break;
                             case "saturday":
-                                dayOfWeek = 6; // Changed from 7
+                                dayOfWeek = 6;
                                 break;
                         }
+
                     }
 
-                    // Save the reminder to the local database
-                    // Get the user ID from the SessionManager and include it in the Reminder constructor
-                    int userId = sessionManager.getUser().getId();
-                    Reminder reminder = new Reminder(-1, userId, dayOfWeek, hour, minute, reason, false); // Set the id to -1 initially, and confirmed to false
-                    int reminderId = reminderMethods.addReminder(reminder);
-                    reminder.setId(reminderId); // Set the ID for the reminder object
+                    // Iterate through reasons and save a reminder for each activity
+                    for (String reason : reasons) {
+                        int userId = sessionManager.getUser().getId();
+                        Reminder reminder = new Reminder(-1, userId, dayOfWeek, hour, minute, reason, false);
+                        int reminderId = reminderMethods.addReminder(reminder);
+                        reminder.setId(reminderId);
 
-                    // Set the alarm for the reminder
-                    ReminderAlarmScheduler reminderAlarmScheduler = new ReminderAlarmScheduler(RemindersSaveActivity.this);
-                    reminderAlarmScheduler.setReminderAlarm(reminder);
+                        // Debug log
+                        Log.d("ReminderSave", "Reminder saved: " + reminder.toString());
 
-                    // Navigate to the ReminderListActivity or any other activity
+                        ReminderAlarmScheduler reminderAlarmScheduler = new ReminderAlarmScheduler(RemindersSaveActivity.this);
+                        reminderAlarmScheduler.setReminderAlarm(reminder);
+                    }
+
                     Intent nextActivityIntent = new Intent(RemindersSaveActivity.this, RemindersActivity.class);
                     startActivity(nextActivityIntent);
                 } else {
@@ -134,6 +137,5 @@ public class RemindersSaveActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 }

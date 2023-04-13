@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/pale_yellow"
+    >
+
+    <TextView
+        android:id="@+id/notification_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Eye Health Reminder"
+        android:textColor="@color/black_text"
+        android:textSize="20sp"
+        android:contentDescription="Eye Health "/>
+
+    <TextView
+        android:id="@+id/notification_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time to check your Amsler Grid"
+        android:textColor="@color/black_text"
+        android:textSize="18sp"
+        android:contentDescription="Time to check your Amsler Grid"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/open_app_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Open App"
+            android:textColor="@color/black_text"
+            android:background="@color/high_contrast_button_color"/>
+
+    </LinearLayout>
+</LinearLayout>
