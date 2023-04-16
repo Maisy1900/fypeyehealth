@@ -31,50 +31,6 @@ public class AmslerGridMethods {
         db = database.getWritableDatabase();
     }
 
-
-    public List<Entry> getAmslerGridResults(int userId) {
-        Log.d("AmslerGridResults", "Getting Amsler grid results for user: " + userId);
-
-        List<Entry> results = new ArrayList<>();
-        String[] columns = {
-                Database.COLUMN_AG_TEST_DATE,
-                Database.COLUMN_AG_X_COORD,
-                Database.COLUMN_AG_Y_COORD
-        };
-        String selection = COLUMN_AG_USER_ID + " = ?";
-        String[] selectionArgs = {String.valueOf(userId)};
-        Cursor cursor = db.query(TABLE_AMSLER_GRID, columns, selection, selectionArgs, null, null, Database.COLUMN_AG_TEST_DATE + " ASC");
-        Log.d("AmslerGridResults", "Cursor rows: " + cursor.getCount());
-
-        int testDateIndex = cursor.getColumnIndex(Database.COLUMN_AG_TEST_DATE);
-        int xCoordIndex = cursor.getColumnIndex(Database.COLUMN_AG_X_COORD);
-        int yCoordIndex = cursor.getColumnIndex(Database.COLUMN_AG_Y_COORD);
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
-        while (cursor.moveToNext()) {
-            String testDate = cursor.getString(testDateIndex);
-            int xCoord = cursor.getInt(xCoordIndex);
-            int yCoord = cursor.getInt(yCoordIndex);
-
-            try {
-                Date date = dateFormat.parse(testDate);
-                if (date != null) {
-                    long timeInMillis = date.getTime();
-                    float xAxisValue = (float) timeInMillis;
-                    float yAxisValue = (float) Math.sqrt(xCoord * xCoord + yCoord * yCoord); // Calculate the distance from the origin.
-                    results.add(new Entry(xAxisValue, yAxisValue));
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
-        cursor.close();
-        Log.d("AmslerGridResults", "Results found: " + results.size());
-
-        return results;
-    }
-
     public int getMaxTestIdForUser(int userId) {
         String query = "SELECT MAX(" + Database.COLUMN_AG_TEST_ID + ") FROM " + TABLE_AMSLER_GRID + " WHERE " + COLUMN_AG_USER_ID + " = " + userId;
         Cursor cursor = db.rawQuery(query, null);
@@ -250,102 +206,49 @@ public class AmslerGridMethods {
         averageDistortions.put("rightEyeQuadrant4", rightEyeQuadrant4Total / totalTests);
         return averageDistortions;
     }
+    public HashMap<String, ArrayList<ArrayList<Float>>> getBaselineTest(int userId) {
+        HashMap<String, ArrayList<ArrayList<Float>>> results = new HashMap<>();
+        ArrayList<ArrayList<Float>> leftEyeCoordinates = new ArrayList<>();
+        ArrayList<ArrayList<Float>> rightEyeCoordinates = new ArrayList<>();
 
-    public void getAllAmslerGridResults(int userId) {
-        // Define the SQL query to fetch all Amsler Grid results for the user with the specified ID
-        String query = "SELECT * FROM " + TABLE_AMSLER_GRID + " WHERE " + COLUMN_AG_USER_ID + " = " + userId;
-
-        // Execute the query and store the result in a Cursor object
-        Cursor cursor = db.rawQuery(query, null);
-
-        // Check if there are any entries in the database for the specified user ID
-        if (cursor.getCount() == 0) {
-            Log.d("MyApp", "No Amsler Grid results found for user ID: " + userId);
-            return;
-        }
-
-        // Loop through the cursor and log the results
-        if (cursor.moveToFirst()) {
-            int idIndex = cursor.getColumnIndex(Database.COLUMN_AG_ID);
-            int testIdIndex = cursor.getColumnIndex(Database.COLUMN_AG_TEST_ID);
-            int testDateIndex = cursor.getColumnIndex(Database.COLUMN_AG_TEST_DATE);
-            int gridIndex = cursor.getColumnIndex(Database.COLUMN_AG_GRID);
-            int xCoordIndex = cursor.getColumnIndex(Database.COLUMN_AG_X_COORD);
-            int yCoordIndex = cursor.getColumnIndex(Database.COLUMN_AG_Y_COORD);
-
-            do {
-                int id = cursor.getInt(idIndex);
-                int testId = cursor.getInt(testIdIndex);
-                String testDate = cursor.getString(testDateIndex);
-                String grid = cursor.getString(gridIndex);
-                int xCoord = cursor.getInt(xCoordIndex);
-                int yCoord = cursor.getInt(yCoordIndex);
-
-                // Log the results for debugging purposes
-                Log.d("MyApp", "ID: " + id + ", User ID: " + userId + ", Test ID: " + testId + ", Test Date: " + testDate + ", Grid: " + grid + ", X Coord: " + xCoord + ", Y Coord: " + yCoord);
-            } while (cursor.moveToNext());
-        }
-
-        // Close the cursor
-        cursor.close();
-    }
-
-    public HashMap<String, Entry> getBaselineAmslerGridResults(int userId) {
-        Log.d("BaselineAmslerGridResults", "Getting baseline Amsler grid results for user: " + userId);
-
-        HashMap<String, Entry> baselineResults = new HashMap<>();
         String[] columns = {
+                Database.COLUMN_AG_ID,
                 Database.COLUMN_AG_TEST_ID,
                 Database.COLUMN_AG_TEST_DATE,
                 Database.COLUMN_AG_GRID,
                 Database.COLUMN_AG_X_COORD,
-                Database.COLUMN_AG_Y_COORD
+                Database.COLUMN_AG_Y_COORD,
+                Database.COLUMN_AG_CREATED_DATE
         };
-        String selection = COLUMN_AG_USER_ID + " = ?";
-        String[] selectionArgs = {String.valueOf(userId)};
-        String orderBy = Database.COLUMN_AG_TEST_DATE + " ASC";
+
+        String selection = COLUMN_AG_USER_ID + " = ? AND " + Database.COLUMN_AG_TEST_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(userId), "1"};
+        String orderBy = Database.COLUMN_AG_TEST_ID + " DESC";
         Cursor cursor = db.query(TABLE_AMSLER_GRID, columns, selection, selectionArgs, null, null, orderBy);
-        Log.d("BaselineAmslerGridResults", "Cursor rows: " + cursor.getCount());
 
-        int testIdIndex = cursor.getColumnIndex(Database.COLUMN_AG_TEST_ID);
-        int testDateIndex = cursor.getColumnIndex(Database.COLUMN_AG_TEST_DATE);
-        int gridIndex = cursor.getColumnIndex(Database.COLUMN_AG_GRID);
-        int xCoordIndex = cursor.getColumnIndex(Database.COLUMN_AG_X_COORD);
-        int yCoordIndex = cursor.getColumnIndex(Database.COLUMN_AG_Y_COORD);
-
-        int currentTestId = -1;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
         while (cursor.moveToNext()) {
-            int testId = cursor.getInt(testIdIndex);
-            if (currentTestId == -1) {
-                currentTestId = testId;
-            } else if (testId != currentTestId) {
-                break;
-            }
+            String grid = cursor.getString(cursor.getColumnIndex(Database.COLUMN_AG_GRID));
+            float xCoord = cursor.getFloat(cursor.getColumnIndex(Database.COLUMN_AG_X_COORD));
+            float yCoord = cursor.getFloat(cursor.getColumnIndex(Database.COLUMN_AG_Y_COORD));
+            ArrayList<Float> coordinates = new ArrayList<>();
+            coordinates.add(xCoord);
+            coordinates.add(yCoord);
 
-            String testDate = cursor.getString(testDateIndex);
-            String grid = cursor.getString(gridIndex);
-            int xCoord = cursor.getInt(xCoordIndex);
-            int yCoord = cursor.getInt(yCoordIndex);
-
-            try {
-                Date date = dateFormat.parse(testDate);
-                if (date != null) {
-                    long timeInMillis = date.getTime();
-                    float xAxisValue = (float) timeInMillis;
-                    float yAxisValue = (float) Math.sqrt(xCoord * xCoord + yCoord * yCoord); // Calculate the distance from the origin.
-                    baselineResults.put(grid, new Entry(xAxisValue, yAxisValue));
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
+            if (grid.equals("L")) {
+                leftEyeCoordinates.add(coordinates);
+            } else if (grid.equals("R")) {
+                rightEyeCoordinates.add(coordinates);
             }
         }
 
         cursor.close();
-        Log.d("BaselineAmslerGridResults", "Baseline results found: " + baselineResults.size());
 
-        return baselineResults;
+        results.put("leftEye", leftEyeCoordinates);
+        results.put("rightEye", rightEyeCoordinates);
+
+        return results;
     }
+
 
     public void close() {
         if (db != null) {

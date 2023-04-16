@@ -260,7 +260,43 @@ public class InteractiveAmslerGridView extends AmslerGridView {
 
         return averageDistortionPercentages;
     }
+    public HashMap<String, Float> calculateLeftRightDistortionPercentages(ArrayList<ArrayList<Float>> distortionCoordinates) {
+        HashMap<String, Float> quadrantDistortions = calculateQuadrantDistortions(distortionCoordinates);
+        HashMap<String, Float> leftRightDistortionPercentages = new HashMap<>();
 
+        float leftDistortion = quadrantDistortions.get("upperLeft") + quadrantDistortions.get("lowerLeft");
+        float rightDistortion = quadrantDistortions.get("upperRight") + quadrantDistortions.get("lowerRight");
+
+        leftRightDistortionPercentages.put("left", leftDistortion);
+        leftRightDistortionPercentages.put("right", rightDistortion);
+
+        return leftRightDistortionPercentages;
+    }
+
+    public HashMap<String, Float> calculateDistortionPercentages(ArrayList<ArrayList<Float>> distortionCoordinates) {
+        float gridWidth = getGridSize();
+        float gridHeight = getGridSize();
+        float totalArea = gridWidth * gridHeight;
+
+        float distortedArea = 0f;
+
+        for (ArrayList<Float> coordinates : distortionCoordinates) {
+            float distortionRadius = 5; // Define the radius for each distortion point (e.g., 5 pixels)
+            float currentDistortedArea = (float) (Math.PI * Math.pow(distortionRadius, 2));
+
+            distortedArea += currentDistortedArea;
+        }
+
+        float distortionPercentage = (distortedArea / totalArea) * 100;
+
+        HashMap<String, Float> distortionPercentages = new HashMap<>();
+        distortionPercentages.put("total", distortionPercentage);
+
+        System.out.println("Distorted Area: " + distortedArea);
+        System.out.println("Distortion Percentage: " + distortionPercentage);
+
+        return distortionPercentages;
+    }
 
 
 }

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -55,6 +54,7 @@
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/back_button" />
+
     <ScrollView
         android:id="@+id/results_scroll_view"
         android:layout_width="0dp"
@@ -63,6 +63,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_box"
         app:layout_constraintBottom_toTopOf="@id/start_test_button"
         app:layout_constraintEnd_toStartOf="@id/scroll_up_button"
         app:layout_constraintHorizontal_bias="0.0"
@@ -76,26 +77,52 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Circular progress bars for left and right eyes -->
+            <!-- Circular progress bars and percentage TextViews for left and right eyes -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_horizontal">
 
-                <fr.castorflex.android.circularprogressbar.CircularProgressBar
-                    android:id="@+id/left_eye_progress"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    app:cpb_thickness="5dp"
-                    app:cpb_progress="0" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                <fr.castorflex.android.circularprogressbar.CircularProgressBar
-                    android:id="@+id/right_eye_progress"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    app:cpb_thickness="5dp"
-                    app:cpb_progress="0" />
+                    <fr.castorflex.android.circularprogressbar.CircularProgressBar
+                        android:id="@+id/left_eye_progress"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:cpb_progress="0"
+                        app:cpb_thickness="5dp" />
+
+                    <TextView
+                        android:id="@+id/left_eye_percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <fr.castorflex.android.circularprogressbar.CircularProgressBar
+                        android:id="@+id/right_eye_progress"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:cpb_thickness="5dp"
+                        app:cpb_progress="0" />
+
+                    <TextView
+                        android:id="@+id/right_eye_percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black" />
+                </LinearLayout>
             </LinearLayout>
 
             <!-- TextView to display the results text -->
@@ -110,7 +137,6 @@
         </LinearLayout>
     </ScrollView>
 
-
     <ImageButton
         android:id="@+id/scroll_up_button"
         android:layout_width="70dp"
@@ -120,8 +146,7 @@
         android:contentDescription="Scroll Up"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tutorial_scroll_view" />
-
+        app:layout_constraintTop_toTopOf="@id/results_scroll_view" />
     <ImageButton
         android:id="@+id/scroll_down_button"
         android:layout_width="70dp"
@@ -130,7 +155,7 @@
         android:background="@drawable/down_arrow"
         android:contentDescription="Scroll Down"
         android:scaleType="centerInside"
-        app:layout_constraintBottom_toBottomOf="@id/tutorial_scroll_view"
+        app:layout_constraintBottom_toBottomOf="@id/results_scroll_view"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
@@ -144,4 +169,3 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
