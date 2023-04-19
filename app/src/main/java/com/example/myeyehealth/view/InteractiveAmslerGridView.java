@@ -279,12 +279,33 @@ public class InteractiveAmslerGridView extends AmslerGridView {
         float totalArea = gridWidth * gridHeight;
 
         float distortedArea = 0f;
+        List<ArrayList<Float>> processedPoints = new ArrayList<>();
 
         for (ArrayList<Float> coordinates : distortionCoordinates) {
-            float distortionRadius = 5; // Define the radius for each distortion point (e.g., 5 pixels)
+            float x = coordinates.get(0);
+            float y = coordinates.get(1);
+
+            boolean overlap = false;
+            for (ArrayList<Float> processedPoint : processedPoints) {
+                float dx = x - processedPoint.get(0);
+                float dy = y - processedPoint.get(1);
+                float distance = (float) Math.sqrt(dx * dx + dy * dy);
+                float minDistance = 10; // Define the minimum distance between two points to be considered not overlapping
+                if (distance < minDistance) {
+                    overlap = true;
+                    break;
+                }
+            }
+
+            float distortionRadius = 25; // Define the radius for each distortion point (e.g., 5 pixels)
             float currentDistortedArea = (float) (Math.PI * Math.pow(distortionRadius, 2));
 
+            if (overlap) {
+                currentDistortedArea /= 2; // Divide the distorted area by 2 if there is an overlap
+            }
+
             distortedArea += currentDistortedArea;
+            processedPoints.add(coordinates);
         }
 
         float distortionPercentage = (distortedArea / totalArea) * 100;
@@ -297,6 +318,7 @@ public class InteractiveAmslerGridView extends AmslerGridView {
 
         return distortionPercentages;
     }
+
 
 
 }

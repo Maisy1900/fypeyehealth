@@ -2,6 +2,7 @@ package com.example.myeyehealth.ui.amslergrid;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -41,12 +42,17 @@ public class AmslerGridRightEyeTestActivity extends AppCompatActivity {
                 }
                 System.out.println("Right Eye Distortion Coordinates: " + AmslerGridRightEyeTestActivity.this.distortionCoordinates);
 
-                Intent intent = new Intent(AmslerGridRightEyeTestActivity.this, AmslerGridTestResultsActivity.class);
+                // Add these log statements
+                Log.d("AmslerGridNewResults", "Left Eye Distortion Coordinates: " + getIntent().getSerializableExtra("leftEyeDistortionCoordinates").toString());
+                Log.d("AmslerGridNewResults", "Right Eye Distortion Coordinates: " + AmslerGridRightEyeTestActivity.this.distortionCoordinates.toString());
+
+                Intent intent = new Intent(AmslerGridRightEyeTestActivity.this, AmslerGridNewResults.class);
                 intent.putExtra("leftEyeDistortionCoordinates", getIntent().getSerializableExtra("leftEyeDistortionCoordinates"));
                 intent.putExtra("rightEyeDistortionCoordinates", AmslerGridRightEyeTestActivity.this.distortionCoordinates);
                 startActivity(intent);
             }
         });
+
 
         ImageButton backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {

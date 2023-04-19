@@ -67,8 +67,8 @@ public class SaccadesExerciseActivity extends AppCompatActivity {
                 for (int i = 0; i < tapDistances.size(); i++) {
                     tapDistancesArray[i] = tapDistances.get(i);
                 }
-
-                Intent intent = new Intent(SaccadesExerciseActivity.this, SaccadesExerciseResultsActivity.class);
+               // Intent intent = new Intent(SaccadesExerciseActivity.this, SaccadesExerciseResultsActivity.class);
+                Intent intent = new Intent(SaccadesExerciseActivity.this, SaccadesExerciseNewActivity.class);
                 intent.putExtra("EXTRA_TAP_TIMES", tapTimes.stream().mapToLong(Long::longValue).toArray());
                 intent.putExtra("EXTRA_TIME_DIFFERENCES", timeDifferences);
                 intent.putExtra("EXTRA_TAP_DISTANCES", tapDistancesArray);

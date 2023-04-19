@@ -206,48 +206,49 @@ public class AmslerGridMethods {
         averageDistortions.put("rightEyeQuadrant4", rightEyeQuadrant4Total / totalTests);
         return averageDistortions;
     }
-    public HashMap<String, ArrayList<ArrayList<Float>>> getBaselineTest(int userId) {
-        HashMap<String, ArrayList<ArrayList<Float>>> results = new HashMap<>();
-        ArrayList<ArrayList<Float>> leftEyeCoordinates = new ArrayList<>();
-        ArrayList<ArrayList<Float>> rightEyeCoordinates = new ArrayList<>();
+    public HashMap<String, ArrayList<Float>>[] getBaselineAmslerResults(int userId) {
+        HashMap<String, ArrayList<Float>> leftCoordinates = new HashMap<>();
+        HashMap<String, ArrayList<Float>> rightCoordinates = new HashMap<>();
 
-        String[] columns = {
-                Database.COLUMN_AG_ID,
-                Database.COLUMN_AG_TEST_ID,
-                Database.COLUMN_AG_TEST_DATE,
-                Database.COLUMN_AG_GRID,
-                Database.COLUMN_AG_X_COORD,
-                Database.COLUMN_AG_Y_COORD,
-                Database.COLUMN_AG_CREATED_DATE
-        };
+        String query = "SELECT * FROM " + Database.TABLE_AMSLER_GRID +
+                " WHERE " + Database.COLUMN_AG_USER_ID + " = ?" +
+                " AND " + Database.COLUMN_AG_TEST_ID + " = 1";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
 
-        String selection = COLUMN_AG_USER_ID + " = ? AND " + Database.COLUMN_AG_TEST_ID + " = ?";
-        String[] selectionArgs = {String.valueOf(userId), "1"};
-        String orderBy = Database.COLUMN_AG_TEST_ID + " DESC";
-        Cursor cursor = db.query(TABLE_AMSLER_GRID, columns, selection, selectionArgs, null, null, orderBy);
+        if (cursor.moveToFirst()) {
+            do {
+                String grid = cursor.getString(cursor.getColumnIndexOrThrow(Database.COLUMN_AG_GRID));
+                float x_coord = cursor.getFloat(cursor.getColumnIndexOrThrow(Database.COLUMN_AG_X_COORD));
+                float y_coord = cursor.getFloat(cursor.getColumnIndexOrThrow(Database.COLUMN_AG_Y_COORD));
 
-        while (cursor.moveToNext()) {
-            String grid = cursor.getString(cursor.getColumnIndex(Database.COLUMN_AG_GRID));
-            float xCoord = cursor.getFloat(cursor.getColumnIndex(Database.COLUMN_AG_X_COORD));
-            float yCoord = cursor.getFloat(cursor.getColumnIndex(Database.COLUMN_AG_Y_COORD));
-            ArrayList<Float> coordinates = new ArrayList<>();
-            coordinates.add(xCoord);
-            coordinates.add(yCoord);
-
-            if (grid.equals("L")) {
-                leftEyeCoordinates.add(coordinates);
-            } else if (grid.equals("R")) {
-                rightEyeCoordinates.add(coordinates);
-            }
+                if (grid.equals("L")) {
+                    addCoordinate(leftCoordinates, x_coord, y_coord);
+                } else if (grid.equals("R")) {
+                    addCoordinate(rightCoordinates, x_coord, y_coord);
+                }
+            } while (cursor.moveToNext());
         }
-
         cursor.close();
 
-        results.put("leftEye", leftEyeCoordinates);
-        results.put("rightEye", rightEyeCoordinates);
-
-        return results;
+        return new HashMap[]{leftCoordinates, rightCoordinates};
     }
+
+    private void addCoordinate(HashMap<String, ArrayList<Float>> coordinates, float x, float y) {
+        ArrayList<Float> x_coords = coordinates.get("x");
+        if (x_coords == null) {
+            x_coords = new ArrayList<>();
+        }
+        x_coords.add(x);
+        coordinates.put("x", x_coords);
+
+        ArrayList<Float> y_coords = coordinates.get("y");
+        if (y_coords == null) {
+            y_coords = new ArrayList<>();
+        }
+        y_coords.add(y);
+        coordinates.put("y", y_coords);
+    }
+
 
 
     public void close() {

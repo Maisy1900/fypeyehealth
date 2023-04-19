@@ -16,10 +16,7 @@
         android:theme="@style/Theme.MyEyeHealth"
         tools:targetApi="31">
         <activity
-            android:name=".AmslerResults"
-            android:exported="false" />
-        <activity
-            android:name=".AmslerGridNewResults"
+            android:name=".ui.exercise.saccades.SaccadesExerciseNew"
             android:exported="false" />
 
         <receiver
@@ -73,6 +70,7 @@
         <activity
             android:name=".ui.SettingsActivity"
             android:exported="false" /> <!-- Amsler Grid activities -->
+        <activity android:name=".ui.amslergrid.AmslerGridNewResults" />
         <activity
             android:name=".ui.amslergrid.AmslerGridTutorial1Activity"
             android:exported="false" />
@@ -126,6 +124,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+        <activity android:name="com.example.myeyehealth.ui.exercise.saccades.SaccadesExerciseNewActivity" />
     </application>
 
 </manifest>
