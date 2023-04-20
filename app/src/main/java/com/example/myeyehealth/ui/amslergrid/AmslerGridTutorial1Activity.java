@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.SessionManager;
+import com.example.myeyehealth.model.User;
 
 public class AmslerGridTutorial1Activity extends AppCompatActivity {
 
@@ -32,6 +34,10 @@ public class AmslerGridTutorial1Activity extends AppCompatActivity {
 
         tutorialScrollView = findViewById(R.id.tutorial_scroll_view);
         tutorialText = findViewById(R.id.tutorial_text);
+        SessionManager sessionManager = SessionManager.getInstance(this);
+        User user = sessionManager.getUser();
+        int userId= user.getId();
+        System.out.println("user id should be 21"+userId);
 
         ImageButton scrollUpButton = findViewById(R.id.scroll_up_button);
         scrollUpButton.setOnClickListener(new View.OnClickListener() {

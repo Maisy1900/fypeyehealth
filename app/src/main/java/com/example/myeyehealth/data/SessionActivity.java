@@ -18,8 +18,7 @@ public abstract class SessionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Get session manager instance
-        SessionManager sessionManager = SessionManager.getInstance(this);
-
+        sessionManager = SessionManager.getInstance(this);
 
         if (shouldCheckLoginStatus()) {
             // Check if user is logged in

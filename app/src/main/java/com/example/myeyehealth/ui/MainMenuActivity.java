@@ -79,7 +79,7 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
     }
 
     protected void onLoggedIn(User user) {
-        int specificUserId = 21;
+        int specificUserId = 4;
         // Create an instance of UserMethods
         UserMethods userMethods = new UserMethods(this);
         // Fetch the user with the specific ID from the database
@@ -89,20 +89,19 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
             SessionManager sessionManager = SessionManager.getInstance(this);
             sessionManager.createLoginSession(user);
 
-           // System.out.println("userid: " + user.getId());
+            System.out.println("userid: " + user.getId());
 
             int userID = user.getId();
             AmslerGridMethods amslerResultMethods = new AmslerGridMethods(this);
             HashMap<Integer, List<HashMap<String, String>>> pastFiveTests = amslerResultMethods.getPastFiveTests(userID);
             //printFormattedResults(pastFiveTests);
-
-
-
         } else {
             // Handle the case when the user is not found
-
+            // Create a new user and insert it into the database
+            createNewUser();
         }
     }
+
 
     @Override
     protected boolean shouldCheckLoginStatus() {
@@ -266,6 +265,22 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
+        }
+    }
+    private void createNewUser() {
+        // Create a new user with the required information
+        User newUser = new User(-1, "John Doe", "john.doe@example.com", "password", "Dr. Jane Smith", "dr.jane@example.com", "Carer", "carer@example.com");
+
+        // Insert the user into the database
+        UserMethods userMethods = new UserMethods(this);
+        long userId = userMethods.addUser(newUser);
+
+        if (userId != -1) {
+            // The user has been successfully created and inserted
+            System.out.println("New user created with ID: " + userId);
+        } else {
+            // There was an issue while inserting the user
+            System.out.println("User creation failed");
         }
     }
 

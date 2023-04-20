@@ -96,11 +96,11 @@ public class SaccadesMethods {
             for (long tapTime : timeTakenArray) {
                 timeTaken += tapTime;
             }
-            timeTaken /= timeTakenArray.length;
 
             exerciseNumbers.add(testNumber);
             completionTimes.add(timeTaken);
         }
+
         cursor.close();
 
         return new SaccadesData(exerciseNumbers, completionTimes);

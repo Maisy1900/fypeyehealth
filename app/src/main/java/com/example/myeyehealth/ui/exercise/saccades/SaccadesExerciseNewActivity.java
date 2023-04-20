@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -62,6 +63,12 @@ public class SaccadesExerciseNewActivity extends AppCompatActivity {
             completionTimes.add(testResult / 1000);
         }
 
+        // Print each completion time
+        Log.d("CompletionTimes", "Completion times: ");
+        for (int i = 0; i < completionTimes.size(); i++) {
+            Log.d("CompletionTimes", "Test " + (i + 1) + ": " + completionTimes.get(i) + "s");
+        }
+
 
 
         Intent intent = getIntent();
@@ -84,6 +91,7 @@ public class SaccadesExerciseNewActivity extends AppCompatActivity {
 // Add the last test's total time to the completionTimes list
 // Add the last test's total time to the completionTimes list
         completionTimes.add(lastTestTotalTime);
+        System.out.println("Current time" + lastTestTotalTime);
         List<Integer> saccadesTestNumbers = new ArrayList<>();
 
         for (int i = 0; i < pastTestResultsData.getExerciseNumbers().size(); i++) {
@@ -96,7 +104,7 @@ public class SaccadesExerciseNewActivity extends AppCompatActivity {
 
 
 // Calculate the minimum time (best time) among completionTimes
-        float bestTimeValue = getBestTotalCompletionTime(saccadesTestNumbers, completionTimes);
+        float bestTimeValue = getBestTotalCompletionTime(completionTimes);
         System.out.println("best full time"+bestTimeValue);
 // Update the bestTime TextView
         bestTime.setText("Best Time: " + String.format("%.2f", bestTimeValue) + "s");
@@ -105,7 +113,8 @@ public class SaccadesExerciseNewActivity extends AppCompatActivity {
         timeTaken.setText("Time Taken: " + String.format("%.2f", lastTestTotalTime) + "s");
 
 // Classify performance and update resultsText and personalRecordProgress
-        String performance = classifyPerformance(completionTimes);
+        String performance = classifyPerformance(completionTimes, lastTestTotalTime);
+
         int progressValue;
         int progressColor;
 
@@ -152,57 +161,82 @@ public class SaccadesExerciseNewActivity extends AppCompatActivity {
 
 
     }
-    private String classifyPerformance(ArrayList<Float> completionTimes) {
-        float sum = 0;
-        for (float time : completionTimes) {
-            sum += time;
+
+    private String classifyPerformance(ArrayList<Float> completionTimes, float lastTestCompletionTime) {
+        int numResults = completionTimes.size();
+
+        // Handle the case when there's only one result
+        if (numResults == 1) {
+            return "This is your first result. Please keep testing.";
         }
-        float averageTime = sum / completionTimes.size();
 
         Collections.sort(completionTimes);
-        float median;
-        int middle = completionTimes.size() / 2;
-        if (completionTimes.size() % 2 == 0) {
-            median = (completionTimes.get(middle - 1) + completionTimes.get(middle)) / 2.0f;
-        } else {
-            median = completionTimes.get(middle);
+
+        // Calculate the interquartile range (IQR)
+        float q1 = completionTimes.get(numResults / 4);
+        float q3 = completionTimes.get(3 * numResults / 4);
+        float iqr = q3 - q1;
+
+        // Filter the outliers
+        ArrayList<Float> filteredCompletionTimes = new ArrayList<>();
+        for (float time : completionTimes) {
+            if (time >= q1 - 1.5 * iqr && time <= q3 + 1.5 * iqr) {
+                filteredCompletionTimes.add(time);
+            }
         }
 
-        if (averageTime <= median * 0.8) {
+        // Calculate the mean and find the minimum completion time
+        float mean = 0;
+        float bestCompletionTime = Float.MAX_VALUE;
+        for (float time : filteredCompletionTimes) {
+            mean += time;
+            if (time < bestCompletionTime) {
+                bestCompletionTime = time;
+            }
+        }
+        mean /= filteredCompletionTimes.size();
+
+        // Calculate standard deviation
+        float sumSquaredDifferences = 0;
+        for (float time : filteredCompletionTimes) {
+            sumSquaredDifferences += Math.pow(time - mean, 2);
+        }
+        float stdDev = (float) Math.sqrt(sumSquaredDifferences / (filteredCompletionTimes.size() - 1));
+
+        // Calculate threshold factor based on the difference between the mean and the best score
+        float thresholdFactor = Math.max(0.5f, (mean - bestCompletionTime) / stdDev);
+
+        // Print the logs for debugging
+        Log.d("PerformanceClassifier", "mean: " + mean);
+        Log.d("PerformanceClassifier", "bestCompletionTime: " + bestCompletionTime);
+        Log.d("PerformanceClassifier", "stdDev: " + stdDev);
+        Log.d("PerformanceClassifier", "thresholdFactor: " + thresholdFactor);
+        Log.d("PerformanceClassifier", "lastTestCompletionTime: " + lastTestCompletionTime);
+
+        // Classify performance
+        if (lastTestCompletionTime <= bestCompletionTime) {
+            return "Good (best time yet)";
+        } else if (lastTestCompletionTime <= mean + thresholdFactor * stdDev) {
             return "Good";
-        } else if (averageTime > median * 0.8 && averageTime < median * 1.2) {
+        } else if (lastTestCompletionTime <= mean + 2 * thresholdFactor * stdDev) {
             return "Average";
         } else {
             return "Poor";
         }
     }
-    public float getBestTotalCompletionTime(List<Integer> saccadesTestNumbers, List<Float> completionTimes) {
-        Map<Integer, Float> testCompletionTimes = new HashMap<>();
 
-        // Sum up completion times for each test number
-        for (int i = 0; i < completionTimes.size(); i++) {
-            if (i < saccadesTestNumbers.size()) {
-                int testNumber = saccadesTestNumbers.get(i);
-                float time = completionTimes.get(i);
-                testCompletionTimes.put(testNumber, testCompletionTimes.getOrDefault(testNumber, 0f) + time);
-            } else {
-                break;
+
+
+
+    public float getBestTotalCompletionTime(List<Float> completionTimes) {
+        float bestTime = Float.MAX_VALUE;
+        for (float time : completionTimes) {
+            if (time < bestTime) {
+                bestTime = time;
             }
         }
-
-        // Find the best total time among the 20 available tests
-        float bestTotalTime = Float.MAX_VALUE;
-        for (int testNumber = 1; testNumber <= 20; testNumber++) {
-            float totalTime = testCompletionTimes.getOrDefault(testNumber, Float.MAX_VALUE);
-
-            if (totalTime < bestTotalTime) {
-                bestTotalTime = totalTime;
-            }
-        }
-
-        return bestTotalTime;
+        return bestTime;
     }
-
 
 
 }
