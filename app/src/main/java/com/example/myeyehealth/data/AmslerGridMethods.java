@@ -45,6 +45,11 @@ public class AmslerGridMethods {
     }
 
     public void saveAmslerGridData(int userId, long date, HashMap<String, ArrayList<Float>> leftCoordinates, HashMap<String, ArrayList<Float>> rightCoordinates) {
+        if (leftCoordinates == null && rightCoordinates == null) {
+            Log.d("AmslerGridMethods", "No coordinates to save for user: " + userId + ". Skipping save operation.");
+            return;
+        }
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
         String testDate = dateFormat.format(new Date(date));
 
@@ -57,9 +62,14 @@ public class AmslerGridMethods {
         // Increment the maximum testId by 1 to generate a new unique testId
         int testId = maxTestId + 1;
 
-        saveCoordinates(userId, testDate, testId, "L", leftCoordinates);
-        saveCoordinates(userId, testDate, testId, "R", rightCoordinates);
+        if (leftCoordinates != null) {
+            saveCoordinates(userId, testDate, testId, "L", leftCoordinates);
+        }
+        if (rightCoordinates != null) {
+            saveCoordinates(userId, testDate, testId, "R", rightCoordinates);
+        }
     }
+
 
     private void saveCoordinates(int userId, String testDate, int testId, String gridType, HashMap<String, ArrayList<Float>> coordinates) {
         for (Map.Entry<String, ArrayList<Float>> entry : coordinates.entrySet()) {

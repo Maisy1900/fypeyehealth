@@ -54,6 +54,32 @@
         android:textSize="40sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/back_button" />
+    <!-- Left Eye Title -->
+    <TextView
+        android:id="@+id/left_eye_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Left Eye"
+        android:textSize="24sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@+id/results_subtitle"
+        app:layout_constraintStart_toStartOf="@+id/left_eye_progress"
+        app:layout_constraintEnd_toEndOf="@+id/left_eye_progress"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Right Eye Title -->
+    <TextView
+        android:id="@+id/right_eye_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Right Eye"
+        android:textSize="24sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@+id/results_subtitle"
+        app:layout_constraintStart_toStartOf="@+id/right_eye_progress"
+        app:layout_constraintEnd_toEndOf="@+id/right_eye_progress"
+        android:layout_marginTop="8dp"/>
+
 
     <!-- Left Eye -->
     <com.mikhaellopez.circularprogressbar.CircularProgressBar
@@ -110,6 +136,30 @@
         app:layout_constraintEnd_toEndOf="@id/right_eye_progress"
         app:layout_constraintStart_toStartOf="@id/right_eye_progress"
         app:layout_constraintTop_toTopOf="@id/right_eye_progress" />
+    <!-- Left Eye Baseline -->
+    <TextView
+        android:id="@+id/left_eye_baseline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Baseline"
+        android:textSize="18sp"
+        android:textColor="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@+id/left_eye_percentage"
+        app:layout_constraintStart_toStartOf="@+id/left_eye_percentage"
+        app:layout_constraintEnd_toEndOf="@+id/left_eye_percentage" />
+
+    <!-- Right Eye Baseline -->
+    <TextView
+        android:id="@+id/right_eye_baseline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Baseline"
+        android:textSize="18sp"
+        android:textColor="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@+id/right_eye_percentage"
+        app:layout_constraintStart_toStartOf="@+id/right_eye_percentage"
+        app:layout_constraintEnd_toEndOf="@+id/right_eye_percentage" />
+
 
     <!-- TextView to display the results text -->
     <TextView

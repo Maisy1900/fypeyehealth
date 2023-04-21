@@ -113,4 +113,32 @@ public class User implements Parcelable {
                 ", carerEmail='" + carerEmail + '\'' +
                 '}';
     }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
+    }
+
+    public void setDoctorEmail(String doctorEmail) {
+        this.doctorEmail = doctorEmail;
+    }
+
+    public void setCarerName(String carerName) {
+        this.carerName = carerName;
+    }
+
+    public void setCarerEmail(String carerEmail) {
+        this.carerEmail = carerEmail;
+    }
+
 }

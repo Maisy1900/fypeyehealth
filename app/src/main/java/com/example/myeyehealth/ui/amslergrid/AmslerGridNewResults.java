@@ -31,7 +31,7 @@ public class AmslerGridNewResults extends AppCompatActivity {
     private TextView titleText, resultsSubtitle, resultsText;
     private CircularProgressBar leftEyeProgress, rightEyeProgress;
     private Button saveButton;
-    private TextView leftEyePercentageText, rightEyePercentageText;
+    private TextView leftEyePercentageText, rightEyePercentageText,leftEyeBaseline,rightEyeBaseline ;
     private HashMap<String, ArrayList<Float>> leftEyeDistortionCoordinates;
     private HashMap<String, ArrayList<Float>> rightEyeDistortionCoordinates;
 
@@ -43,8 +43,6 @@ public class AmslerGridNewResults extends AppCompatActivity {
 
         backButton = findViewById(R.id.back_button);
         speakerButton = findViewById(R.id.speaker_button);
-        scrollUpButton = findViewById(R.id.scroll_up_button);
-        scrollDownButton = findViewById(R.id.scroll_down_button);
         titleText = findViewById(R.id.title_text);
         resultsSubtitle = findViewById(R.id.results_subtitle);
         resultsText = findViewById(R.id.results_text);
@@ -53,43 +51,55 @@ public class AmslerGridNewResults extends AppCompatActivity {
         saveButton = findViewById(R.id.save_button);
         leftEyePercentageText = findViewById(R.id.left_eye_percentage);
         rightEyePercentageText = findViewById(R.id.right_eye_percentage);
+        leftEyeBaseline = findViewById(R.id.left_eye_baseline);
+        rightEyeBaseline = findViewById(R.id.right_eye_baseline);
 
         // Assume you have the distortion coordinates for the current Amsler Grid
         Intent intent = getIntent();
-        leftEyeDistortionCoordinates = (HashMap<String, ArrayList<Float>>) intent.getSerializableExtra("leftEyeDistortionCoordinates");
-        rightEyeDistortionCoordinates = (HashMap<String, ArrayList<Float>>) intent.getSerializableExtra("rightEyeDistortionCoordinates");
+        HashMap<String, ArrayList<Float>> currentLeftEyeDistortionCoordinates = (HashMap<String, ArrayList<Float>>) intent.getSerializableExtra("leftEyeDistortionCoordinates");
+        HashMap<String, ArrayList<Float>> currentRightEyeDistortionCoordinates = (HashMap<String, ArrayList<Float>>) intent.getSerializableExtra("rightEyeDistortionCoordinates");
+        InteractiveAmslerGridView interactiveAmslerGridView = new InteractiveAmslerGridView(this);
+        // Calculate the percentage of distortion for each eye
 
-// Add log statements here
-        Log.d("AmslerGridNewResults", "Received Left Eye Distortion Coordinates: " + leftEyeDistortionCoordinates.toString());
-        Log.d("AmslerGridNewResults", "Received Right Eye Distortion Coordinates: " + rightEyeDistortionCoordinates.toString());
+
+        // Add log statements here
+        Log.d("AmslerGridNewResults", "Received Current Left Eye Distortion Coordinates: " + currentLeftEyeDistortionCoordinates.toString());
+        Log.d("AmslerGridNewResults", "Received Current Right Eye Distortion Coordinates: " + currentRightEyeDistortionCoordinates.toString());
 
         AmslerGridMethods amslerResultMethods = new AmslerGridMethods(this);
         InteractiveAmslerGridView interactive = new InteractiveAmslerGridView(this);
         SessionManager sessionManager = SessionManager.getInstance(this);
         User user = sessionManager.getUser();
-        int userId= user.getId();
+        int userId = user.getId();
         long currentDate = System.currentTimeMillis();
+
         // Get the baseline coordinates for the left and right eyes
         HashMap<String, ArrayList<Float>>[] baselineResults = amslerResultMethods.getBaselineAmslerResults(userId);
-        HashMap<String, ArrayList<Float>> leftCoordinates = baselineResults[0];
-        HashMap<String, ArrayList<Float>> rightCoordinates = baselineResults[1];
-
-        compareDistortions(leftEyeDistortionCoordinates, rightEyeDistortionCoordinates, leftCoordinates, rightCoordinates);
+        HashMap<String, ArrayList<Float>> baselineLeftEyeCoordinates = baselineResults[0];
+        HashMap<String, ArrayList<Float>> baselineRightEyeCoordinates = baselineResults[1];
+        ArrayList<ArrayList<Float>> baselineLeftEyeCoordinatesList = convertHashMapToArrayList(baselineResults[0]);
+        ArrayList<ArrayList<Float>> baselineRightEyeCoordinatesList = convertHashMapToArrayList(baselineResults[1]);
+        HashMap<String, Float> baselineleftEyeDistortionPercentages = interactiveAmslerGridView.calculateDistortionPercentages(baselineLeftEyeCoordinatesList);
+        HashMap<String, Float> baselinerightEyeDistortionPercentages = interactiveAmslerGridView.calculateDistortionPercentages(baselineRightEyeCoordinatesList);
+        double baselineleftEyeDistortionPercentage = baselineleftEyeDistortionPercentages.get("total");
+        double baselinerightEyeDistortionPercentage = baselinerightEyeDistortionPercentages.get("total");
         leftEyeProgress.setProgressMax(1f);
         rightEyeProgress.setProgressMax(1f);
-        // Convert HashMap to ArrayList
-        ArrayList<ArrayList<Float>> leftEyeDistortionCoordinatesList = convertHashMapToArrayList(leftEyeDistortionCoordinates);
-        ArrayList<ArrayList<Float>> rightEyeDistortionCoordinatesList = convertHashMapToArrayList(rightEyeDistortionCoordinates);
 
-        // Calculate the percentage of distortion for each eye
-        HashMap<String, Float> leftEyeDistortionPercentages = interactive.calculateDistortionPercentages(leftEyeDistortionCoordinatesList);
-        HashMap<String, Float> rightEyeDistortionPercentages = interactive.calculateDistortionPercentages(rightEyeDistortionCoordinatesList);
+        // Convert HashMap to ArrayList for current coordinates
+        ArrayList<ArrayList<Float>> currentLeftEyeDistortionCoordinatesList = convertHashMapToArrayList(currentLeftEyeDistortionCoordinates);
+        ArrayList<ArrayList<Float>> currentRightEyeDistortionCoordinatesList = convertHashMapToArrayList(currentRightEyeDistortionCoordinates);
 
-        // Get the total distortion percentages for left and right eyes
-        double leftEyeTotalDistortionPercentage = leftEyeDistortionPercentages.get("total");
-        double rightEyeTotalDistortionPercentage = rightEyeDistortionPercentages.get("total");
+        // Calculate the percentage of distortion for each eye based on the current coordinates
+        HashMap<String, Float> currentLeftEyeDistortionPercentages = interactive.calculateDistortionPercentages(currentLeftEyeDistortionCoordinatesList);
+        HashMap<String, Float> currentRightEyeDistortionPercentages = interactive.calculateDistortionPercentages(currentRightEyeDistortionCoordinatesList);
 
-        displayDistortionPercentages(leftEyeTotalDistortionPercentage, rightEyeTotalDistortionPercentage);
+        // Get the total distortion percentages for left and right eyes based on the current coordinates
+        double currentLeftEyeTotalDistortionPercentage = currentLeftEyeDistortionPercentages.get("total");
+        double currentRightEyeTotalDistortionPercentage = currentRightEyeDistortionPercentages.get("total");
+        compareDistortions(currentLeftEyeTotalDistortionPercentage, currentRightEyeTotalDistortionPercentage, baselineleftEyeDistortionPercentage, baselinerightEyeDistortionPercentage);
+        displayDistortionPercentages(currentLeftEyeTotalDistortionPercentage, currentRightEyeTotalDistortionPercentage,baselineleftEyeDistortionPercentage,baselinerightEyeDistortionPercentage);
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,9 +116,16 @@ public class AmslerGridNewResults extends AppCompatActivity {
 
             }
         });
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
     }
 
-    private void displayDistortionPercentages(double leftEyeDistortionPercentage, double rightEyeDistortionPercentage) {
+    private void displayDistortionPercentages(double leftEyeDistortionPercentage, double rightEyeDistortionPercentage,double baselineleftEyeDistortionPercentage,double baselinerightEyeDistortionPercentage) {
         Log.d("AmslerGridNewResults", "Left Eye Distortion Percentage: " + leftEyeDistortionPercentage);
         Log.d("AmslerGridNewResults", "Right Eye Distortion Percentage: " + rightEyeDistortionPercentage);
 
@@ -126,6 +143,10 @@ public class AmslerGridNewResults extends AppCompatActivity {
                 // Update the TextView in the center of CircularProgressBars with the calculated distortion percentages
                 leftEyePercentageText.setText(String.format("%.1f%%", leftEyeDistortionPercentage));
                 rightEyePercentageText.setText(String.format("%.1f%%", rightEyeDistortionPercentage));
+
+                // Update the TextViews with the baseline distortion percentages
+                leftEyeBaseline.setText(String.format("Baseline: %.1f%%", baselineleftEyeDistortionPercentage));
+                rightEyeBaseline.setText(String.format("Baseline: %.1f%%", baselinerightEyeDistortionPercentage));
             }
         });
 
@@ -134,38 +155,20 @@ public class AmslerGridNewResults extends AppCompatActivity {
         Log.d("AmslerGridNewResults", "Right Eye Progress Text: " + rightEyePercentageText.getText());
     }
 
-
-
-
-    private void compareDistortions(HashMap<String, ArrayList<Float>> leftEyeDistortionCoordinates, HashMap<String, ArrayList<Float>> rightEyeDistortionCoordinates, HashMap<String, ArrayList<Float>> baselineLeftEyeCoordinates, HashMap<String, ArrayList<Float>> baselineRightEyeCoordinates) {
+    private void compareDistortions(double leftEyeDistortionPercentage, double rightEyeDistortionPercentage, double baselineLeftEyeDistortionPercentage, double baselineRightEyeDistortionPercentage) {
         Log.d("AmslerGridNewResults", "compareDistortions() called");
-        InteractiveAmslerGridView interactiveAmslerGridView = new InteractiveAmslerGridView(this);
 
-        // Convert HashMap to ArrayList
-        ArrayList<ArrayList<Float>> leftEyeDistortionCoordinatesList = convertHashMapToArrayList(leftEyeDistortionCoordinates);
-        ArrayList<ArrayList<Float>> rightEyeDistortionCoordinatesList = convertHashMapToArrayList(rightEyeDistortionCoordinates);
-        ArrayList<ArrayList<Float>> baselineLeftEyeCoordinatesList = convertHashMapToArrayList(baselineLeftEyeCoordinates);
-        ArrayList<ArrayList<Float>> baselineRightEyeCoordinatesList = convertHashMapToArrayList(baselineRightEyeCoordinates);
+        // Calculate percentage difference in distortion compared to baseline for left eye
+        double leftEyeDifference = leftEyeDistortionPercentage - baselineLeftEyeDistortionPercentage;
 
-        // Calculate the percentage of distortion for each eye
-        HashMap<String, Float> leftEyeDistortionPercentages = interactiveAmslerGridView.calculateDistortionPercentages(leftEyeDistortionCoordinatesList);
-        HashMap<String, Float> rightEyeDistortionPercentages = interactiveAmslerGridView.calculateDistortionPercentages(rightEyeDistortionCoordinatesList);
-
-        // Calculate the baseline distortion percentages
-        HashMap<String, Float> baselineLeftEyeDistortionPercentages = interactiveAmslerGridView.calculateDistortionPercentages(baselineLeftEyeCoordinatesList);
-        HashMap<String, Float> baselineRightEyeDistortionPercentages = interactiveAmslerGridView.calculateDistortionPercentages(baselineRightEyeCoordinatesList);
-
-        // Calculate percentage increase in distortion compared to baseline for left eye
-        double leftEyeIncrease = ((leftEyeDistortionPercentages.get("total") - baselineLeftEyeDistortionPercentages.get("total")) / baselineLeftEyeDistortionPercentages.get("total")) * 100;
-
-        // Calculate percentage increase in distortion compared to baseline for right eye
-        double rightEyeIncrease = ((rightEyeDistortionPercentages.get("total") - baselineRightEyeDistortionPercentages.get("total")) / baselineRightEyeDistortionPercentages.get("total")) * 100;
+        // Calculate percentage difference in distortion compared to baseline for right eye
+        double rightEyeDifference = rightEyeDistortionPercentage - baselineRightEyeDistortionPercentage;
 
         // Define color thresholds for left eye
         String leftEyeColor;
-        if (leftEyeIncrease >= 20) {
+        if (leftEyeDifference >= 5) {
             leftEyeColor = "red";
-        } else if (leftEyeIncrease >= 10) {
+        } else if (leftEyeDifference >= 10) {
             leftEyeColor = "orange";
         } else {
             leftEyeColor = "green";
@@ -173,32 +176,34 @@ public class AmslerGridNewResults extends AppCompatActivity {
 
         // Define color thresholds for right eye
         String rightEyeColor;
-        if (rightEyeIncrease >= 20) {
+        if (rightEyeDifference >= 5) {
             rightEyeColor = "red";
-        } else if (rightEyeIncrease >= 10) {
+        } else if (rightEyeDifference >= 10) {
             rightEyeColor = "orange";
         } else {
             rightEyeColor = "green";
         }
-    // Set the progress colors for left and right eye indicators
+
+        // Set the progress colors for left and right eye indicators
         leftEyeProgress.setProgressBarColor(Color.parseColor(leftEyeColor));
         rightEyeProgress.setProgressBarColor(Color.parseColor(rightEyeColor));
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (leftEyeIncrease < 10 && rightEyeIncrease < 10) {
-                    resultsText.setText("Congratulations! Your Amsler grid test results show no distortion or abnormalities in your vision. Keep up the good work by scheduling regular eye exams and following a healthy lifestyle to maintain your eye health.");
-                } else if ((leftEyeIncrease >= 10 && leftEyeIncrease < 20) || (rightEyeIncrease >= 10 && rightEyeIncrease < 20)) {
-                    resultsText.setText("Your Amsler grid test results show a slight increase in distortion in one or both eyes. This could be a sign of visual degradation or the early stages of an eye condition. We recommend that you monitor your vision closely and schedule an appointment with an eye care professional if the distortion persists or worsens.");
-                } else if (leftEyeIncrease >= 20 || rightEyeIncrease >= 20) {
-                    resultsText.setText("Based on your Amsler grid test results, it appears that there has been a significant increase in distortion in one or both eyes. This could be a sign of a serious eye condition that requires immediate attention. We recommend that you schedule an appointment with an eye care professional as soon as possible to receive a thorough evaluation and treatment.");
-                } else {
-                    resultsText.setText("If your Amsler grid test results show no improvement or a worsening of your vision over time, this may be a sign of an underlying eye condition that requires further evaluation and treatment. We recommend that you see an ophthalmologist or optometrist for a complete eye exam and any necessary medical intervention.");
+                if (leftEyeDifference < 5 && rightEyeDifference < 5) {
+                    resultsText.setText("Your Amsler grid test results are very close to the baseline, indicating no significant changes in your vision. Continue testing regularly to monitor your eye health and maintain a healthy lifestyle.");
+                } else if ((leftEyeDifference >= 5 && leftEyeDifference < 10) || (rightEyeDifference >= 5 && rightEyeDifference < 10)) {
+                    resultsText.setText("Your Amsler grid test results show a slight increase in distortion in one or both eyes. This could be a sign of visual degradation. We recommend monitoring your vision closely and scheduling an appointment with an eye care professional if the distortion persists or worsens.");
+                } else if ((leftEyeDifference >= 10 && leftEyeDifference < 15) || (rightEyeDifference >= 10 && rightEyeDifference < 15)) {
+                    resultsText.setText("Your Amsler grid test results show a moderate increase in distortion in one or both eyes. This could be a sign of an eye condition. We recommend seeing an ophthalmologist to get a thorough evaluation of your eye health.");
+                } else if (leftEyeDifference >= 15 || rightEyeDifference >= 15) {
+                    resultsText.setText("Based on your Amsler grid test results, there has been a significant increase in distortion in one or both eyes. This could be a sign of a serious eye condition that requires immediate attention. We recommend scheduling an appointment with an eye care professional as soon as possible to receive a thorough evaluation and treatment.");
                 }
                 resultsText.invalidate();
             }
         });
+
 
         // Add log statement for the resultsText
         Log.d("AmslerGridNewResults", "Results Text: " + resultsText.getText());

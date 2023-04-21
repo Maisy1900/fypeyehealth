@@ -15,6 +15,7 @@ import com.example.myeyehealth.data.SessionActivity;
 import com.example.myeyehealth.data.SessionManager;
 import com.example.myeyehealth.data.UserMethods;
 import com.example.myeyehealth.model.User;
+import com.example.myeyehealth.ui.profile.ProfileActivity;
 import com.example.myeyehealth.ui.amslergrid.AmslerGridTutorial1Activity;
 import com.example.myeyehealth.ui.exercise.saccades.SaccadesTutorial1Activity;
 import com.example.myeyehealth.ui.reminders.RemindersActivity;
@@ -79,7 +80,7 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
     }
 
     protected void onLoggedIn(User user) {
-        int specificUserId = 4;
+        int specificUserId = 1;
         // Create an instance of UserMethods
         UserMethods userMethods = new UserMethods(this);
         // Fetch the user with the specific ID from the database

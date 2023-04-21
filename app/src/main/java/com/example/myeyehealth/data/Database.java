@@ -1,9 +1,13 @@
 package com.example.myeyehealth.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.example.myeyehealth.model.User;
+
 //This is because you're using a singleton pattern for your Database class, which means you won't be creating multiple instances of it.
 public class Database extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "mydatabase.db";
@@ -273,6 +277,50 @@ public class Database extends SQLiteOpenHelper {
 
         db.close();
     }
+    public User getUserById(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_USER, null, COLUMN_USER_ID + "=?", new String[]{String.valueOf(userId)}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int nameIndex = cursor.getColumnIndex(COLUMN_USER_NAME);
+            int emailIndex = cursor.getColumnIndex(COLUMN_USER_EMAIL);
+            int passwordIndex = cursor.getColumnIndex(COLUMN_USER_PASSWORD);
+            int doctorNameIndex = cursor.getColumnIndex(COLUMN_USER_DOCTOR_NAME);
+            int doctorEmailIndex = cursor.getColumnIndex(COLUMN_USER_DOCTOR_EMAIL);
+            int carerNameIndex = cursor.getColumnIndex(COLUMN_USER_CARER_NAME);
+            int carerEmailIndex = cursor.getColumnIndex(COLUMN_USER_CARER_EMAIL);
+
+            String userName = nameIndex != -1 ? cursor.getString(nameIndex) : null;
+            String userEmail = emailIndex != -1 ? cursor.getString(emailIndex) : null;
+            String userPassword = passwordIndex != -1 ? cursor.getString(passwordIndex) : null;
+            String doctorName = doctorNameIndex != -1 ? cursor.getString(doctorNameIndex) : null;
+            String doctorEmail = doctorEmailIndex != -1 ? cursor.getString(doctorEmailIndex) : null;
+            String carerName = carerNameIndex != -1 ? cursor.getString(carerNameIndex) : null;
+            String carerEmail = carerEmailIndex != -1 ? cursor.getString(carerEmailIndex) : null;
+
+            User user = new User(userId, userName, userEmail, userPassword, doctorName, doctorEmail, carerName, carerEmail);
+
+            cursor.close();
+            return user;
+        }
+        return null;
+    }
+    public void updateUser(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_NAME, user.getName());
+        values.put(COLUMN_USER_EMAIL, user.getEmail());
+        values.put(COLUMN_USER_PASSWORD, user.getPassword());
+        values.put(COLUMN_USER_DOCTOR_NAME, user.getDoctorName());
+        values.put(COLUMN_USER_DOCTOR_EMAIL, user.getDoctorEmail());
+        values.put(COLUMN_USER_CARER_NAME, user.getCarerName());
+        values.put(COLUMN_USER_CARER_EMAIL, user.getCarerEmail());
+
+        db.update(TABLE_USER, values, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(user.getId())});
+    }
+
+
 
 }
 

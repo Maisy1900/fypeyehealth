@@ -137,7 +137,7 @@ public class SaccadesMethods {
         long saccadesId = db.getWritableDatabase().insert(Database.TABLE_SACCADES, null, values);
 
         db.close();
-   }
+    }
 
 
 
