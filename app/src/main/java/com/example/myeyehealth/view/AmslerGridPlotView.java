@@ -15,34 +15,39 @@ public class AmslerGridPlotView extends AmslerGridView {
     private HashMap<String, ArrayList<Float>> coordinates;
     private int plotGridSize;
     private int originalGridSize;
+    private float lineSpacing;
+    private static final int GRID_LINES = 40;
 
     public AmslerGridPlotView(Context context) {
         super(context);
+        originalGridSize = 800;
         init();
     }
 
     public AmslerGridPlotView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        originalGridSize = 800;
         init();
     }
 
     public AmslerGridPlotView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        originalGridSize = 800;
         init();
     }
+
     public void setOriginalGridSize(int originalGridSize) {
         this.originalGridSize = originalGridSize;
     }
+
     private void init() {
         coordinates = new HashMap<>();
     }
 
     @Override
+
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        int gridSize = getGridSize();
-        int lineSpacing = getLineSpacing();
 
         Paint pointPaint = new Paint();
         pointPaint.setColor(0xFFFF0000);
@@ -52,21 +57,15 @@ public class AmslerGridPlotView extends AmslerGridView {
         ArrayList<Float> xCoordinates = coordinates.get("x");
         ArrayList<Float> yCoordinates = coordinates.get("y");
 
+        float scalingFactor = (float) plotGridSize / originalGridSize;
+
         if (xCoordinates != null && yCoordinates != null) {
-            Log.d("AmslerGridPlotView", "Drawing " + xCoordinates.size() + " points");
             for (int i = 0; i < xCoordinates.size(); i++) {
                 float x = xCoordinates.get(i);
                 float y = yCoordinates.get(i);
-                float xPos = (getWidth() - gridSize) / 2.0f + x * lineSpacing;
-                float yPos = (getHeight() - gridSize) / 2.0f + y * lineSpacing;
+                float xPos = getPaddingLeft() + x * scalingFactor;
+                float yPos = getPaddingTop() + y * scalingFactor;
 
-                if (originalGridSize != 0) {
-                    float scaleFactor = (float) plotGridSize / originalGridSize;
-                    xPos *= scaleFactor;
-                    yPos *= scaleFactor;
-                }
-
-                Log.d("AmslerGridPlotView", "Drawing point at (" + xPos + ", " + yPos + ")");
                 canvas.drawCircle(xPos, yPos, 8f, pointPaint);
             }
         } else {
@@ -74,19 +73,26 @@ public class AmslerGridPlotView extends AmslerGridView {
         }
     }
 
+
     public void setCoordinates(HashMap<String, ArrayList<Float>> coordinates) {
         this.coordinates = coordinates;
+        Log.d("AmslerGridPlotView", "Received coordinates: " + coordinates.toString());
         invalidate();
-        postInvalidate(); // Add this line to force the view to redraw itself
+        postInvalidate();
     }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        plotGridSize = Math.min(w, h); // Use the smaller dimension as the grid size
+        plotGridSize = 350; // Set the plot grid size to 300px
+        updateLineSpacing(w, h);
     }
 
     public int getPlotGridSize() {
         return plotGridSize;
     }
 
+    private void updateLineSpacing(int w, int h) {
+        lineSpacing = Math.min(w, h) / (float) GRID_LINES;
+    }
 }

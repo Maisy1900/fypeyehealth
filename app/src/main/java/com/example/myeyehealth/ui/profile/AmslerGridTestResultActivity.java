@@ -45,8 +45,10 @@ public class AmslerGridTestResultActivity extends SessionActivity {
         leftEyeGridSize = gridSizes[0];
         rightEyeGridSize = gridSizes[1];
 
-        leftEyeCoordinates = normalizeCoordinates(coordinates[0], leftEyeGridSize);
-        rightEyeCoordinates = normalizeCoordinates(coordinates[1], rightEyeGridSize);
+// Remove normalization here
+        leftEyeCoordinates = coordinates[0];
+        rightEyeCoordinates = coordinates[1];
+
 
         leftEyeAmslerGridPlotView.setOriginalGridSize(leftEyeGridSize);
         rightEyeAmslerGridPlotView.setOriginalGridSize(rightEyeGridSize);
@@ -58,30 +60,6 @@ public class AmslerGridTestResultActivity extends SessionActivity {
         Log.d("AmslerTestResult", "Right Eye Coordinates: " + rightEyeCoordinates);
     }
 
-    private HashMap<String, ArrayList<Float>> normalizeCoordinates(HashMap<String, ArrayList<Float>> originalCoordinates, int gridSize) {
-        HashMap<String, ArrayList<Float>> normalizedCoordinates = new HashMap<>();
-
-        ArrayList<Float> xCoordinates = originalCoordinates.get("x");
-        ArrayList<Float> yCoordinates = originalCoordinates.get("y");
-        Log.d("AmslerTestResult", "Original X Coordinates: " + xCoordinates);
-        Log.d("AmslerTestResult", "Original Y Coordinates: " + yCoordinates);
-
-        ArrayList<Float> normalizedX = new ArrayList<>();
-        ArrayList<Float> normalizedY = new ArrayList<>();
-
-        for (int i = 0; i < xCoordinates.size(); i++) {
-            float normalizedXValue = xCoordinates.get(i) / (float) gridSize;
-            float normalizedYValue = yCoordinates.get(i) / (float) gridSize;
-            normalizedX.add(normalizedXValue);
-            normalizedY.add(normalizedYValue);
-        }
-        Log.d("AmslerTestResult", "Normalized X Coordinates: " + normalizedX);
-        Log.d("AmslerTestResult", "Normalized Y Coordinates: " + normalizedY);
-
-        normalizedCoordinates.put("x", normalizedX);
-        normalizedCoordinates.put("y", normalizedY);
-        return normalizedCoordinates;
-    }
 
     @Override
     protected void onLoggedIn(User user) {

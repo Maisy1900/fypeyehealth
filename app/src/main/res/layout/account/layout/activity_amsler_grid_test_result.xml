@@ -70,8 +70,8 @@
 
     <com.example.myeyehealth.view.AmslerGridPlotView
         android:id="@+id/leftEyeAmslerGridPlotView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_marginStart="16dp"
         app:layout_constraintBottom_toTopOf="@+id/export_button"
         app:layout_constraintDimensionRatio="1:1"
@@ -80,12 +80,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/left_eye_label"
         app:layout_constraintVertical_bias="0.095"
-        app:layout_constraintWidth_percent="0.4" />
+        />
+
 
     <com.example.myeyehealth.view.AmslerGridPlotView
         android:id="@+id/rightEyeAmslerGridPlotView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toTopOf="@+id/export_button"
         app:layout_constraintDimensionRatio="1:1"
@@ -93,8 +94,27 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/leftEyeAmslerGridPlotView"
         app:layout_constraintTop_toTopOf="@+id/leftEyeAmslerGridPlotView"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintWidth_percent="0.4" />
+        app:layout_constraintVertical_bias="0.0" />
+    <TextView
+        android:id="@+id/left_eye_percentages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/leftEyeAmslerGridPlotView"
+        app:layout_constraintStart_toStartOf="@+id/leftEyeAmslerGridPlotView"
+        app:layout_constraintTop_toBottomOf="@+id/leftEyeAmslerGridPlotView" />
+
+    <TextView
+        android:id="@+id/right_eye_percentages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/rightEyeAmslerGridPlotView"
+        app:layout_constraintStart_toStartOf="@+id/rightEyeAmslerGridPlotView"
+        app:layout_constraintTop_toBottomOf="@+id/rightEyeAmslerGridPlotView" />
+
 
     <Button
         android:id="@+id/export_button"
