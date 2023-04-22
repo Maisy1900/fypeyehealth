@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.myeyehealth.model.AmslerGrid;
+import com.example.myeyehealth.model.AmslerGridTestData;
 import com.github.mikephil.charting.data.Entry;
 
 import java.text.ParseException;
@@ -258,6 +260,42 @@ public class AmslerGridMethods {
         y_coords.add(y);
         coordinates.put("y", y_coords);
     }
+
+    public List<AmslerGridTestData> getSortedAmslerGridTests() {
+        List<AmslerGridTestData> amslerGridTests = new ArrayList<>();
+
+        String selectQuery = "SELECT " + Database.COLUMN_AG_TEST_ID + ", " + Database.COLUMN_AG_USER_ID + ", " + Database.COLUMN_AG_TEST_DATE
+                + " FROM " + Database.TABLE_AMSLER_GRID + " ORDER BY " + Database.COLUMN_AG_TEST_ID + " DESC";
+        SQLiteDatabase db = this.db;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String testId = cursor.getString(cursor.getColumnIndex(Database.COLUMN_AG_TEST_ID));
+                String userId = cursor.getString(cursor.getColumnIndex(Database.COLUMN_AG_USER_ID));
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                Date testDate;
+                try {
+                    testDate = dateFormat.parse(cursor.getString(cursor.getColumnIndex(Database.COLUMN_AG_TEST_DATE)));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    testDate = new Date(); // Default to the current date if there's an error
+                }
+
+                int testNumber = cursor.getInt(cursor.getColumnIndex(Database.COLUMN_AG_TEST_ID));
+
+                AmslerGridTestData amslerGridTestData = new AmslerGridTestData(testId, userId, testDate, null, testNumber);
+
+                amslerGridTests.add(amslerGridTestData);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return amslerGridTests;
+    }
+
 
 
 

@@ -65,5 +65,9 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:background">@color/blue</item>
     </style>
+    <style name="Divider">
+        <item name="android:listDivider">@drawable/divider</item>
+    </style>
+
 
 </resources>

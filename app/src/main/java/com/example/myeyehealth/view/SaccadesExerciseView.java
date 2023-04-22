@@ -100,13 +100,44 @@ public class SaccadesExerciseView extends View {
         peripheralDots.clear();
 
         for (int i = 0; i < 8; i++) {
-            float x = padding + random.nextInt(width - 2 * padding);
-            float y = padding + random.nextInt(height - 2 * padding);
-            SaccadesPeripheralDot dot = new SaccadesPeripheralDot(x, y, Color.BLACK);
+            boolean validDot = false;
+            SaccadesPeripheralDot dot = null;
+
+            while (!validDot) {
+                float x = padding + random.nextInt(width - 2 * padding);
+                float y = padding + random.nextInt(height - 2 * padding);
+                dot = new SaccadesPeripheralDot(x, y, Color.BLACK);
+
+                if (isValidDot(dot, peripheralDots, 20)) {
+                    validDot = true;
+                }
+            }
+
             peripheralDots.add(dot);
         }
         peripheralDots.get(currentActiveDotIndex).setActive(true);
         updateActiveDotColor(); // Update this line to use the updateActiveDotColor() method
+    }
+
+    private boolean isValidDot(SaccadesPeripheralDot newDot, List<SaccadesPeripheralDot> existingDots, int minDistance) {
+        PointF newDotPosition = newDot.getPosition();
+        PointF center = new PointF(getWidth() / 2f, getHeight() / 2f);
+
+        // Check if the new dot is too close to the central dot
+        if (distanceBetween(newDotPosition, center) < minDistance) {
+            return false;
+        }
+
+        // Check if the new dot is too close to existing peripheral dots
+        for (SaccadesPeripheralDot existingDot : existingDots) {
+            PointF existingDotPosition = existingDot.getPosition();
+            if (distanceBetween(newDotPosition, existingDotPosition) < minDistance) {
+                return false;
+            }
+        }
+
+        // If the new dot is not too close to the central dot or existing dots, it's valid
+        return true;
     }
 
 

@@ -27,6 +27,9 @@ import java.util.HashMap;
 
 
 public class AmslerGridNewResults extends AppCompatActivity {
+    private static final String RED_COLOR = "#FF0000";
+    private static final String ORANGE_COLOR = "#FFA500";
+    private static final String GREEN_COLOR = "#008000";
     private ImageButton backButton, speakerButton, scrollUpButton, scrollDownButton;
     private TextView titleText, resultsSubtitle, resultsText;
     private CircularProgressBar leftEyeProgress, rightEyeProgress;
@@ -166,22 +169,22 @@ public class AmslerGridNewResults extends AppCompatActivity {
 
         // Define color thresholds for left eye
         String leftEyeColor;
-        if (leftEyeDifference >= 5) {
-            leftEyeColor = "red";
-        } else if (leftEyeDifference >= 10) {
-            leftEyeColor = "orange";
+        if (leftEyeDifference >= 10) {
+            leftEyeColor = RED_COLOR;
+        } else if (leftEyeDifference >= 5) {
+            leftEyeColor = ORANGE_COLOR;
         } else {
-            leftEyeColor = "green";
+            leftEyeColor = GREEN_COLOR;
         }
 
         // Define color thresholds for right eye
         String rightEyeColor;
-        if (rightEyeDifference >= 5) {
-            rightEyeColor = "red";
-        } else if (rightEyeDifference >= 10) {
-            rightEyeColor = "orange";
+        if (rightEyeDifference >= 10) {
+            rightEyeColor = RED_COLOR;
+        } else if (rightEyeDifference >= 5) {
+            rightEyeColor = ORANGE_COLOR;
         } else {
-            rightEyeColor = "green";
+            rightEyeColor = GREEN_COLOR;
         }
 
         // Set the progress colors for left and right eye indicators

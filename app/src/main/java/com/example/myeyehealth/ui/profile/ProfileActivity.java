@@ -1,5 +1,6 @@
 package com.example.myeyehealth.ui.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -67,6 +68,15 @@ public class ProfileActivity extends AppCompatActivity {
                 revertChanges();
             }
         });
+        Button amslerGridDataButton = findViewById(R.id.amsler_grid_data_button);
+        amslerGridDataButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, ProfileAmslerDataActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void saveUserData() {

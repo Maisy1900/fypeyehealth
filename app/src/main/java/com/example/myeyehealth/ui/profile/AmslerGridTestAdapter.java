@@ -13,6 +13,7 @@ import com.example.myeyehealth.model.AmslerGridTestData;
 
 import java.text.DateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class AmslerGridTestAdapter extends RecyclerView.Adapter<AmslerGridTestAdapter.AmslerGridTestViewHolder> {
 
@@ -35,9 +36,14 @@ public class AmslerGridTestAdapter extends RecyclerView.Adapter<AmslerGridTestAd
     @Override
     public void onBindViewHolder(@NonNull AmslerGridTestViewHolder holder, int position) {
         AmslerGridTestData data = amslerGridTestDataList.get(position);
-        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
-        holder.dateTextView.setText(dateFormat.format(data.getDate())); // Assuming 'getDate()' method returns a Date object
+
+        // Assuming there's a method called getTestNumber() in the AmslerGridTestData class
+        holder.testNumberTextView.setText(String.valueOf(data.getTestNumber()));
+
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.UK);
+        holder.dateTextView.setText(dateFormat.format(data.getDate()));
     }
+
 
     @Override
     public int getItemCount() {
@@ -46,19 +52,21 @@ public class AmslerGridTestAdapter extends RecyclerView.Adapter<AmslerGridTestAd
 
     public static class AmslerGridTestViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        TextView testNumberTextView;
         TextView dateTextView;
         AmslerGridTestClickListener clickListener;
 
         public AmslerGridTestViewHolder(@NonNull View itemView, AmslerGridTestClickListener clickListener) {
             super(itemView);
+            testNumberTextView = itemView.findViewById(R.id.amsler_grid_test_number);
             dateTextView = itemView.findViewById(R.id.amsler_grid_test_date);
             this.clickListener = clickListener;
             itemView.setOnClickListener(this);
         }
+
         @Override
         public void onClick(View v) {
             clickListener.onAmslerGridTestClick(getAdapterPosition());
         }
-
     }
 }

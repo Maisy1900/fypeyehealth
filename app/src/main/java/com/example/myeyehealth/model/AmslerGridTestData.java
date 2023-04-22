@@ -6,14 +6,19 @@ public class AmslerGridTestData {
     private String testId;
     private String userId;
     private Date date;
-    private AmslerGrid amslerGrid;
+    private AmslerGrid grid;
+    private int testNumber;
 
-    public AmslerGridTestData(String testId, String userId, Date date, AmslerGrid amslerGrid) {
+    public AmslerGridTestData(String testId, String userId, Date date, AmslerGrid grid, int testNumber) {
         this.testId = testId;
         this.userId = userId;
         this.date = date;
-        this.amslerGrid = amslerGrid;
+        this.grid = grid;
+        this.testNumber = testNumber;
     }
+
+    // Add a getter method for testNumber
+
 
     // Getters
     public String getTestId() {
@@ -28,10 +33,9 @@ public class AmslerGridTestData {
         return date;
     }
 
-    public AmslerGrid getAmslerGrid() {
-        return amslerGrid;
+    public int getTestNumber() {
+        return testNumber;
     }
-
     // Setters
     public void setTestId(String testId) {
         this.testId = testId;
@@ -45,9 +49,4 @@ public class AmslerGridTestData {
         this.date = date;
     }
 
-    public void setAmslerGrid(AmslerGrid amslerGrid) {
-        this.amslerGrid = amslerGrid;
-    }
-
-    // Add other methods as needed
 }

@@ -52,6 +52,7 @@ public class SaccadesExerciseNewActivity extends AppCompatActivity {
         SessionManager sessionManager = SessionManager.getInstance(this);
         User currentUser = sessionManager.getUser();
         int userId = currentUser.getId();
+        System.out.println("this is user" +userId);
 
         SaccadesMethods saccadesMethods = new SaccadesMethods(SaccadesExerciseNewActivity.this);
         SaccadesData pastTestResultsData = saccadesMethods.getPastNSaccadesTests(userId, 20);
@@ -113,18 +114,19 @@ public class SaccadesExerciseNewActivity extends AppCompatActivity {
         timeTaken.setText("Time Taken: " + String.format("%.2f", lastTestTotalTime) + "s");
 
 // Classify performance and update resultsText and personalRecordProgress
+        // Classify performance and update resultsText and personalRecordProgress
         String performance = classifyPerformance(completionTimes, lastTestTotalTime);
 
         int progressValue;
         int progressColor;
 
         switch (performance) {
-            case "Good":
+            case "Green (best or close to best time)":
                 resultsText.setText("Great job! Your timings are above average. Keep up the good work!");
                 progressValue = 100;
                 progressColor = getResources().getColor(R.color.green);
                 break;
-            case "Average":
+            case "Orange":
                 resultsText.setText("Your timings are average. Keep practicing to improve your performance.");
                 progressValue = 50;
                 progressColor = getResources().getColor(R.color.amber);
@@ -137,6 +139,7 @@ public class SaccadesExerciseNewActivity extends AppCompatActivity {
 
         personalRecordProgress.setProgress(progressValue);
         personalRecordProgress.getProgressDrawable().setColorFilter(progressColor, PorterDuff.Mode.SRC_IN);
+
         // Handle save button click
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,54 +179,23 @@ public class SaccadesExerciseNewActivity extends AppCompatActivity {
         float q1 = completionTimes.get(numResults / 4);
         float q3 = completionTimes.get(3 * numResults / 4);
         float iqr = q3 - q1;
+        float median = completionTimes.get(numResults / 2);
+        float bestCompletionTime = completionTimes.get(0);
 
-        // Filter the outliers
-        ArrayList<Float> filteredCompletionTimes = new ArrayList<>();
-        for (float time : completionTimes) {
-            if (time >= q1 - 1.5 * iqr && time <= q3 + 1.5 * iqr) {
-                filteredCompletionTimes.add(time);
-            }
-        }
-
-        // Calculate the mean and find the minimum completion time
-        float mean = 0;
-        float bestCompletionTime = Float.MAX_VALUE;
-        for (float time : filteredCompletionTimes) {
-            mean += time;
-            if (time < bestCompletionTime) {
-                bestCompletionTime = time;
-            }
-        }
-        mean /= filteredCompletionTimes.size();
-
-        // Calculate standard deviation
-        float sumSquaredDifferences = 0;
-        for (float time : filteredCompletionTimes) {
-            sumSquaredDifferences += Math.pow(time - mean, 2);
-        }
-        float stdDev = (float) Math.sqrt(sumSquaredDifferences / (filteredCompletionTimes.size() - 1));
-
-        // Calculate threshold factor based on the difference between the mean and the best score
-        float thresholdFactor = Math.max(0.5f, (mean - bestCompletionTime) / stdDev);
-
-        // Print the logs for debugging
-        Log.d("PerformanceClassifier", "mean: " + mean);
-        Log.d("PerformanceClassifier", "bestCompletionTime: " + bestCompletionTime);
-        Log.d("PerformanceClassifier", "stdDev: " + stdDev);
-        Log.d("PerformanceClassifier", "thresholdFactor: " + thresholdFactor);
-        Log.d("PerformanceClassifier", "lastTestCompletionTime: " + lastTestCompletionTime);
+        // Determine the threshold value based on the median and best completion time
+        float threshold = 0.1f * (median - bestCompletionTime);
 
         // Classify performance
-        if (lastTestCompletionTime <= bestCompletionTime) {
-            return "Good (best time yet)";
-        } else if (lastTestCompletionTime <= mean + thresholdFactor * stdDev) {
-            return "Good";
-        } else if (lastTestCompletionTime <= mean + 2 * thresholdFactor * stdDev) {
-            return "Average";
+        if (lastTestCompletionTime <= (bestCompletionTime + threshold)) {
+            return "Green (best or close to best time)";
+        } else if (lastTestCompletionTime > q1 && lastTestCompletionTime <= q3) {
+            return "Orange";
         } else {
-            return "Poor";
+            return "Red (worst time)";
         }
     }
+
+
 
 
 
