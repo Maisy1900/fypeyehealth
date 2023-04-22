@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -263,6 +264,7 @@ public class AmslerGridMethods {
 
     public List<AmslerGridTestData> getSortedAmslerGridTests() {
         List<AmslerGridTestData> amslerGridTests = new ArrayList<>();
+        Set<String> seenTestIds = new HashSet<>(); // Create a set to keep track of seen test IDs
 
         String selectQuery = "SELECT " + Database.COLUMN_AG_TEST_ID + ", " + Database.COLUMN_AG_USER_ID + ", " + Database.COLUMN_AG_TEST_DATE
                 + " FROM " + Database.TABLE_AMSLER_GRID + " ORDER BY " + Database.COLUMN_AG_TEST_ID + " DESC";
@@ -275,6 +277,12 @@ public class AmslerGridMethods {
                 String testId = cursor.getString(cursor.getColumnIndex(Database.COLUMN_AG_TEST_ID));
                 String userId = cursor.getString(cursor.getColumnIndex(Database.COLUMN_AG_USER_ID));
 
+                if (seenTestIds.contains(testId)) {
+                    continue; // If the test ID has already been seen, skip this entry
+                }
+
+                seenTestIds.add(testId); // Add the test ID to the set of seen test IDs
+
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 Date testDate;
                 try {
@@ -284,7 +292,7 @@ public class AmslerGridMethods {
                     testDate = new Date(); // Default to the current date if there's an error
                 }
 
-                int testNumber = cursor.getInt(cursor.getColumnIndex(Database.COLUMN_AG_TEST_ID));
+                int testNumber = Integer.parseInt(testId); // Use the actual test ID as the test number
 
                 AmslerGridTestData amslerGridTestData = new AmslerGridTestData(testId, userId, testDate, null, testNumber);
 
@@ -296,12 +304,41 @@ public class AmslerGridMethods {
         return amslerGridTests;
     }
 
-
-
-
     public void close() {
         if (db != null) {
             db.close();
         }
     }
+    public HashMap<String, ArrayList<Float>>[] getAmslerGridCoordinatesForTest(int userId, int testId) {
+        HashMap<String, ArrayList<Float>> leftCoordinates = new HashMap<>();
+        HashMap<String, ArrayList<Float>> rightCoordinates = new HashMap<>();
+
+        String query = "SELECT * FROM " + Database.TABLE_AMSLER_GRID +
+                " WHERE " + Database.COLUMN_AG_USER_ID + " = ?" +
+                " AND " + Database.COLUMN_AG_TEST_ID + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId), String.valueOf(testId)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                String grid = cursor.getString(cursor.getColumnIndexOrThrow(Database.COLUMN_AG_GRID));
+                float x_coord = cursor.getFloat(cursor.getColumnIndexOrThrow(Database.COLUMN_AG_X_COORD));
+                float y_coord = cursor.getFloat(cursor.getColumnIndexOrThrow(Database.COLUMN_AG_Y_COORD));
+
+                Log.d("AmslerTestResult", "Grid: " + grid + ", X: " + x_coord + ", Y: " + y_coord);
+
+                if (grid.equals("L")) {
+                    addCoordinate(leftCoordinates, x_coord, y_coord);
+                } else if (grid.equals("R")) {
+                    addCoordinate(rightCoordinates, x_coord, y_coord);
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        Log.d("AmslerTestResult", "LeftCoordinates: " + leftCoordinates);
+        Log.d("AmslerTestResult", "RightCoordinates: " + rightCoordinates);
+
+        return new HashMap[]{leftCoordinates, rightCoordinates};
+    }
+
 }

@@ -127,6 +127,10 @@
         <activity android:name="com.example.myeyehealth.ui.exercise.saccades.SaccadesExerciseNewActivity" />
         <activity android:name=".ui.profile.ProfileActivity" />
         <activity android:name=".ui.profile.ProfileAmslerDataActivity" />
+        <activity
+            android:name=".ui.profile.AmslerGridTestResultActivity"
+            android:label="@string/app_name">
+        </activity>
 
     </application>
 

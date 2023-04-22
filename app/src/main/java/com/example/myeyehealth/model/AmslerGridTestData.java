@@ -1,8 +1,11 @@
 package com.example.myeyehealth.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
-public class AmslerGridTestData {
+public class AmslerGridTestData implements Parcelable {
     private String testId;
     private String userId;
     private Date date;
@@ -17,8 +20,39 @@ public class AmslerGridTestData {
         this.testNumber = testNumber;
     }
 
-    // Add a getter method for testNumber
+    protected AmslerGridTestData(Parcel in) {
+        testId = in.readString();
+        userId = in.readString();
+        date = new Date(in.readLong());
+        grid = in.readParcelable(AmslerGrid.class.getClassLoader());
+        testNumber = in.readInt();
+    }
 
+    public static final Creator<AmslerGridTestData> CREATOR = new Creator<AmslerGridTestData>() {
+        @Override
+        public AmslerGridTestData createFromParcel(Parcel in) {
+            return new AmslerGridTestData(in);
+        }
+
+        @Override
+        public AmslerGridTestData[] newArray(int size) {
+            return new AmslerGridTestData[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(testId);
+        dest.writeString(userId);
+        dest.writeLong(date.getTime());
+        dest.writeParcelable(grid, flags);
+        dest.writeInt(testNumber);
+    }
 
     // Getters
     public String getTestId() {
@@ -36,6 +70,7 @@ public class AmslerGridTestData {
     public int getTestNumber() {
         return testNumber;
     }
+
     // Setters
     public void setTestId(String testId) {
         this.testId = testId;
@@ -48,5 +83,4 @@ public class AmslerGridTestData {
     public void setDate(Date date) {
         this.date = date;
     }
-
 }

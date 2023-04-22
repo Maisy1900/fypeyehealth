@@ -62,7 +62,8 @@ public class AmslerGridNewResults extends AppCompatActivity {
         HashMap<String, ArrayList<Float>> currentLeftEyeDistortionCoordinates = (HashMap<String, ArrayList<Float>>) intent.getSerializableExtra("leftEyeDistortionCoordinates");
         HashMap<String, ArrayList<Float>> currentRightEyeDistortionCoordinates = (HashMap<String, ArrayList<Float>>) intent.getSerializableExtra("rightEyeDistortionCoordinates");
         InteractiveAmslerGridView interactiveAmslerGridView = new InteractiveAmslerGridView(this);
-        // Calculate the percentage of distortion for each eye
+        leftEyeDistortionCoordinates = currentLeftEyeDistortionCoordinates;
+        rightEyeDistortionCoordinates = currentRightEyeDistortionCoordinates;
 
 
         // Add log statements here
@@ -78,8 +79,6 @@ public class AmslerGridNewResults extends AppCompatActivity {
 
         // Get the baseline coordinates for the left and right eyes
         HashMap<String, ArrayList<Float>>[] baselineResults = amslerResultMethods.getBaselineAmslerResults(userId);
-        HashMap<String, ArrayList<Float>> baselineLeftEyeCoordinates = baselineResults[0];
-        HashMap<String, ArrayList<Float>> baselineRightEyeCoordinates = baselineResults[1];
         ArrayList<ArrayList<Float>> baselineLeftEyeCoordinatesList = convertHashMapToArrayList(baselineResults[0]);
         ArrayList<ArrayList<Float>> baselineRightEyeCoordinatesList = convertHashMapToArrayList(baselineResults[1]);
         HashMap<String, Float> baselineleftEyeDistortionPercentages = interactiveAmslerGridView.calculateDistortionPercentages(baselineLeftEyeCoordinatesList);

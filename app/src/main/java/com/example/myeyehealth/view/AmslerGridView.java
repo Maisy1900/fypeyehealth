@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 
 import com.example.myeyehealth.data.SessionManager;
 
+import java.util.ArrayList;
+
 public class AmslerGridView extends View {
 
     private Paint gridPaint;
