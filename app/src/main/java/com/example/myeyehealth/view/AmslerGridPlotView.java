@@ -8,9 +8,10 @@ import android.util.AttributeSet;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AmslerGridPlotView extends AmslerGridView {
-    private ArrayList<Float> coordinates;
+    private HashMap<String, ArrayList<Float>> coordinates;
 
     public AmslerGridPlotView(Context context) {
         super(context);
@@ -28,7 +29,7 @@ public class AmslerGridPlotView extends AmslerGridView {
     }
 
     private void init() {
-        coordinates = new ArrayList<>();
+        coordinates = new HashMap<>();
     }
 
     @Override
@@ -39,20 +40,25 @@ public class AmslerGridPlotView extends AmslerGridView {
         int lineSpacing = gridSize / 20; // 20 is the number of lines in the AmslerGridView
 
         Paint pointPaint = new Paint();
-        pointPaint.setColor(0xFFFF0000); // red color
-        pointPaint.setStrokeWidth(8f);
+        pointPaint.setColor(0xFF0000FF); // blue color
+        pointPaint.setStrokeWidth(12f);
         pointPaint.setStyle(Paint.Style.FILL);
 
-        if (coordinates != null) {
-            for (int i = 0; i < coordinates.size(); i += 2) {
-                float x = coordinates.get(i);
-                float y = coordinates.get(i + 1);
-                canvas.drawCircle((getWidth() - gridSize) / 2.0f + x * lineSpacing, (getHeight() - gridSize) / 2.0f + y * lineSpacing, 4f, pointPaint);
+        ArrayList<Float> xCoordinates = coordinates.get("x");
+        ArrayList<Float> yCoordinates = coordinates.get("y");
+
+        if (xCoordinates != null && yCoordinates != null) {
+            for (int i = 0; i < xCoordinates.size(); i++) {
+                float x = xCoordinates.get(i);
+                float y = yCoordinates.get(i);
+                float xPos = (getWidth() - gridSize) / 2.0f + x * lineSpacing;
+                float yPos = (getHeight() - gridSize) / 2.0f + y * lineSpacing;
+                canvas.drawCircle(xPos, yPos, 4f, pointPaint);
             }
         }
     }
 
-    public void setCoordinates(ArrayList<Float> coordinates) {
+    public void setCoordinates(HashMap<String, ArrayList<Float>> coordinates) {
         this.coordinates = coordinates;
         invalidate();
     }

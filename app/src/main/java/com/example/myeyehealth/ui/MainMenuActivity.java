@@ -80,7 +80,7 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
     }
 
     protected void onLoggedIn(User user) {
-        int specificUserId = 1;
+        int specificUserId = 4;
         // Create an instance of UserMethods
         UserMethods userMethods = new UserMethods(this);
         // Fetch the user with the specific ID from the database

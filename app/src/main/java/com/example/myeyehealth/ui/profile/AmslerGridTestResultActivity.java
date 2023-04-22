@@ -2,7 +2,6 @@ package com.example.myeyehealth.ui.profile;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -10,17 +9,15 @@ import com.example.myeyehealth.R;
 import com.example.myeyehealth.data.AmslerGridMethods;
 import com.example.myeyehealth.data.SessionActivity;
 import com.example.myeyehealth.data.SessionManager;
-import com.example.myeyehealth.model.AmslerGridTestData;
 import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.view.AmslerGridPlotView;
-import com.example.myeyehealth.view.AmslerGridView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AmslerGridTestResultActivity extends SessionActivity {
     public static final String TEST_ID_KEY = "test_id_key";
-
+    private static final int GRID_LINES = 20;
     private HashMap<String, ArrayList<Float>> leftEyeCoordinates;
     private HashMap<String, ArrayList<Float>> rightEyeCoordinates;
 
@@ -51,10 +48,14 @@ public class AmslerGridTestResultActivity extends SessionActivity {
         AmslerGridPlotView leftEyeGrid = findViewById(R.id.left_eye_grid);
         AmslerGridPlotView rightEyeGrid = findViewById(R.id.right_eye_grid);
 
-        leftEyeGrid.setCoordinates(leftEyeCoordinates);
-        rightEyeGrid.setCoordinates(rightEyeCoordinates);
-    }
+        if (leftEyeCoordinates != null) {
+            leftEyeGrid.setCoordinates(leftEyeCoordinates);
+        }
 
+        if (rightEyeCoordinates != null) {
+            rightEyeGrid.setCoordinates(rightEyeCoordinates);
+        }
+    }
 
     @Override
     protected void onLoggedIn(User user) {
