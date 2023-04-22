@@ -318,20 +318,5 @@ public class InteractiveAmslerGridView extends AmslerGridView {
 
         return distortionPercentages;
     }
-    private PointF absoluteToRelative(float x, float y) {
-        int width = getWidth();
-        int height = getHeight();
-        int gridSize = getGridSize();
-
-        float gridLeft = (width - gridSize) / 2.0f;
-        float gridTop = (height - gridSize) / 2.0f;
-
-        float relativeX = (x - gridLeft) / gridSize;
-        float relativeY = (y - gridTop) / gridSize;
-
-        return new PointF(relativeX, relativeY);
-    }
-
-
 
 }

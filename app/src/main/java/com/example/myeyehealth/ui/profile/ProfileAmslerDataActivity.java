@@ -2,6 +2,7 @@ package com.example.myeyehealth.ui.profile;
 
 import com.example.myeyehealth.data.AmslerGridMethods;
 import com.example.myeyehealth.data.Database;
+import com.example.myeyehealth.data.SessionManager;
 import com.example.myeyehealth.model.AmslerGridTestData;
 
 import android.content.Intent;
@@ -26,7 +27,11 @@ public class ProfileAmslerDataActivity extends SessionActivity implements com.ex
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_amsler_data);
         AmslerGridMethods am = new AmslerGridMethods(this);
-        sortedAmslerGridTestData = am.getSortedAmslerGridTests();
+        SessionManager sessionManager = SessionManager.getInstance(this);
+        User currentUser = sessionManager.getUser();
+        int userId = currentUser.getId();
+        sortedAmslerGridTestData = am.getSortedAmslerGridTests(String.valueOf(userId));
+
         RecyclerView resultsRecyclerView = findViewById(R.id.results_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         resultsRecyclerView.setLayoutManager(layoutManager);

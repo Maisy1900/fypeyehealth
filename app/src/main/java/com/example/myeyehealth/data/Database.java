@@ -23,6 +23,8 @@ public class Database extends SQLiteOpenHelper {
     public static final String COLUMN_AG_X_COORD = "x_coord";
     public static final String COLUMN_AG_Y_COORD = "y_coord";
     public static final String COLUMN_AG_CREATED_DATE = "created_date";
+    public static final String COLUMN_AG_LEFT_GRID_SIZE = "left_grid_size";
+    public static final String COLUMN_AG_RIGHT_GRID_SIZE = "right_grid_size";
 
 
     // User table
@@ -75,8 +77,9 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // ...
+
         // Create Amsler Grid table
-// Create Amsler Grid table
         String CREATE_AMSLER_GRID_TABLE = "CREATE TABLE " + TABLE_AMSLER_GRID +
                 "(" +
                 COLUMN_AG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -86,10 +89,10 @@ public class Database extends SQLiteOpenHelper {
                 COLUMN_AG_GRID + " TEXT," +
                 COLUMN_AG_X_COORD + " INTEGER," +
                 COLUMN_AG_Y_COORD + " INTEGER," +
-                COLUMN_AG_CREATED_DATE + " TEXT" + // Add this line to include the created_date column
+                COLUMN_AG_CREATED_DATE + " TEXT," +
+                COLUMN_AG_LEFT_GRID_SIZE + " INTEGER," + // Add new column for left grid size
+                COLUMN_AG_RIGHT_GRID_SIZE + " INTEGER" + // Add new column for right grid size
                 ")";
-
-
 
         db.execSQL(CREATE_AMSLER_GRID_TABLE);
 
@@ -146,6 +149,11 @@ public class Database extends SQLiteOpenHelper {
         // Create tables again
         onCreate(db);
     }
+    public void addGridSizeColumnsIfNeeded() {
+        addColumnIfNeeded(TABLE_AMSLER_GRID, COLUMN_AG_LEFT_GRID_SIZE, "INTEGER");
+        addColumnIfNeeded(TABLE_AMSLER_GRID, COLUMN_AG_RIGHT_GRID_SIZE, "INTEGER");
+    }
+
     public void deleteUserData(int userId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_AMSLER_GRID, COLUMN_AG_USER_ID + " = ?", new String[] { String.valueOf(userId) });

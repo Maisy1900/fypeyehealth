@@ -47,7 +47,28 @@ public class AmslerGridMethods {
         return maxTestId;
     }
 
-    public void saveAmslerGridData(int userId, long date, HashMap<String, ArrayList<Float>> leftCoordinates, HashMap<String, ArrayList<Float>> rightCoordinates) {
+    public int[] getGridSizesForTest(int userId, int testId) {
+        int[] gridSizes = new int[2];
+
+        Cursor cursor = db.query(
+                Database.TABLE_AMSLER_GRID,
+                new String[]{Database.COLUMN_AG_LEFT_GRID_SIZE, Database.COLUMN_AG_RIGHT_GRID_SIZE},
+                Database.COLUMN_AG_USER_ID + "=? AND " + Database.COLUMN_AG_TEST_ID + "=?",
+                new String[]{String.valueOf(userId), String.valueOf(testId)},
+                null, null, null
+        );
+
+        if (cursor.moveToFirst()) {
+            gridSizes[0] = cursor.getInt(cursor.getColumnIndex(Database.COLUMN_AG_LEFT_GRID_SIZE));
+            gridSizes[1] = cursor.getInt(cursor.getColumnIndex(Database.COLUMN_AG_RIGHT_GRID_SIZE));
+        }
+
+        cursor.close();
+        db.close();
+        return gridSizes;
+    }
+
+    public void saveAmslerGridData(int userId, long date, HashMap<String, ArrayList<Float>> leftCoordinates, HashMap<String, ArrayList<Float>> rightCoordinates, int leftGridSize, int rightGridSize) {
         if (leftCoordinates == null && rightCoordinates == null) {
             Log.d("AmslerGridMethods", "No coordinates to save for user: " + userId + ". Skipping save operation.");
             return;
@@ -66,15 +87,15 @@ public class AmslerGridMethods {
         int testId = maxTestId + 1;
 
         if (leftCoordinates != null) {
-            saveCoordinates(userId, testDate, testId, "L", leftCoordinates);
+            saveCoordinates(userId, testDate, testId, "L", leftCoordinates, leftGridSize,rightGridSize);
         }
         if (rightCoordinates != null) {
-            saveCoordinates(userId, testDate, testId, "R", rightCoordinates);
+            saveCoordinates(userId, testDate, testId, "R", rightCoordinates,leftGridSize, rightGridSize);
         }
     }
 
 
-    private void saveCoordinates(int userId, String testDate, int testId, String gridType, HashMap<String, ArrayList<Float>> coordinates) {
+    private void saveCoordinates(int userId, String testDate, int testId, String gridType, HashMap<String, ArrayList<Float>> coordinates, int leftGridSize, int rightGridSize) {
         for (Map.Entry<String, ArrayList<Float>> entry : coordinates.entrySet()) {
             String grid = gridType;
             ArrayList<Float> coords = entry.getValue();
@@ -88,12 +109,16 @@ public class AmslerGridMethods {
             values.put(Database.COLUMN_AG_GRID, grid);
             values.put(Database.COLUMN_AG_X_COORD, xCoord);
             values.put(Database.COLUMN_AG_Y_COORD, yCoord);
+            values.put(Database.COLUMN_AG_LEFT_GRID_SIZE, leftGridSize); // Add this line to store left grid size
+            values.put(Database.COLUMN_AG_RIGHT_GRID_SIZE, rightGridSize); // Add this line to store right grid size
 
             db.insert(TABLE_AMSLER_GRID, null, values);
             System.out.println("Saved data with Test ID: " + testId); // Add this line for debugging
             Log.d("AmslerGridMethods", "Saved data with Test ID: " + testId);
         }
     }
+
+
 
 
 
@@ -262,15 +287,17 @@ public class AmslerGridMethods {
         coordinates.put("y", y_coords);
     }
 
-    public List<AmslerGridTestData> getSortedAmslerGridTests() {
+    public List<AmslerGridTestData> getSortedAmslerGridTests(String targetUserId) {
         List<AmslerGridTestData> amslerGridTests = new ArrayList<>();
         Set<String> seenTestIds = new HashSet<>(); // Create a set to keep track of seen test IDs
 
         String selectQuery = "SELECT " + Database.COLUMN_AG_TEST_ID + ", " + Database.COLUMN_AG_USER_ID + ", " + Database.COLUMN_AG_TEST_DATE
-                + " FROM " + Database.TABLE_AMSLER_GRID + " ORDER BY " + Database.COLUMN_AG_TEST_ID + " DESC";
+                + " FROM " + Database.TABLE_AMSLER_GRID
+                + " WHERE " + Database.COLUMN_AG_USER_ID + " = ?"
+                + " ORDER BY " + Database.COLUMN_AG_TEST_ID + " DESC";
         SQLiteDatabase db = this.db;
 
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(selectQuery, new String[]{targetUserId});
 
         if (cursor.moveToFirst()) {
             do {
@@ -303,6 +330,7 @@ public class AmslerGridMethods {
         cursor.close();
         return amslerGridTests;
     }
+
 
     public void close() {
         if (db != null) {

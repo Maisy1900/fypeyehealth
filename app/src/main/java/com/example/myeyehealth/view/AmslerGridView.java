@@ -108,5 +108,14 @@ public class AmslerGridView extends View {
             canvas.drawLine(xPos, gridRect.top, xPos, gridRect.bottom, gridPaint);
         }
     }
+    public void setGridLines(int numLines) {
+        this.numLines = numLines;
+        lineSpacing = gridSize / numLines; // update the spacing between the lines
+        invalidate(); // redraw the grid with the new number of lines
+    }
+    public int getLineSpacing() {
+        return lineSpacing;
+    }
+
 
 }

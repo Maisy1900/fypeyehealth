@@ -71,7 +71,7 @@ public class AmslerGridGraphActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 // Pass both left and right eye HashMaps to the updated saveAmslerGridData() method
-                amslerResultMethods.saveAmslerGridData(userID, currentDate, convertToHashMap(leftEyeDistortionCoordinates), convertToHashMap(rightEyeDistortionCoordinates));
+                //amslerResultMethods.saveAmslerGridData(userID, currentDate, convertToHashMap(leftEyeDistortionCoordinates), convertToHashMap(rightEyeDistortionCoordinates));
 
                 Log.d("AmslerGridGraph", "Results saved successfully by the save button.foruser" + userID);
                 Toast.makeText(AmslerGridGraphActivity.this, "Results saved successfully", Toast.LENGTH_SHORT).show();

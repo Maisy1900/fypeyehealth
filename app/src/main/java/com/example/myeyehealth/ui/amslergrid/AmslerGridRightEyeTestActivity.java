@@ -19,6 +19,8 @@ public class AmslerGridRightEyeTestActivity extends AppCompatActivity {
 
     private HashMap<String, ArrayList<Float>> distortionCoordinates = new HashMap<>();
     private int numDistortions;
+    private int leftEyeGridSize;
+    private int rightEyeGridSize; // Add a new variable
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,12 @@ public class AmslerGridRightEyeTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_amsler_grid_right_eye_test);
 
         final InteractiveAmslerGridView amslerGridView = findViewById(R.id.amsler_grid_view);
+
+        // Receive the left eye grid size from the previous activity
+        leftEyeGridSize = getIntent().getIntExtra("leftEyeGridSize", 0);
+
+        // Get the right eye grid size from the current InteractiveAmslerGridView
+        rightEyeGridSize = amslerGridView.getGridSize(); // Replace with the appropriate method to get the grid size
 
         // get the number of distortions from the InteractiveAmslerGridView
         numDistortions = amslerGridView.getNumDistortions();
@@ -49,10 +57,12 @@ public class AmslerGridRightEyeTestActivity extends AppCompatActivity {
                 Intent intent = new Intent(AmslerGridRightEyeTestActivity.this, AmslerGridNewResults.class);
                 intent.putExtra("leftEyeDistortionCoordinates", getIntent().getSerializableExtra("leftEyeDistortionCoordinates"));
                 intent.putExtra("rightEyeDistortionCoordinates", AmslerGridRightEyeTestActivity.this.distortionCoordinates);
+                intent.putExtra("leftEyeGridSize", leftEyeGridSize); // Pass the left eye grid size to the next activity
+                intent.putExtra("rightEyeGridSize", rightEyeGridSize); // Pass the right eye grid size to the next activity
                 startActivity(intent);
+
             }
         });
-
 
         ImageButton backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +92,8 @@ public class AmslerGridRightEyeTestActivity extends AppCompatActivity {
         if (intent != null) {
             intent.removeExtra("leftEyeDistortionCoordinates");
             intent.removeExtra("rightEyeDistortionCoordinates");
+            intent.removeExtra("gridSize"); // Add this line to remove the grid size extra
         }
     }
+
 }

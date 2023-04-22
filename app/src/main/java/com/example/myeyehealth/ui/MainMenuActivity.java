@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 
 import com.example.myeyehealth.R;
 import com.example.myeyehealth.data.AmslerGridMethods;
+import com.example.myeyehealth.data.Database;
 import com.example.myeyehealth.data.SessionActivity;
 import com.example.myeyehealth.data.SessionManager;
 import com.example.myeyehealth.data.UserMethods;
@@ -35,6 +36,10 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
         createNotificationChannel();
+        Database database = Database.getInstance(this);
+
+        // Call the addGridSizeColumnsIfNeeded method
+        database.addGridSizeColumnsIfNeeded();
 
         // Get references to the ImageButtons and menu buttons
         ScrollUpButton = findViewById(R.id.scroll_up_button);
@@ -80,7 +85,7 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
     }
 
     protected void onLoggedIn(User user) {
-        int specificUserId = 4;
+        int specificUserId = 5;
         // Create an instance of UserMethods
         UserMethods userMethods = new UserMethods(this);
         // Fetch the user with the specific ID from the database

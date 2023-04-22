@@ -37,6 +37,8 @@ public class AmslerGridNewResults extends AppCompatActivity {
     private TextView leftEyePercentageText, rightEyePercentageText,leftEyeBaseline,rightEyeBaseline ;
     private HashMap<String, ArrayList<Float>> leftEyeDistortionCoordinates;
     private HashMap<String, ArrayList<Float>> rightEyeDistortionCoordinates;
+    private int leftEyeGridSize;
+    private int rightEyeGridSize;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +66,11 @@ public class AmslerGridNewResults extends AppCompatActivity {
         InteractiveAmslerGridView interactiveAmslerGridView = new InteractiveAmslerGridView(this);
         leftEyeDistortionCoordinates = currentLeftEyeDistortionCoordinates;
         rightEyeDistortionCoordinates = currentRightEyeDistortionCoordinates;
+        leftEyeGridSize = getIntent().getIntExtra("leftEyeGridSize", 0);
+        rightEyeGridSize = getIntent().getIntExtra("rightEyeGridSize", 0);
 
+        Log.d("AmslerGridNewResults", "Received Left Eye Grid Size: " + leftEyeGridSize);
+        Log.d("AmslerGridNewResults", "Received Right Eye Grid Size: " + rightEyeGridSize);
 
         // Add log statements here
         Log.d("AmslerGridNewResults", "Received Current Left Eye Distortion Coordinates: " + currentLeftEyeDistortionCoordinates.toString());
@@ -107,7 +113,7 @@ public class AmslerGridNewResults extends AppCompatActivity {
             public void onClick(View v) {
 
                 // Pass both left and right eye HashMaps to the updated saveAmslerGridData() method
-                amslerResultMethods.saveAmslerGridData(userId, currentDate, leftEyeDistortionCoordinates, rightEyeDistortionCoordinates);
+                amslerResultMethods.saveAmslerGridData(userId, currentDate, leftEyeDistortionCoordinates, rightEyeDistortionCoordinates,leftEyeGridSize,rightEyeGridSize );
 
                 Log.d("AmslerGridGraph", "Results saved successfully by the save button.foruser" + userId);
                 Toast.makeText(AmslerGridNewResults.this, "Results saved successfully", Toast.LENGTH_SHORT).show();

@@ -18,6 +18,7 @@ public class AmslerGridLeftEyeTestActivity extends AppCompatActivity {
 
     private HashMap<String, ArrayList<Float>> distortionCoordinates = new HashMap<>();
     private int numDistortions;
+    private int leftEyeGridSize; // Change the variable name
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +27,14 @@ public class AmslerGridLeftEyeTestActivity extends AppCompatActivity {
 
         final InteractiveAmslerGridView amslerGridView = findViewById(R.id.amsler_grid_view);
 
-        // get the number of distortions from the InteractiveAmslerGridView
+        // get the number of distortions and the grid size from the InteractiveAmslerGridView
         numDistortions = amslerGridView.getNumDistortions();
+        leftEyeGridSize = amslerGridView.getGridSize(); // Replace with the appropriate method to get the grid size
 
         amslerGridView.setOnCompleteListener(new InteractiveAmslerGridView.OnCompleteListener() {
             @Override
             public void onComplete(ArrayList<ArrayList<Float>> distortionCoordinates) {
-                System.out.println("Left Eye onComplete called"); // Add this line for debugging
+                System.out.println("Left Eye onComplete called");
 
                 // save distortion coordinates and go to next activity
                 for (int i = 0; i < distortionCoordinates.size(); i++) {
@@ -44,12 +46,10 @@ public class AmslerGridLeftEyeTestActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(AmslerGridLeftEyeTestActivity.this, AmslerGridRightEyeTestActivity.class);
                 intent.putExtra("leftEyeDistortionCoordinates", AmslerGridLeftEyeTestActivity.this.distortionCoordinates);
+                intent.putExtra("leftEyeGridSize", leftEyeGridSize); // Pass the left eye grid size to the next activity
                 startActivity(intent);
             }
         });
-
-
-
 
         ImageButton backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -63,12 +63,9 @@ public class AmslerGridLeftEyeTestActivity extends AppCompatActivity {
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                amslerGridView.callOnComplete(); // Add this line
+                amslerGridView.callOnComplete();
             }
         });
-
-
-
     }
 
     @Override
