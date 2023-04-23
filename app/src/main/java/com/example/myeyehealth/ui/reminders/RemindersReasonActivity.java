@@ -10,8 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 
-public class RemindersReasonActivity extends AppCompatActivity {
+public class RemindersReasonActivity extends BaseActivity {
     private Button mAmslerTestButton;
     private Button mSaccadesExerciseButton;
     private Button mNextButton;

@@ -14,11 +14,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RemindersWeeklyActivity extends AppCompatActivity {
+public class RemindersWeeklyActivity extends BaseActivity {
 
     private TextView mAmslerTestButton;
     private TextView mSaccadesExerciseButton;

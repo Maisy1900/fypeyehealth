@@ -39,6 +39,7 @@ import java.io.IOException;
 import android.widget.Toast;
 
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -125,13 +126,11 @@ public class AmslerGridTestResultActivity extends SessionActivity {
 
         // Create PDF file
         File outputDir = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "AmslerGridData");
-       if (!outputDir.exists()) {
+        if (!outputDir.exists()) {
             outputDir.mkdirs();
         }
 
         File outputFile = new File(outputDir, "Amsler_Grid_Data_" + testDate + ".pdf");
-
-        // Create PDF Document
         PdfDocument pdfDocument = new PdfDocument();
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(A4_WIDTH, A4_HEIGHT, 1).create();
         PdfDocument.Page page = pdfDocument.startPage(pageInfo);
@@ -139,9 +138,34 @@ public class AmslerGridTestResultActivity extends SessionActivity {
 
         Paint paint = new Paint();
         paint.setColor(Color.BLACK);
-        canvas.drawBitmap(leftEyeBitmap, null, new Rect(0, 0, A4_WIDTH / 2, A4_HEIGHT), paint);
-        canvas.drawBitmap(rightEyeBitmap, null, new Rect(A4_WIDTH / 2, 0, A4_WIDTH, A4_HEIGHT), paint);
+
+        // 1. Add spacing between the grids
+        int spacing = 50;
+        int gridWidth = 250;
+        int gridHeight = 250;
+
+        // Calculate the positions of each Amsler grid
+        int leftGridX = (A4_WIDTH - 2 * gridWidth - spacing) / 2;
+        int rightGridX = leftGridX + gridWidth + spacing;
+
+        // Draw the left Amsler grid
+        canvas.drawBitmap(leftEyeBitmap, null, new Rect(leftGridX, 0, leftGridX + gridWidth, gridHeight), paint);
+
+        // Draw the right Amsler grid
+        canvas.drawBitmap(rightEyeBitmap, null, new Rect(rightGridX, 0, rightGridX + gridWidth, gridHeight), paint);
+
+        // Add labels above the grids
+        paint.setTextSize(24);
+        canvas.drawText("Left Eye", leftGridX + gridWidth / 2 - 40, gridHeight + 30, paint);
+        canvas.drawText("Right Eye", rightGridX + gridWidth / 2 - 40, gridHeight + 30, paint);
+
+        // Add the test date on the PDF
+        paint.setTextSize(18);
+        canvas.drawText("Test Date: " + testDate, A4_WIDTH / 2 - 80, A4_HEIGHT - 40, paint);
+
         pdfDocument.finishPage(page);
+
+
 
         try {
             FileOutputStream outputStream = new FileOutputStream(outputFile);
@@ -168,11 +192,83 @@ public class AmslerGridTestResultActivity extends SessionActivity {
         } catch (ActivityNotFoundException e) {
             Toast.makeText(this, "No PDF viewer app found. Install one to view the exported PDF.", Toast.LENGTH_LONG).show();
         }
+// Create an image with the same structure as the PDF page
+        Bitmap pageImage = Bitmap.createBitmap(A4_WIDTH, A4_HEIGHT, Bitmap.Config.ARGB_8888);
+        Canvas pageCanvas = new Canvas(pageImage);
+        pageCanvas.drawColor(Color.WHITE); // Set white background
+        pageCanvas.drawBitmap(leftEyeBitmap, null, new Rect(leftGridX, 0, leftGridX + gridWidth, gridHeight), paint);
+        pageCanvas.drawBitmap(rightEyeBitmap, null, new Rect(rightGridX, 0, rightGridX + gridWidth, gridHeight), paint);
 
+// Save the image to the gallery
+        String savedImagePath = saveImageToGallery(pageImage);
 
+// Open the image in the gallery app
+        if (savedImagePath != null) {
+            openImageInGallery(savedImagePath);
+        } else {
+            Toast.makeText(this, "Error saving image to gallery.", Toast.LENGTH_LONG).show();
+        }
     }
 
+        private void openPdfInViewer (String pdfPath){
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            File pdfFile = new File(pdfPath);
+            Uri contentUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", pdfFile);
 
+            intent.setDataAndType(contentUri, "application/pdf");
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(this, "No PDF viewer app found. Install one to view the exported PDF.", Toast.LENGTH_LONG).show();
+            }
+        }
+
+
+    private String saveImageToGallery(Bitmap image) {
+        String fileName = "Amsler_Grid_Data_" + testDate + ".jpg";
+        OutputStream outputStream;
+        String savedImagePath = null;
+
+        File storageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File imageFile = new File(storageDirectory, fileName);
+        savedImagePath = imageFile.getAbsolutePath();
+
+        try {
+            outputStream = new FileOutputStream(imageFile);
+            image.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        // Add the image to the system gallery
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File file = new File(savedImagePath);
+        Uri contentUri = Uri.fromFile(file);
+        mediaScanIntent.setData(contentUri);
+        sendBroadcast(mediaScanIntent);
+
+        return savedImagePath;
+    }
+
+    private void openImageInGallery(String imagePath) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        File imageFile = new File(imagePath);
+        Uri contentUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", imageFile);
+
+        intent.setDataAndType(contentUri, "image/*");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, "No gallery app found to view the image.", Toast.LENGTH_LONG).show();
+        }
+    }
 
     private void requestStoragePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

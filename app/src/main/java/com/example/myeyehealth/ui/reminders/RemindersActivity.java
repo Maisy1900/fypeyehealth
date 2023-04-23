@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.data.ReminderMethods;
 import com.example.myeyehealth.data.SessionManager;
 import com.example.myeyehealth.model.Reminder;
@@ -25,7 +26,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class RemindersActivity extends AppCompatActivity {
+public class RemindersActivity extends BaseActivity {
 
     private ScrollView weekdaysScrollView;
     private LinearLayout weekdays_container;

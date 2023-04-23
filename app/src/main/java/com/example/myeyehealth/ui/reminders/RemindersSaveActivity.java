@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.data.ReminderMethods;
 import com.example.myeyehealth.data.SessionManager;
 import com.example.myeyehealth.model.Reminder;
@@ -21,7 +22,7 @@ import com.example.myeyehealth.model.Reminder;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class RemindersSaveActivity extends AppCompatActivity {
+public class RemindersSaveActivity extends BaseActivity {
 
     private ImageButton backButton;
     private TextView timeInput;
