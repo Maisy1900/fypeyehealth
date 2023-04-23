@@ -10,8 +10,9 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 
-public class LoginEmailActivity extends AppCompatActivity {
+public class LoginEmailActivity extends BaseActivity {
 
     // define variables to store the views
     private EditText emailInput;

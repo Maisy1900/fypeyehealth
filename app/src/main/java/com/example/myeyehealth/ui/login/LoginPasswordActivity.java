@@ -10,10 +10,11 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.data.UserMethods;
 import com.example.myeyehealth.model.User;
 
-public class LoginPasswordActivity extends AppCompatActivity {
+public class LoginPasswordActivity extends BaseActivity {
     EditText passwordInput;
     Button loginButton;
     ImageButton backButton;

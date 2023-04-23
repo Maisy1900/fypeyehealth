@@ -10,8 +10,9 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 
-public class CreateAccountConfirmPasswordActivity extends AppCompatActivity {
+public class CreateAccountConfirmPasswordActivity extends BaseActivity {
     private EditText confirmedPasswordInput;
 
     @Override

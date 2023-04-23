@@ -5,7 +5,7 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
+    <color name="black">#FFFFFFFF</color>
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
@@ -34,8 +34,8 @@
 
     <!-- Dark Theme -->
     <color name="dark_theme_background_color">#121212</color>
-    <color name="dark_theme_text_primary">#000000</color>
-    <color name="dark_theme_text_secondary">#FF4081</color>
+    <color name="dark_theme_text_primary">#FFFFFF</color>
+    <color name="dark_theme_text_secondary">#000000</color>
     <color name="dark_theme_button_color">#FFD700</color>
     <color name="dark_theme_button_text_color">#000000</color>
     <color name="dark_theme_icon_tint">#000000</color>
@@ -45,6 +45,4 @@
     <color name="high_contrast_text_color">#000000</color>
     <color name="high_contrast_button_color">#000000</color>
     <color name="high_contrast_button_text_color">#FFD700</color>
-
-
 </resources>

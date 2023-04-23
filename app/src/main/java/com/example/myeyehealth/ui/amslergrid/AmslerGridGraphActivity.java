@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
 import com.example.myeyehealth.data.AmslerGridMethods;
+import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.data.SessionManager;
 import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.ui.MainMenuActivity;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class AmslerGridGraphActivity extends AppCompatActivity {
+public class AmslerGridGraphActivity extends BaseActivity {
     private InteractiveAmslerGridView interactiveAmslerGridView;
     private TextView comparisonText;
 

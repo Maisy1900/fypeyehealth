@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.data.Database;
 import com.example.myeyehealth.data.SaccadesData;
 import com.example.myeyehealth.data.SaccadesMethods;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class SaccadesExerciseResultsActivity extends AppCompatActivity {
+public class SaccadesExerciseResultsActivity extends BaseActivity {
 
     private TextView performanceText;
     private Button saveButton;

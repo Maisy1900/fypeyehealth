@@ -211,7 +211,7 @@
                 android:layout_margin="4dp"
                 android:background="@drawable/weekday_button_background"
                 android:text="Friday"
-                android:textColor="@android:color/white"
+                android:textColor ="@android:color/white"
                 android:textSize="14sp" />
 
             <Button

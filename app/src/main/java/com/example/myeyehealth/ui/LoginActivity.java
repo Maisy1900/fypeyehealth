@@ -8,10 +8,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.ui.account.CreateAccountNameActivity;
 import com.example.myeyehealth.ui.login.LoginEmailActivity;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private Button mLoginButton;
     private Button mCreateAccountButton;

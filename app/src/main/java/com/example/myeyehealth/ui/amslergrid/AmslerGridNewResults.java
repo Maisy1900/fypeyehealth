@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.myeyehealth.R;
 import com.example.myeyehealth.data.AmslerGridMethods;
+import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.data.SessionManager;
 import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.ui.MainMenuActivity;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class AmslerGridNewResults extends AppCompatActivity {
+public class AmslerGridNewResults extends BaseActivity {
     private static final String RED_COLOR = "#FF0000";
     private static final String ORANGE_COLOR = "#FFA500";
     private static final String GREEN_COLOR = "#008000";

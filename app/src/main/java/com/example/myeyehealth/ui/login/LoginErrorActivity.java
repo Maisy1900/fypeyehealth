@@ -9,8 +9,9 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 
-public class LoginErrorActivity extends AppCompatActivity {
+public class LoginErrorActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

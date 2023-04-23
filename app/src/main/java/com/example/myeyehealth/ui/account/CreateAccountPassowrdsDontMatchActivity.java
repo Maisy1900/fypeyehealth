@@ -9,8 +9,9 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 
-public class CreateAccountPassowrdsDontMatchActivity extends AppCompatActivity {
+public class CreateAccountPassowrdsDontMatchActivity extends BaseActivity {
 
     private Button tryAgainButton;
     private ImageButton backButton;

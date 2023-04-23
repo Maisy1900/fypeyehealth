@@ -8,12 +8,13 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.data.SessionManager;
 import com.example.myeyehealth.data.UserMethods;
 import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.ui.MainMenuActivity;
 
-public class CreateAccountSuccessActivity extends AppCompatActivity {
+public class CreateAccountSuccessActivity extends BaseActivity {
 
     private TextView userDetailsTextView;
 

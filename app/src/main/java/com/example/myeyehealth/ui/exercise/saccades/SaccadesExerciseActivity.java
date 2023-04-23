@@ -11,12 +11,13 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.view.SaccadesExerciseView;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class SaccadesExerciseActivity extends AppCompatActivity {
+public class SaccadesExerciseActivity extends BaseActivity {
 
     private SaccadesExerciseView saccadesExerciseView;
     private TextView promptText;

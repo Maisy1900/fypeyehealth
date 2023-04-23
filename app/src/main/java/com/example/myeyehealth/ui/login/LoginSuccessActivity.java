@@ -9,11 +9,12 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.data.SessionManager;
 import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.ui.MainMenuActivity;
 
-public class LoginSuccessActivity extends AppCompatActivity {
+public class LoginSuccessActivity extends BaseActivity {
 
     private SessionManager sessionManager;
 

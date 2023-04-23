@@ -8,6 +8,7 @@ import android.widget.ProgressBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.data.SessionManager;
 
 /**
@@ -15,7 +16,7 @@ import com.example.myeyehealth.data.SessionManager;
  * automatically to show the progress of a long-running operation. Once the operation is complete,
  * the activity finishes and launches the main activity.
  */
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
     private ProgressBar mProgressBar;
     private int mProgressStatus = 0;
     private Handler mHandler = new Handler();

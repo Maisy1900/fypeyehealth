@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.data.SaccadesData;
 import com.example.myeyehealth.data.SaccadesMethods;
 import com.example.myeyehealth.data.SessionManager;
@@ -26,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SaccadesExerciseNewActivity extends AppCompatActivity {
+public class SaccadesExerciseNewActivity extends BaseActivity {
 
     private ImageButton backButton;
     private TextView titleText, resultsSubtitle, bestTime, timeTaken, resultsText;

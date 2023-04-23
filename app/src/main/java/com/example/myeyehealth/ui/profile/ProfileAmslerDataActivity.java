@@ -16,7 +16,9 @@ import com.example.myeyehealth.R;
 import com.example.myeyehealth.data.SessionActivity;
 import com.example.myeyehealth.model.User;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ProfileAmslerDataActivity extends SessionActivity implements com.example.myeyehealth.ui.profile.AmslerGridTestClickListener {
@@ -51,9 +53,16 @@ public class ProfileAmslerDataActivity extends SessionActivity implements com.ex
     @Override
     public void onAmslerGridTestClick(int position) {
         AmslerGridTestData data = sortedAmslerGridTestData.get(position);
+
+        // Get the date of the AmslerGridTest
+        Date testDate = data.getDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = sdf.format(testDate);
+
         // Handle the click event, navigate to the Amsler Grid Test results page for the respective date
         Intent intent = new Intent(this, AmslerGridTestResultActivity.class);
         intent.putExtra(AmslerGridTestResultActivity.TEST_ID_KEY, data.getTestId());
+        intent.putExtra(AmslerGridTestResultActivity.TEST_DATE_KEY, formattedDate); // Pass the date as an extra
         startActivity(intent);
     }
 }

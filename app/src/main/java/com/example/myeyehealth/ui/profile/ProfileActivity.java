@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.data.Database;
 import com.example.myeyehealth.data.UserMethods;
 import com.example.myeyehealth.model.User;
@@ -17,7 +18,7 @@ import com.example.myeyehealth.ui.account.CreateAccountEmailActivity;
 
 import java.util.regex.Pattern;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseActivity {
 
     private EditText mNameInput;
     private EditText mEmailInput;

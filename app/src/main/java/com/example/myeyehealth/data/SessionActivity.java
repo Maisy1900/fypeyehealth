@@ -6,9 +6,10 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myeyehealth.R;
 import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.ui.LoginActivity;
-//abstract class that extends AppCompatActivity and handles the logic related to checking the user's login status. It uses the SessionManager to determine whether a user is logged in and retrieves the logged-in user's information.
+
 public abstract class SessionActivity extends AppCompatActivity {
 
     private SessionManager sessionManager;
@@ -16,6 +17,7 @@ public abstract class SessionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setAppTheme(); // Add this line to set the theme
 
         // Get session manager instance
         sessionManager = SessionManager.getInstance(this);
@@ -53,5 +55,20 @@ public abstract class SessionActivity extends AppCompatActivity {
         super.onDestroy();
         // Close session manager instance to release resources
         sessionManager = null;
+    }
+    // Add this method to set the theme
+    protected void setAppTheme() {
+        String theme = SessionManager.getInstance(this).getThemeName();
+        switch (theme) {
+            case "Theme.MyEyeHealth.Light":
+                setTheme(R.style.Theme_MyEyeHealth_Light);
+                break;
+            case "Theme.MyEyeHealth.Dark":
+                setTheme(R.style.Theme_MyEyeHealth_Dark);
+                break;
+            case "Theme.MyEyeHealth.HighContrast":
+                setTheme(R.style.Theme_MyEyeHealth_HighContrast);
+                break;
+        }
     }
 }

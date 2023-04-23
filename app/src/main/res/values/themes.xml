@@ -1,17 +1,41 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.MyEyeHealth" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
+        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+    </style>
+    <!-- Light Theme -->
+    <style name="Theme.MyEyeHealth.Light" parent="Theme.MyEyeHealth">
+        <!-- ... other attributes ... -->
+        <item name="colorPrimary">@color/light_theme_button_color</item>
+        <item name="colorOnPrimary">@color/light_theme_text_color</item>
+        <item name="android:colorBackground">@color/light_theme_background_color</item>
+    </style>
+    <!-- Dark Theme -->
+    <style name="Theme.MyEyeHealth.Dark" parent="Theme.MyEyeHealth">
+        <!-- ... other attributes ... -->
+        <item name="colorPrimary">@color/dark_theme_button_color</item>
+        <item name="colorOnPrimary">@color/dark_theme_text_primary</item>
+        <item name="android:colorBackground">@color/dark_theme_background_color</item>
+    </style>
+    <!-- High Contrast Theme -->
+    <style name="Theme.MyEyeHealth.HighContrast" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- ... other attributes ... -->
+        <item name="colorPrimary">@color/high_contrast_button_color</item>
+        <item name="colorOnPrimary">#F7FF00</item>
+        <item name="android:colorBackground">#F7FF00</item>
+    </style>
+
+    <style name="ColorButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:background">@null</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">12sp</item>
+        <item name="backgroundTint">@null</item>
     </style>
 
     <style name="Theme.MyEyeHealth.NoActionBar">

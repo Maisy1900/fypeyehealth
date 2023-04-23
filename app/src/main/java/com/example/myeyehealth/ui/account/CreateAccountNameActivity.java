@@ -11,8 +11,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 
-public class CreateAccountNameActivity extends AppCompatActivity {
+public class CreateAccountNameActivity extends BaseActivity {
     private EditText nameInput;
 
     @Override

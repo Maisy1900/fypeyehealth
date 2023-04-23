@@ -10,12 +10,13 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.view.InteractiveAmslerGridView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AmslerGridRightEyeTestActivity extends AppCompatActivity {
+public class AmslerGridRightEyeTestActivity extends BaseActivity {
 
     private HashMap<String, ArrayList<Float>> distortionCoordinates = new HashMap<>();
     private int numDistortions;

@@ -11,8 +11,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 
-public class SaccadesTutorial1Activity extends AppCompatActivity {
+public class SaccadesTutorial1Activity extends BaseActivity {
     private ScrollView tutorialScrollView;
     private TextView tutorialText;
     @Override

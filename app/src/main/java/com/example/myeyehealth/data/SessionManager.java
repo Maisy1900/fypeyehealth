@@ -3,6 +3,7 @@ package com.example.myeyehealth.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.myeyehealth.R;
 import com.example.myeyehealth.model.User;
 //singleton class that helps manage the user session. It is responsible for starting and ending user sessions, checking if a user is logged in, and getting user information from the SharedPreferences.
 public class SessionManager {
@@ -13,7 +14,7 @@ public class SessionManager {
     private static final String SACCADES_COLOR_KEY = "saccades_color";
 
     private static final String LINE_THICKNESS_KEY = "line_thickness";
-
+    private static final String THEME_KEY = "theme";
     public static synchronized SessionManager getInstance(Context context) {
         if (instance == null) {
             instance = new SessionManager(context.getApplicationContext());
@@ -105,4 +106,14 @@ public class SessionManager {
     public String getSaccadesColor() {
         return prefs.getString(SACCADES_COLOR_KEY, "red"); // red is the default saccades color
     }
+    public void updateTheme(String theme) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(THEME_KEY, theme);
+        editor.apply();
+    }
+
+    public String getThemeName() {
+        return prefs.getString(THEME_KEY, "Theme.MyEyeHealth.Light");
+    }
+
 }

@@ -11,10 +11,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.data.SessionManager;
 import com.example.myeyehealth.model.User;
 
-public class AmslerGridTutorial1Activity extends AppCompatActivity {
+public class AmslerGridTutorial1Activity extends BaseActivity {
 
     private ScrollView tutorialScrollView;
     private TextView tutorialText;

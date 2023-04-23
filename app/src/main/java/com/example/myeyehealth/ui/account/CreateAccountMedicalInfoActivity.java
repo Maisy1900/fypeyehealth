@@ -14,13 +14,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.data.UserMethods;
 import com.example.myeyehealth.model.User;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CreateAccountMedicalInfoActivity extends AppCompatActivity {
+public class CreateAccountMedicalInfoActivity extends BaseActivity {
 
     private EditText docNameInput;
     private EditText docEmailInput;

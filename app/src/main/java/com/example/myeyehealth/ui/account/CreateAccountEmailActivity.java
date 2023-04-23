@@ -11,11 +11,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.data.UserMethods;
 
 import java.util.regex.Pattern;
 
-public class CreateAccountEmailActivity extends AppCompatActivity {
+public class CreateAccountEmailActivity extends BaseActivity {
     private EditText emailInput;
 
     private boolean isValidEmail(String email) {

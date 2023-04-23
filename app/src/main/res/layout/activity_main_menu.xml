@@ -43,6 +43,7 @@
                     android:weightSum="5"
                     android:paddingTop="16dp"
                     android:paddingBottom="16dp">
+
                     <!-- Button 1 -->
                     <Button
                         android:id="@+id/button1"
@@ -51,12 +52,10 @@
                         android:layout_weight="1"
                         android:background="@drawable/menu_button"
                         android:text="@string/button_1_text"
-                        android:drawableLeft="@drawable/grid"
+                        android:drawableLeft="@drawable/grid_resized"
+                        android:drawablePadding="10dp"
+                        android:layout_margin="10dp" />
 
-                        android:drawableTint="@color/icon_tint"
-                        android:drawablePadding="5dp"
-                        android:textSize="18sp"
-                        android:layout_margin="8dp" />
                     <!-- Button 2 -->
                     <Button
                         android:id="@+id/button2"
@@ -65,11 +64,9 @@
                         android:layout_weight="1"
                         android:background="@drawable/menu_button"
                         android:text="@string/button_2_text"
-                        android:drawableLeft="@drawable/saccades"
-                        android:drawableTint="@color/icon_tint"
-                        android:drawablePadding="5dp"
-                        android:textSize="18sp"
-                        android:layout_margin="8dp" />
+                        android:drawableLeft="@drawable/saccades_resized"
+                        android:drawablePadding="10dp"
+                        android:layout_margin="10dp" />
 
                     <!-- Button 3 -->
                     <Button
@@ -79,11 +76,10 @@
                         android:layout_weight="1"
                         android:background="@drawable/menu_button"
                         android:text="@string/button_3_text"
-                        android:drawableLeft="@drawable/clock"
-                        android:drawableTint="@color/icon_tint"
-                        android:drawablePadding="5dp"
-                        android:textSize="18sp"
-                        android:layout_margin="8dp" />
+                        android:drawableLeft="@drawable/clock_resized"
+                        android:drawablePadding="10dp"
+                        android:layout_margin="10dp" />
+
                     <!-- Button 4 -->
                     <Button
                         android:id="@+id/button4"
@@ -92,11 +88,10 @@
                         android:layout_weight="1"
                         android:background="@drawable/menu_button"
                         android:text="@string/button_4_text"
-                        android:drawableLeft="@drawable/settings"
-                        android:drawableTint="@color/icon_tint"
-                        android:drawablePadding="5dp"
-                        android:textSize="18sp"
-                        android:layout_margin="8dp" />
+                        android:drawableLeft="@drawable/settings_resized"
+                        android:tint="#FFFFFF"
+                        android:drawablePadding="10dp"
+                        android:layout_margin="10dp" />
 
                     <!-- Button 5 -->
                     <Button
@@ -106,11 +101,9 @@
                         android:layout_weight="1"
                         android:background="@drawable/menu_button"
                         android:text="@string/button_5_text"
-                        android:drawableLeft="@drawable/account"
-                        android:drawableTint="@color/icon_tint"
-                        android:drawablePadding="5dp"
-                        android:textSize="18sp"
-                        android:layout_margin="8dp" />
+                        android:drawableLeft="@drawable/account_resized"
+                        android:drawablePadding="10dp"
+                        android:layout_margin="10dp" />
 
 
                 </LinearLayout>

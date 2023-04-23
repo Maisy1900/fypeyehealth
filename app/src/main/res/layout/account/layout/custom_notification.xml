@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Time to check your Amsler Grid"
-        android:textColor="@color/black_text"
+        android:textColor ="@color/black_text"
         android:textSize="18sp"
         android:contentDescription="Time to check your Amsler Grid"/>
 
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Open App"
-            android:textColor="@color/black_text"
+            android:textColor ="@color/black_text"
             android:background="@color/high_contrast_button_color"/>
 
     </LinearLayout>
