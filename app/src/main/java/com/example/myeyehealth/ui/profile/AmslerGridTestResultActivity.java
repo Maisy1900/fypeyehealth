@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -56,7 +57,8 @@ public class AmslerGridTestResultActivity extends SessionActivity {
     private HashMap<String, ArrayList<Float>> rightEyeCoordinates;
     private int leftEyeGridSize;
     private int rightEyeGridSize;
-    private String testDate; // Declare testDate as an instance variable
+    private String testDate;
+    private ImageButton backButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,6 +107,15 @@ public class AmslerGridTestResultActivity extends SessionActivity {
             @Override
             public void onClick(View view) {
                 exportAmslerGridDataToPdf();
+            }
+        });
+        backButton = findViewById(R.id.back_button); // Retrieve the back button
+
+        // Set the OnClickListener for the back button
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Call the onBackPressed() method
             }
         });
     }

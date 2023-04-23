@@ -116,4 +116,10 @@ public class SessionManager {
         return prefs.getString(THEME_KEY, "Theme.MyEyeHealth.Light");
     }
 
+    public void logout() {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove("userId");
+        editor.apply();
+    }
+
 }

@@ -131,18 +131,16 @@
         <activity
             android:name=".ui.reminders.RemindersSaveActivity"
             android:exported="false" /> <!-- MainMenuActivity -->
-        <activity
-            android:name=".ui.MainMenuActivity"
+        <!-- Set SplashActivity as the launcher activity -->
+        <activity android:name=".ui.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- SplashScreen and MainActivity -->
-        <activity
-            android:name=".ui.SplashActivity"
-            android:exported="true" />
+        </activity>
+
+        <activity android:name=".ui.MainMenuActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true" />

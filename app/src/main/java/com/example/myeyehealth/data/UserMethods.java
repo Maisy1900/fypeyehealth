@@ -29,7 +29,12 @@ public class UserMethods {
         db.close();
         return id;
     }
-
+    public void deleteUser(int userId) {
+        Database database = Database.getInstance(context);
+        SQLiteDatabase db = database.getWritableDatabase();
+        db.delete(Database.TABLE_USER, Database.COLUMN_USER_ID + " = ?", new String[] { String.valueOf(userId) });
+        db.close();
+    }
 
 
     public boolean checkUserEmailExists(String email) {

@@ -8,6 +8,9 @@ import com.example.myeyehealth.model.AmslerGridTestData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ScrollView;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +19,7 @@ import com.example.myeyehealth.R;
 import com.example.myeyehealth.data.SessionActivity;
 import com.example.myeyehealth.model.User;
 
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +27,10 @@ import java.util.List;
 
 public class ProfileAmslerDataActivity extends SessionActivity implements com.example.myeyehealth.ui.profile.AmslerGridTestClickListener {
     private List<AmslerGridTestData> sortedAmslerGridTestData;
-
+    private ScrollView resultsScrollView;
+    private ImageButton scrollUpButton;
+    private ImageButton scrollDownButton;
+    private ImageButton backButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +40,9 @@ public class ProfileAmslerDataActivity extends SessionActivity implements com.ex
         User currentUser = sessionManager.getUser();
         int userId = currentUser.getId();
         sortedAmslerGridTestData = am.getSortedAmslerGridTests(String.valueOf(userId));
+        resultsScrollView = findViewById(R.id.results_scroll_view);
+        scrollUpButton = findViewById(R.id.scroll_up_button);
+        scrollDownButton = findViewById(R.id.scroll_down_button);
 
         RecyclerView resultsRecyclerView = findViewById(R.id.results_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -44,10 +54,53 @@ public class ProfileAmslerDataActivity extends SessionActivity implements com.ex
         ContextThemeWrapper themeWrapper = new ContextThemeWrapper(this, R.style.Divider);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(themeWrapper, layoutManager.getOrientation());
         resultsRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        resultsScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                resultsScrollView.scrollTo(0, 500);
+            }
+        });
+
+
+        scrollUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollResults(-50);
+            }
+        });
+
+        scrollDownButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollResults(50);
+            }
+        });
+        resultsRecyclerView.setPadding(0, 500, 0, 1500);
+        backButton = findViewById(R.id.back_button); // Retrieve the back button
+
+        // Set the OnClickListener for the back button
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Call the onBackPressed() method
+            }
+        });
+
     }
 
     @Override
     protected void onLoggedIn(User user) {
+    }
+    private void scrollResults(int dy) {
+        int maxScrollY = resultsScrollView.getChildAt(0).getMeasuredHeight() - resultsScrollView.getHeight();
+        int targetY = resultsScrollView.getScrollY() + dy;
+        if (targetY < 0) {
+            targetY = 0;
+        } else if (targetY > maxScrollY) {
+            targetY = maxScrollY;
+        }
+        resultsScrollView.scrollTo(0, targetY);
     }
 
     @Override

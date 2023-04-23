@@ -1,24 +1,27 @@
 package com.example.myeyehealth.ui.profile;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
 
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.BaseActivity;
 import com.example.myeyehealth.data.Database;
+import com.example.myeyehealth.data.SessionActivity;
+import com.example.myeyehealth.data.SessionManager;
 import com.example.myeyehealth.data.UserMethods;
 import com.example.myeyehealth.model.User;
-import com.example.myeyehealth.ui.account.CreateAccountEmailActivity;
+import com.example.myeyehealth.ui.LoginActivity;
 
 import java.util.regex.Pattern;
 
-public class ProfileActivity extends BaseActivity {
+public class ProfileActivity extends SessionActivity {
 
     private EditText mNameInput;
     private EditText mEmailInput;
@@ -29,7 +32,7 @@ public class ProfileActivity extends BaseActivity {
     private Database db;
     private int mUserId;
     private User mUser;
-
+    private SessionManager sessionManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +47,10 @@ public class ProfileActivity extends BaseActivity {
 
         // Initialize the DatabaseHelper and set the user ID
         db = new Database(this);
-        mUserId = 1; // Replace this with the actual user ID
+        sessionManager = SessionManager.getInstance(this);
+        User user = sessionManager.getUser();
+        mUserId = user.getId(); // Get the user ID from the User object
+        System.out.println("UserID" +mUserId);
 
         // Fetch the user data and update the EditText fields
         mUser = db.getUserById(mUserId);
@@ -69,6 +75,7 @@ public class ProfileActivity extends BaseActivity {
                 revertChanges();
             }
         });
+
         Button amslerGridDataButton = findViewById(R.id.amsler_grid_data_button);
         amslerGridDataButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +84,62 @@ public class ProfileActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        // Sign out button
+        Button signOutButton = findViewById(R.id.sign_out_button);
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sessionManager.logout();
+                Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        Button deactivateButton = findViewById(R.id.deactivate_button);
+        deactivateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show a confirmation dialog before proceeding
+                new AlertDialog.Builder(ProfileActivity.this)
+                        .setTitle("Deactivate Account")
+                        .setMessage("Are you sure you want to deactivate your account? This action cannot be undone.")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Delete the user account from the database
+                                UserMethods userMethods = new UserMethods(ProfileActivity.this);
+                                userMethods.deleteUser(mUser.getId());
+
+                                // Log the user out and navigate to LoginActivity
+                                sessionManager.logout();
+                                Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+            }
+        });
+    // Initialize the back button
+        ImageButton backButton = findViewById(R.id.back_button);
+
+    // Set up a click listener for the back button
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+    }
+
+    @Override
+    protected void onLoggedIn(User user) {
 
     }
 
@@ -94,6 +157,7 @@ public class ProfileActivity extends BaseActivity {
 
         // Validate the updated data
         if (!isValidEmail(updatedEmail)) {
+            Toast.makeText(ProfileActivity.this, "Please input a valid email", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -104,6 +168,20 @@ public class ProfileActivity extends BaseActivity {
 
         // Update the user data in the database
         db.updateUser(mUser);
+
+        // Show a success message and refresh the user data
+        Toast.makeText(ProfileActivity.this, "User information updated", Toast.LENGTH_SHORT).show();
+        refreshUserData();
+    }
+
+    private void refreshUserData() {
+        // Fetch the updated user data and update the EditText fields
+        mUser = db.getUserById(mUserId);
+        if (mUser != null) {
+            mNameInput.setText(mUser.getName());
+            mEmailInput.setText(mUser.getEmail());
+            mPasswordInput.setText(mUser.getPassword());
+        }
     }
 
     private void revertChanges() {
@@ -139,3 +217,4 @@ public class ProfileActivity extends BaseActivity {
     }
 
 }
+

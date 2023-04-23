@@ -81,31 +81,20 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
             }
         });
 
-        onLoggedIn(null);
+        // Check if the user is logged in
+        SessionManager sessionManager = SessionManager.getInstance(this);
+        if (sessionManager.isLoggedIn()) {
+            User user = sessionManager.getUser();
+            System.out.println("Logged in user ID: " + user.getId());
+            // You can get other user information as well, like user.getEmail() or user.getName()
+        } else {
+            // Redirect the user to the login screen or show a message
+        }
     }
 
+    @Override
     protected void onLoggedIn(User user) {
-        int specificUserId = 5;
-        // Create an instance of UserMethods
-        UserMethods userMethods = new UserMethods(this);
-        // Fetch the user with the specific ID from the database
-        user = userMethods.getUserById(specificUserId);
-        if (user != null) {
-            // Create a session for the specific user
-            SessionManager sessionManager = SessionManager.getInstance(this);
-            sessionManager.createLoginSession(user);
 
-            System.out.println("userid: " + user.getId());
-
-            int userID = user.getId();
-            AmslerGridMethods amslerResultMethods = new AmslerGridMethods(this);
-            HashMap<Integer, List<HashMap<String, String>>> pastFiveTests = amslerResultMethods.getPastFiveTests(userID);
-            //printFormattedResults(pastFiveTests);
-        } else {
-            // Handle the case when the user is not found
-            // Create a new user and insert it into the database
-            createNewUser();
-        }
     }
 
 
@@ -273,22 +262,5 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
             notificationManager.createNotificationChannel(channel);
         }
     }
-    private void createNewUser() {
-        // Create a new user with the required information
-        User newUser = new User(-1, "John Doe", "john.doe@example.com", "password", "Dr. Jane Smith", "dr.jane@example.com", "Carer", "carer@example.com");
-
-        // Insert the user into the database
-        UserMethods userMethods = new UserMethods(this);
-        long userId = userMethods.addUser(newUser);
-
-        if (userId != -1) {
-            // The user has been successfully created and inserted
-            System.out.println("New user created with ID: " + userId);
-        } else {
-            // There was an issue while inserting the user
-            System.out.println("User creation failed");
-        }
-    }
-
 
 }
