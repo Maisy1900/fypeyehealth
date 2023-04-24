@@ -8,25 +8,16 @@
     <color name="black">#FFFFFFFF</color>
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorAccentDark">#D81B60</color>
     <color name="blue">#0000FF</color>
     <color name="yellow">#FFFF00</color>
     <color name="grey">#474747</color>
-    <color name="yellow_background">#FFFF00</color>
     <color name="black_text">#000000</color>
 
     <color name="pale_yellow">#FFF9C4</color>
     <color name="green">#4CAF50</color>
     <color name="amber">#FFC107</color>
     <color name="red">#F44336</color>
-    <color name="icon_tint">#FFFFFF</color>
-    <color name="colorHighContrastPrimary">#000000</color>
-    <color name="colorHighContrastPrimaryDark">#000000</color>
-    <color name="colorHighContrastAccent">#FFD700</color>
-    <color name="colorHighContrastTextPrimary">#FFFFFF</color>
-    <color name="colorHighContrastTextSecondary">#D3D3D3</color>
     <!-- Light Theme -->
     <color name="light_theme_background_color">#FFFFFF</color>
     <color name="light_theme_text_color">#FFFFFF</color>
@@ -35,14 +26,8 @@
     <!-- Dark Theme -->
     <color name="dark_theme_background_color">#121212</color>
     <color name="dark_theme_text_primary">#FFFFFF</color>
-    <color name="dark_theme_text_secondary">#000000</color>
     <color name="dark_theme_button_color">#FFD700</color>
-    <color name="dark_theme_button_text_color">#000000</color>
-    <color name="dark_theme_icon_tint">#000000</color>
 
     <!-- High Contrast Theme -->
-    <color name="high_contrast_background_color">#FFD700</color>
-    <color name="high_contrast_text_color">#000000</color>
     <color name="high_contrast_button_color">#000000</color>
-    <color name="high_contrast_button_text_color">#FFD700</color>
 </resources>

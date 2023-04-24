@@ -88,9 +88,6 @@ public class AmslerGridPlotView extends AmslerGridView {
         updateLineSpacing(w, h);
     }
 
-    public int getPlotGridSize() {
-        return plotGridSize;
-    }
 
     private void updateLineSpacing(int w, int h) {
         lineSpacing = Math.min(w, h) / (float) GRID_LINES;

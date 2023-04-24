@@ -75,7 +75,6 @@
         app:layout_constraintVertical_bias="1.0">
 
         <FrameLayout
-            android:id="@+id/frame_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
@@ -86,6 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textColor="@color/black"
                 android:text="This is the tutorial text. It will explain how to take the Amsler Grid Test. You can scroll through the text if you prefer to read it yourself." />
 
         </FrameLayout>

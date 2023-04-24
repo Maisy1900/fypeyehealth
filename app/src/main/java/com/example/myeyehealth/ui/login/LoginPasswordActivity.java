@@ -7,11 +7,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.BaseActivity;
-import com.example.myeyehealth.data.UserMethods;
+import com.example.myeyehealth.utils.BaseActivity;
+import com.example.myeyehealth.utils.SessionManager;
+import com.example.myeyehealth.controller.UserMethods;
 import com.example.myeyehealth.model.User;
 
 public class LoginPasswordActivity extends BaseActivity {
@@ -44,10 +43,13 @@ public class LoginPasswordActivity extends BaseActivity {
                 UserMethods userMethods = new UserMethods(LoginPasswordActivity.this);
                 User user = userMethods.getUserByEmail(email);
 
-
                 // Check if user exists and if password matches
                 if (user != null && password.equals(user.getPassword())) {
-                    // Password is correct, go to LoginSuccessActivity
+                    // Password is correct, create a session for the user
+                    SessionManager sessionManager = SessionManager.getInstance(LoginPasswordActivity.this);
+                    sessionManager.createLoginSession(user);
+
+                    // Go to LoginSuccessActivity
                     Intent intent = new Intent(LoginPasswordActivity.this, LoginSuccessActivity.class);
                     startActivity(intent);
                 } else {

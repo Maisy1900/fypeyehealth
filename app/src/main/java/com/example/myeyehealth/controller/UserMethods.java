@@ -1,10 +1,11 @@
-package com.example.myeyehealth.data;
+package com.example.myeyehealth.controller;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.myeyehealth.model.Database;
 import com.example.myeyehealth.model.User;
 
 public class UserMethods {
@@ -13,7 +14,7 @@ public class UserMethods {
     public UserMethods(Context context) {
         this.context = context;
     }
-    //user
+
     public long addUser(User user) {
         Database database = Database.getInstance(context);
         SQLiteDatabase db = database.getReadableDatabase();
@@ -92,12 +93,7 @@ public class UserMethods {
         db.close();
         return user;
     }
-    public void clearUserTable() {
-        Database database = Database.getInstance(context);
-        SQLiteDatabase db = database.getReadableDatabase();
-        db.execSQL("DELETE FROM " + Database.TABLE_USER);
-        db.close();
-    }
+
 
     public User getUserByEmail(String email) {
         Database database = Database.getInstance(context);

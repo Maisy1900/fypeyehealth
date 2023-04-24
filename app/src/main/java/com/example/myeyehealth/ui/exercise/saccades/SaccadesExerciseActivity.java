@@ -8,10 +8,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.BaseActivity;
+import com.example.myeyehealth.utils.BaseActivity;
 import com.example.myeyehealth.view.SaccadesExerciseView;
 
 import java.util.Arrays;

@@ -7,11 +7,6 @@ public class AmslerGrid implements Parcelable {
     private int size;
     private int[][] data;
 
-    public AmslerGrid(int size) {
-        this.size = size;
-        data = new int[size][size];
-    }
-
     protected AmslerGrid(Parcel in) {
         size = in.readInt();
         data = new int[size][size];
@@ -45,23 +40,4 @@ public class AmslerGrid implements Parcelable {
         }
     }
 
-    public int getSize() {
-        return size;
-    }
-
-    public int[][] getData() {
-        return data;
-    }
-
-    public void setData(int[][] data) {
-        this.data = data;
-    }
-
-    public int getValueAt(int row, int col) {
-        return data[row][col];
-    }
-
-    public void setValueAt(int row, int col, int value) {
-        data[row][col] = value;
-    }
 }

@@ -2,20 +2,12 @@
     <string name="app_name">MyEyeHealth</string>
     <string name="title_activity_reminders">RemindersActivity</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-        <string name="button_1_text">Button 1</string>
+    <string name="button_1_text">Button 1</string>
         <string name="button_2_text">Button 2</string>
         <string name="button_3_text">Button 3</string>
         <string name="button_4_text">Button 4</string>
         <string name="button_5_text">Button 5</string>
-        <string name="profile_button_text">Profile</string>
-        <string name="settings_button_text">Settings</string>
     <string-array name="menu_button_texts">
         <item>AmslerGrid</item>
         <item>SaccadesExercise</item>
@@ -23,11 +15,4 @@
         <item>Settings</item>
         <item>Profile</item>
     </string-array>
-    <array name="menu_button_icons">
-        <item>@drawable/grid</item>
-        <item>@drawable/view</item>
-        <item>@drawable/calendar</item>
-        <item>@drawable/settings</item>
-        <item>@drawable/user</item>
-    </array>
 </resources>

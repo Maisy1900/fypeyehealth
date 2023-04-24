@@ -3,16 +3,17 @@ package com.example.myeyehealth.ui.account;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.BaseActivity;
-import com.example.myeyehealth.data.SessionManager;
-import com.example.myeyehealth.data.UserMethods;
-import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.ui.MainMenuActivity;
+import com.example.myeyehealth.utils.BaseActivity;
+import com.example.myeyehealth.utils.SessionManager;
+import com.example.myeyehealth.controller.UserMethods;
+import com.example.myeyehealth.model.User;
 
 public class CreateAccountSuccessActivity extends BaseActivity {
 
@@ -25,36 +26,46 @@ public class CreateAccountSuccessActivity extends BaseActivity {
         setContentView(R.layout.activity_create_account_success);
 
         userDetailsTextView = findViewById(R.id.user_details_text_view);
+        ImageButton backButton = findViewById(R.id.back_button);
+        Button completeButton = findViewById(R.id.complete_button);
 
-        // Get the ID of the newly created user
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        completeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CreateAccountSuccessActivity.this, MainMenuActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         int userId = getIntent().getIntExtra("user_id", -1);
 
         if (userId != -1) {
-            // Fetch the user object from the database
             UserMethods userMethods = new UserMethods(this);
             User user = userMethods.getUserById(userId);
 
-
             if (user != null) {
-                // Display the user details in the TextView
                 userDetailsTextView.setText(user.toString());
-
-                // Start session with the newly created user
                 SessionManager sessionManager = SessionManager.getInstance(this);
                 sessionManager.startSession(user);
             } else {
-                // User not found in the database, display an error message
                 userDetailsTextView.setText("Error: User not found in database");
             }
         } else {
-            // Invalid user ID, display an error message
             userDetailsTextView.setText("Error: Invalid user ID");
         }
     }
 
     @Override
     public void onBackPressed() {
-        // Start the MainMenuActivity and clear the activity stack
         Intent intent = new Intent(this, MainMenuActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

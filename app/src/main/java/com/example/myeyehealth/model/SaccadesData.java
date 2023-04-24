@@ -1,4 +1,4 @@
-package com.example.myeyehealth.data;
+package com.example.myeyehealth.model;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -17,13 +17,6 @@ public class SaccadesData {
 
     public ArrayList<Float> getCompletionTimes() {
         return completionTimes;
-    }
-
-    public float getMinCompletionTime() {
-        return Collections.min(completionTimes);
-    }
-    public float getMaxCompletionTime() {
-        return Collections.max(completionTimes);
     }
 
 }

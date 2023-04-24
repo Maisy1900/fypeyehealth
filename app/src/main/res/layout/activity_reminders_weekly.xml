@@ -67,7 +67,6 @@
             android:src="@drawable/amslersize" />
 
         <TextView
-            android:id="@+id/amsler_test_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -101,7 +100,6 @@
             android:scaleType="fitCenter" />
 
         <TextView
-            android:id="@+id/saccades_exercise_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Saccades Exercise"
@@ -143,7 +141,6 @@
         app:layout_constraintTop_toBottomOf="@+id/day_subtitle_text">
 
         <GridLayout
-            android:id="@+id/days_of_week_grid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"

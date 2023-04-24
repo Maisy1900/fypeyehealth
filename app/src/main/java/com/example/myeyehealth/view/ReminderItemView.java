@@ -1,6 +1,7 @@
 package com.example.myeyehealth.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.ReminderMethods;
+import com.example.myeyehealth.controller.ReminderMethods;
 import com.example.myeyehealth.model.Reminder;
-import com.example.myeyehealth.ui.reminders.ReminderAlarmScheduler;
+import com.example.myeyehealth.controller.ReminderAlarmScheduler;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -47,7 +48,7 @@ public class ReminderItemView extends LinearLayout {
         reminderTime = findViewById(R.id.tv_reminder_time);
         deleteButton = findViewById(R.id.btn_delete);
 
-        int buttonSize = Math.max(reminderReason.getLineHeight(), reminderTime.getLineHeight());
+        int buttonSize = (Math.max(reminderReason.getLineHeight(), reminderTime.getLineHeight()))*2;
         ViewGroup.LayoutParams layoutParams = deleteButton.getLayoutParams();
         layoutParams.width = buttonSize;
         layoutParams.height = buttonSize;
@@ -69,17 +70,18 @@ public class ReminderItemView extends LinearLayout {
 
     public void setReminder(Reminder reminder) {
         this.reminder = reminder;
-        reminderTime.setText(getTimeAsString(reminder.getHour(), reminder.getMinute()));
+
+        // Set text size and color for reminderReason
+        reminderReason.setTextSize(32);
+        reminderReason.setTextColor(Color.BLACK);
         reminderReason.setText(reminder.getReason());
+
+        // Set text size and color for reminderTime
+        reminderTime.setTextSize(32);
+        reminderTime.setTextColor(Color.BLACK);
+        reminderTime.setText(getTimeAsString(reminder.getHour(), reminder.getMinute()));
     }
 
-    private String getWeekdayFromDayOfWeek(int dayOfWeek) {
-        Calendar calendar = Calendar.getInstance();
-        dayOfWeek = dayOfWeek % 7 + 1;
-        calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
-        return dateFormat.format(calendar.getTime());
-    }
 
     private String getTimeAsString(int hour, int minute) {
         Calendar calendar = Calendar.getInstance();

@@ -11,10 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.BaseActivity;
+import com.example.myeyehealth.utils.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;

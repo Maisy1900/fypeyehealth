@@ -1,4 +1,4 @@
-package com.example.myeyehealth.data;
+package com.example.myeyehealth.utils;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myeyehealth.R;
 import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.ui.LoginActivity;
+import com.example.myeyehealth.utils.SessionManager;
 
 public abstract class SessionActivity extends AppCompatActivity {
 

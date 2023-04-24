@@ -5,10 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.myeyehealth.data.ReminderMethods;
-import com.example.myeyehealth.data.SessionManager;
+import com.example.myeyehealth.controller.ReminderAlarmScheduler;
+import com.example.myeyehealth.controller.ReminderMethods;
+import com.example.myeyehealth.utils.SessionManager;
 import com.example.myeyehealth.model.Reminder;
-import com.example.myeyehealth.ui.reminders.notification.NotificationHelper;
+import com.example.myeyehealth.utils.NotificationHelper;
 
 import java.util.List;
 

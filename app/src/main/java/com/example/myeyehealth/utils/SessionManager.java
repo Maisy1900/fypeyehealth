@@ -1,9 +1,8 @@
-package com.example.myeyehealth.data;
+package com.example.myeyehealth.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.myeyehealth.R;
 import com.example.myeyehealth.model.User;
 //singleton class that helps manage the user session. It is responsible for starting and ending user sessions, checking if a user is logged in, and getting user information from the SharedPreferences.
 public class SessionManager {
@@ -64,7 +63,8 @@ public class SessionManager {
 
     public void endSession() {
         SharedPreferences.Editor editor = prefs.edit();
-        editor.clear();
+        editor.putBoolean("isLoggedIn", false);
+        editor.remove("userId");
         editor.apply();
     }
 
@@ -119,6 +119,7 @@ public class SessionManager {
     public void logout() {
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove("userId");
+        editor.putBoolean("isLoggedIn", false);
         editor.apply();
     }
 

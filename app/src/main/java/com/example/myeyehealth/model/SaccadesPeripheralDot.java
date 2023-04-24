@@ -18,16 +18,8 @@ public class SaccadesPeripheralDot {
         return position;
     }
 
-    public void setPosition(PointF position) {
-        this.position = position;
-    }
-
     public Paint getPaint() {
         return paint;
-    }
-
-    public boolean isActive() {
-        return isActive;
     }
 
     public void setActive(boolean active) {

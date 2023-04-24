@@ -1,4 +1,4 @@
-package com.example.myeyehealth.ui.profile;
+package com.example.myeyehealth.model;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.model.AmslerGridTestData;
+import com.example.myeyehealth.ui.profile.AmslerGridTestClickListener;
 
 import java.text.DateFormat;
 import java.util.List;

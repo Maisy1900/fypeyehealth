@@ -84,9 +84,6 @@
             android:name=".ui.account.CreateAccountPassowrdsDontMatchActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.account.CreateAccountMedicalInfoActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.account.CreateAccountSuccessActivity"
             android:exported="false" /> <!-- Profile and Settings activities -->
         <activity
@@ -102,29 +99,19 @@
         <activity
             android:name=".ui.amslergrid.AmslerGridRightEyeTestActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.amslergrid.AmslerGridTestResultsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.amslergrid.AmslerGridGraphActivity"
-            android:exported="false" /> <!-- Saccades activities -->
+        <!-- Saccades activities -->
         <activity
             android:name=".ui.exercise.saccades.SaccadesTutorial1Activity"
             android:exported="false" />
         <activity
             android:name=".ui.exercise.saccades.SaccadesExerciseActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.exercise.saccades.SaccadesExerciseResultsActivity"
-            android:exported="false" /> <!-- Reminders activities -->
+        <!-- Reminders activities -->
         <activity
             android:name=".ui.reminders.RemindersActivity"
             android:exported="false"
             android:label="@string/title_activity_reminders"
             android:theme="@style/Theme.MyEyeHealth.NoActionBar" />
-        <activity
-            android:name=".ui.reminders.RemindersReasonActivity"
-            android:exported="false" />
         <activity
             android:name=".ui.reminders.RemindersWeeklyActivity"
             android:exported="false" />
@@ -139,8 +126,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.MainMenuActivity"
+            android:exported="true" />
 
-        <activity android:name=".ui.MainMenuActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true" />

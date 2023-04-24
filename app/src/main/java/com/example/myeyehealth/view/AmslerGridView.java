@@ -9,13 +9,13 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import com.example.myeyehealth.data.SessionManager;
-
-import java.util.ArrayList;
+import com.example.myeyehealth.utils.SessionManager;
 
 public class AmslerGridView extends View {
 
     private Paint gridPaint;
+    private Paint crossPaint;
+
     private int gridSize;
     private int numLines;
     private int lineSpacing;
@@ -61,6 +61,7 @@ public class AmslerGridView extends View {
         return thicknessValue;
     }
 
+
     private void init() {
         sessionManager = SessionManager.getInstance(getContext());
 
@@ -70,10 +71,16 @@ public class AmslerGridView extends View {
         float thickness = getGridThicknessValue();
         gridPaint.setStrokeWidth(thickness);
 
+        // Initialize the crossPaint object
+        crossPaint = new Paint();
+        crossPaint.setColor(0xFF000000); // black color
+        crossPaint.setStrokeWidth(thickness * 2); // Set the cross width to double the grid line width
+
         gridSize = 800; // set the grid size
         numLines = 20; // set the number of lines
         lineSpacing = gridSize / numLines; // set the spacing between the lines
     }
+
 
 
     @Override
@@ -107,15 +114,16 @@ public class AmslerGridView extends View {
             float xPos = gridLeft + i * lineSpacing;
             canvas.drawLine(xPos, gridRect.top, xPos, gridRect.bottom, gridPaint);
         }
-    }
-    public void setGridLines(int numLines) {
-        this.numLines = numLines;
-        lineSpacing = gridSize / numLines; // update the spacing between the lines
-        invalidate(); // redraw the grid with the new number of lines
-    }
-    public int getLineSpacing() {
-        return lineSpacing;
-    }
+        // Draw the central cross
+        float centerX = gridLeft + gridSize / 2.0f;
+        float centerY = gridTop + gridSize / 2.0f;
+        float crossLength = lineSpacing;
 
+        // Draw the horizontal line of the cross
+        canvas.drawLine(centerX - crossLength / 2.0f, centerY, centerX + crossLength / 2.0f, centerY, crossPaint);
+
+        // Draw the vertical line of the cross
+        canvas.drawLine(centerX, centerY - crossLength / 2.0f, centerX, centerY + crossLength / 2.0f, crossPaint);
+    }
 
 }

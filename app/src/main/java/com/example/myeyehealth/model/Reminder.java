@@ -24,10 +24,6 @@ public class Reminder {
         return completed;
     }
 
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
-
     public int getId() {
         return id;
     }
@@ -48,37 +44,20 @@ public class Reminder {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(int dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
-    }
-
     public int getHour() {
         return hour;
     }
 
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
 
     public int getMinute() {
         return minute;
     }
 
-    public void setMinute(int minute) {
-        this.minute = minute;
-    }
 
     public String getReason() {
         return reason;
     }
 
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-    public String getDayOfWeekString() {
-        String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-        return days[dayOfWeek - 1];
-    }
 
     public String getTimeString() {
         String hourFormatted = hour < 10 ? "0" + hour : String.valueOf(hour);

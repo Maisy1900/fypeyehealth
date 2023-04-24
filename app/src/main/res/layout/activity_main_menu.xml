@@ -21,7 +21,6 @@
         android:weightSum="100">
 
         <LinearLayout
-            android:id="@+id/menu_and_arrows_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="85"
@@ -36,7 +35,6 @@
                 android:fillViewport="true">
 
                 <LinearLayout
-                    android:id="@+id/menu_buttons_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -54,7 +52,8 @@
                         android:text="@string/button_1_text"
                         android:drawableLeft="@drawable/grid_resized"
                         android:drawablePadding="10dp"
-                        android:layout_margin="10dp" />
+                        android:layout_margin="10dp"
+                        />
 
                     <!-- Button 2 -->
                     <Button
@@ -113,7 +112,6 @@
             <!-- ... -->
 
             <LinearLayout
-                android:id="@+id/arrows_container"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
@@ -155,7 +153,6 @@
         </LinearLayout>
 
         <View
-            android:id="@+id/bottom_space"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="15" />

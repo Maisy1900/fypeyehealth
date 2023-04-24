@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ProgressBar;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.BaseActivity;
-import com.example.myeyehealth.data.SessionManager;
+import com.example.myeyehealth.utils.BaseActivity;
+import com.example.myeyehealth.utils.SessionManager;
 
 /**
  * This activity displays a splash screen with a logo and a loading bar. The loading bar updates

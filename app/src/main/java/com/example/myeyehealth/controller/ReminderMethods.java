@@ -1,13 +1,14 @@
-package com.example.myeyehealth.data;
+package com.example.myeyehealth.controller;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.myeyehealth.model.Database;
+import com.example.myeyehealth.utils.SessionManager;
 import com.example.myeyehealth.model.Reminder;
 import com.example.myeyehealth.model.User;
-import com.example.myeyehealth.ui.reminders.ReminderAlarmScheduler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,12 +95,7 @@ public class ReminderMethods {
         return reminders;
     }
 
-    public void clearRemindersTable() {
-        Database database = Database.getInstance(context);
-        SQLiteDatabase db = database.getReadableDatabase();
-        db.delete(Database.TABLE_REMINDER, null, null);
-        db.close();
-    }
+
 
     public Reminder getReminderById(int reminderId) {
         Database database = Database.getInstance(context);

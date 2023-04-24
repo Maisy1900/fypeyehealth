@@ -71,16 +71,9 @@ public class AmslerGridTestData implements Parcelable {
         return testNumber;
     }
 
-    // Setters
-    public void setTestId(String testId) {
-        this.testId = testId;
-    }
 
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
 }

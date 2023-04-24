@@ -25,13 +25,9 @@ public class AmslerResultsTextView extends androidx.appcompat.widget.AppCompatTe
     }
 
     private void init() {
-        // Set any custom attributes or initialization code here
+
     }
 
-    public void setResultsText(String resultsText) {
-        setText(resultsText);
-    }
 
-    // You can add any other custom methods or attributes here as needed
 
 }

@@ -1,10 +1,11 @@
-package com.example.myeyehealth.data;
+package com.example.myeyehealth.utils;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.myeyehealth.R;
+import com.example.myeyehealth.utils.SessionManager;
 
 public class BaseActivity extends AppCompatActivity {
 

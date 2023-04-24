@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.example.myeyehealth.data.SessionManager;
+import com.example.myeyehealth.utils.SessionManager;
 import com.example.myeyehealth.model.SaccadesPeripheralDot;
 
 import java.util.ArrayList;
@@ -108,7 +108,7 @@ public class SaccadesExerciseView extends View {
                 float y = padding + random.nextInt(height - 2 * padding);
                 dot = new SaccadesPeripheralDot(x, y, Color.BLACK);
 
-                if (isValidDot(dot, peripheralDots, 20)) {
+                if (isValidDot(dot, peripheralDots, 60)) {
                     validDot = true;
                 }
             }

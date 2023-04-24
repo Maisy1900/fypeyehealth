@@ -12,10 +12,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.Database;
-import com.example.myeyehealth.data.SessionActivity;
-import com.example.myeyehealth.data.SessionManager;
-import com.example.myeyehealth.data.UserMethods;
+import com.example.myeyehealth.model.Database;
+import com.example.myeyehealth.utils.SessionActivity;
+import com.example.myeyehealth.utils.SessionManager;
+import com.example.myeyehealth.controller.UserMethods;
 import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.ui.LoginActivity;
 

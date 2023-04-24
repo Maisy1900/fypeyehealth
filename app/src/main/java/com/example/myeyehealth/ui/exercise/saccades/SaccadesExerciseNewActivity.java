@@ -1,7 +1,5 @@
 package com.example.myeyehealth.ui.exercise.saccades;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -14,18 +12,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.BaseActivity;
-import com.example.myeyehealth.data.SaccadesData;
-import com.example.myeyehealth.data.SaccadesMethods;
-import com.example.myeyehealth.data.SessionManager;
-import com.example.myeyehealth.model.User;
 import com.example.myeyehealth.ui.MainMenuActivity;
+import com.example.myeyehealth.utils.BaseActivity;
+import com.example.myeyehealth.model.SaccadesData;
+import com.example.myeyehealth.controller.SaccadesMethods;
+import com.example.myeyehealth.utils.SessionManager;
+import com.example.myeyehealth.model.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SaccadesExerciseNewActivity extends BaseActivity {
 
@@ -122,6 +118,11 @@ public class SaccadesExerciseNewActivity extends BaseActivity {
         int progressColor;
 
         switch (performance) {
+            case "No past results":
+                resultsText.setText("Congratulations on completing this exercise! Keep going for personalised results.");
+                progressValue = 100;
+                progressColor = getResources().getColor(R.color.green);
+                break;
             case "Green (best or close to best time)":
                 resultsText.setText("Great job! Your timings are above average. Keep up the good work!");
                 progressValue = 100;

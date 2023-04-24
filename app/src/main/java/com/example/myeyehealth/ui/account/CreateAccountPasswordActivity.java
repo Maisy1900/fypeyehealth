@@ -8,10 +8,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.BaseActivity;
+import com.example.myeyehealth.utils.BaseActivity;
 
 public class CreateAccountPasswordActivity extends BaseActivity {
     private EditText passwordInput;

@@ -6,7 +6,6 @@
     >
 
     <TextView
-        android:id="@+id/notification_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Eye Health Reminder"
@@ -29,7 +28,6 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/open_app_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Open App"

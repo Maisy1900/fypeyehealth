@@ -11,12 +11,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.BaseActivity;
-import com.example.myeyehealth.data.ReminderMethods;
-import com.example.myeyehealth.data.SessionManager;
+import com.example.myeyehealth.controller.ReminderAlarmScheduler;
+import com.example.myeyehealth.utils.BaseActivity;
+import com.example.myeyehealth.controller.ReminderMethods;
+import com.example.myeyehealth.utils.SessionManager;
 import com.example.myeyehealth.model.Reminder;
 
 import java.util.ArrayList;

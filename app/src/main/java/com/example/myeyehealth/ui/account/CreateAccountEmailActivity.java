@@ -8,11 +8,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.BaseActivity;
-import com.example.myeyehealth.data.UserMethods;
+import com.example.myeyehealth.utils.BaseActivity;
+import com.example.myeyehealth.controller.UserMethods;
 
 import java.util.regex.Pattern;
 

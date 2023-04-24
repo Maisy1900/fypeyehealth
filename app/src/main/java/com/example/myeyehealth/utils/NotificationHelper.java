@@ -1,4 +1,4 @@
-package com.example.myeyehealth.ui.reminders.notification;
+package com.example.myeyehealth.utils;
 
 import android.app.Notification;
 import android.app.NotificationChannel;

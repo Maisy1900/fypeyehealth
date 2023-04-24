@@ -12,16 +12,14 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.BaseActivity;
-import com.example.myeyehealth.data.SessionManager;
+import com.example.myeyehealth.utils.BaseActivity;
+import com.example.myeyehealth.utils.SessionManager;
 
 public class SettingsActivity extends BaseActivity {
     private ScrollView settingsScrollView;
     private LinearLayout scroll_container;
-    private Button fontSmall, fontMedium, fontLarge;
+
     private Button thicknessSmall, thicknessMedium, thicknessLarge;
     private Button colorRed, colorBlue, colorGreen, colorYellow;
 
@@ -49,10 +47,6 @@ public class SettingsActivity extends BaseActivity {
 
         setContentView(R.layout.activity_settings);
 
-        // Set up the buttons
-        fontSmall = findViewById(R.id.font_small);
-        fontMedium = findViewById(R.id.font_medium);
-        fontLarge = findViewById(R.id.font_large);
 
         thicknessSmall = findViewById(R.id.thickness_small);
         thicknessMedium = findViewById(R.id.thickness_medium);
@@ -69,18 +63,10 @@ public class SettingsActivity extends BaseActivity {
 
 
         // Retrieve the saved settings
-        String fontSize = SessionManager.getInstance(this).getFontSize();
         String saccadesColor = SessionManager.getInstance(this).getSaccadesColor();
         String gridThickness = SessionManager.getInstance(this).getGridThickness();
 
-        // Set the default settings if there are no saved settings
-        if (fontSize.equals("S")) {
-            setSelected(fontSmall);
-        } else if (fontSize.equals("M")) {
-            setSelected(fontMedium);
-        } else if (fontSize.equals("L")) {
-            setSelected(fontLarge);
-        }
+
 
         if (saccadesColor.equals("red")) {
             setSelected(colorRed);
@@ -154,36 +140,6 @@ public class SettingsActivity extends BaseActivity {
                 settingsScrollView.scrollTo(0, 500); // Set the initial scroll position to 500
             }
         });
-        fontSmall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearSelected(new Button[]{fontMedium, fontLarge});
-                setSelected(fontSmall);
-                SessionManager.getInstance(getApplicationContext()).setFontSize("S");
-                recreate();
-            }
-        });
-
-        fontMedium.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearSelected(new Button[]{fontSmall, fontLarge});
-                setSelected(fontMedium);
-                SessionManager.getInstance(getApplicationContext()).setFontSize("M");
-                recreate();
-            }
-        });
-
-        fontLarge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearSelected(new Button[]{fontSmall, fontMedium});
-                setSelected(fontLarge);
-                SessionManager.getInstance(getApplicationContext()).setFontSize("L");
-                recreate();
-            }
-        });
-
         thicknessSmall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

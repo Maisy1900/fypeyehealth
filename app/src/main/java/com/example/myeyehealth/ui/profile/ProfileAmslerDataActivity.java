@@ -1,8 +1,8 @@
 package com.example.myeyehealth.ui.profile;
 
-import com.example.myeyehealth.data.AmslerGridMethods;
-import com.example.myeyehealth.data.Database;
-import com.example.myeyehealth.data.SessionManager;
+import com.example.myeyehealth.controller.AmslerGridMethods;
+import com.example.myeyehealth.model.AmslerGridTestAdapter;
+import com.example.myeyehealth.utils.SessionManager;
 import com.example.myeyehealth.model.AmslerGridTestData;
 
 import android.content.Intent;
@@ -16,12 +16,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.SessionActivity;
+import com.example.myeyehealth.utils.SessionActivity;
 import com.example.myeyehealth.model.User;
 
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class ProfileAmslerDataActivity extends SessionActivity implements com.ex
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         resultsRecyclerView.setLayoutManager(layoutManager);
 
-        com.example.myeyehealth.ui.profile.AmslerGridTestAdapter amslerGridTestAdapter = new com.example.myeyehealth.ui.profile.AmslerGridTestAdapter(sortedAmslerGridTestData, this);
+        AmslerGridTestAdapter amslerGridTestAdapter = new AmslerGridTestAdapter(sortedAmslerGridTestData, this);
         resultsRecyclerView.setAdapter(amslerGridTestAdapter);
 
         ContextThemeWrapper themeWrapper = new ContextThemeWrapper(this, R.style.Divider);

@@ -6,11 +6,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-
-import androidx.appcompat.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.BaseActivity;
+import com.example.myeyehealth.utils.BaseActivity;
+import com.example.myeyehealth.controller.UserMethods;
+import com.example.myeyehealth.model.User;
 
 public class CreateAccountConfirmPasswordActivity extends BaseActivity {
     private EditText confirmedPasswordInput;
@@ -27,21 +28,30 @@ public class CreateAccountConfirmPasswordActivity extends BaseActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String name = getIntent().getStringExtra("name");
+                String email = getIntent().getStringExtra("email");
                 String password = getIntent().getStringExtra("password");
                 String confirmedPassword = confirmedPasswordInput.getText().toString();
 
                 if (confirmedPassword.equals(password)) {
-                    Intent intent = new Intent(CreateAccountConfirmPasswordActivity.this, CreateAccountMedicalInfoActivity.class);
-                    intent.putExtra("name", getIntent().getStringExtra("name"));
-                    intent.putExtra("email", getIntent().getStringExtra("email"));
-                    intent.putExtra("password", password);
+                    // Create a new User object with the given details
+                    User user = new User(-1, name, email, password, "", "", "", "");
+
+                    // Save the user's information to the database and get the ID of the newly inserted row
+                    UserMethods userMethods = new UserMethods(CreateAccountConfirmPasswordActivity.this);
+                    int userId = (int) userMethods.addUser(user);
+
+                    // Set the id of the user object to the generated id
+                    user.setId(userId);
+
+                    // Start the CreateAccountSuccessActivity and pass the user ID as an extra
+                    Intent intent = new Intent(CreateAccountConfirmPasswordActivity.this, CreateAccountSuccessActivity.class);
+                    intent.putExtra("user_id", userId);
                     startActivity(intent);
                     finish();
                 } else {
-                    Intent intent = new Intent(CreateAccountConfirmPasswordActivity.this, CreateAccountPassowrdsDontMatchActivity.class);
-                    startActivity(intent);
+                    Toast.makeText(CreateAccountConfirmPasswordActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
@@ -68,4 +78,3 @@ public class CreateAccountConfirmPasswordActivity extends BaseActivity {
         setIntent(intent);
     }
 }
-

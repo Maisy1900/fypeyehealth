@@ -3,7 +3,6 @@ package com.example.myeyehealth.ui.reminders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -11,15 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.BaseActivity;
-import com.example.myeyehealth.data.ReminderMethods;
-import com.example.myeyehealth.data.SessionManager;
+import com.example.myeyehealth.ui.MainMenuActivity;
+import com.example.myeyehealth.utils.BaseActivity;
+import com.example.myeyehealth.controller.ReminderMethods;
+import com.example.myeyehealth.utils.SessionManager;
 import com.example.myeyehealth.model.Reminder;
 import com.example.myeyehealth.model.User;
-import com.example.myeyehealth.ui.MainMenuActivity;
 import com.example.myeyehealth.view.ReminderItemView;
 
 import java.util.Collections;
@@ -115,7 +112,6 @@ public class RemindersActivity extends BaseActivity {
             }
         });
 
-        LayoutInflater inflater = LayoutInflater.from(this);
         LinearLayout weekdaysContainer = findViewById(R.id.weekdays_container);
         String[] dayNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
@@ -153,29 +149,6 @@ public class RemindersActivity extends BaseActivity {
                     dayContainer.addView(reminderItemView);
                 }
             }
-        }
-    }
-
-
-
-    private String getDayLabel(int dayOfWeek) {
-        switch (dayOfWeek) {
-            case 0:
-                return "Sunday";
-            case 1:
-                return "Monday";
-            case 2:
-                return "Tuesday";
-            case 3:
-                return "Wednesday";
-            case 4:
-                return "Thursday";
-            case 5:
-                return "Friday";
-            case 6:
-                return "Saturday";
-            default:
-                return "";
         }
     }
 

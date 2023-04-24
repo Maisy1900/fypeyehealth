@@ -6,10 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.BaseActivity;
+import com.example.myeyehealth.utils.BaseActivity;
 
 public class CreateAccountPassowrdsDontMatchActivity extends BaseActivity {
 
@@ -43,5 +41,14 @@ public class CreateAccountPassowrdsDontMatchActivity extends BaseActivity {
             }
         });
     }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(CreateAccountPassowrdsDontMatchActivity.this, CreateAccountPasswordActivity.class);
+        intent.putExtra("name", getIntent().getStringExtra("name"));
+        intent.putExtra("email", getIntent().getStringExtra("email"));
+        startActivity(intent);
+        finish();
+    }
+
 }
 

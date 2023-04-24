@@ -1,4 +1,4 @@
-package com.example.myeyehealth.ui.reminders;
+package com.example.myeyehealth.controller;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -8,6 +8,7 @@ import android.os.Build;
 import android.util.Log;
 
 import com.example.myeyehealth.model.Reminder;
+import com.example.myeyehealth.ui.reminders.ReminderReceiver;
 
 import java.util.Calendar;
 

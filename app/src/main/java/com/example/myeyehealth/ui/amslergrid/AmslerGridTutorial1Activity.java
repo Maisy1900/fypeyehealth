@@ -1,6 +1,7 @@
 package com.example.myeyehealth.ui.amslergrid;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,11 +9,9 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.BaseActivity;
-import com.example.myeyehealth.data.SessionManager;
+import com.example.myeyehealth.utils.BaseActivity;
+import com.example.myeyehealth.utils.SessionManager;
 import com.example.myeyehealth.model.User;
 
 public class AmslerGridTutorial1Activity extends BaseActivity {
@@ -72,6 +71,8 @@ public class AmslerGridTutorial1Activity extends BaseActivity {
                 + "Check for any distorted or missing areas on the grid.\n\n"
                 + "If you see any distorted or missing areas, touch or click on the matching spot on the grid.");
         tutorialText.setPadding(0, 500, 0, 500);
+        tutorialText.setTextSize(32);
+        tutorialText.setTextColor(Color.BLACK);
         tutorialScrollView.post(new Runnable() {
             @Override
             public void run() {

@@ -1,6 +1,7 @@
 package com.example.myeyehealth.ui.exercise.saccades;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,10 +9,8 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.myeyehealth.R;
-import com.example.myeyehealth.data.BaseActivity;
+import com.example.myeyehealth.utils.BaseActivity;
 
 public class SaccadesTutorial1Activity extends BaseActivity {
     private ScrollView tutorialScrollView;
@@ -66,6 +65,8 @@ public class SaccadesTutorial1Activity extends BaseActivity {
                 + "Tap the first indicated dot, then quickly move your gaze to the next indicated dot as it changes colour.\n\n"
                 + "Tap on each consecutive dot in the sequence to complete the exercise.");
         tutorialText.setPadding(0, 500, 0, 500);
+        tutorialText.setTextSize(32);
+        tutorialText.setTextColor(Color.BLACK);
         tutorialScrollView.post(new Runnable() {
             @Override
             public void run() {

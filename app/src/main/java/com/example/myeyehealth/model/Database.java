@@ -1,4 +1,4 @@
-package com.example.myeyehealth.data;
+package com.example.myeyehealth.model;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.myeyehealth.model.User;
+import com.example.myeyehealth.controller.AmslerGridMethods;
+import com.example.myeyehealth.controller.ReminderMethods;
+import com.example.myeyehealth.controller.SaccadesMethods;
+import com.example.myeyehealth.controller.UserMethods;
 
 //This is because you're using a singleton pattern for your Database class, which means you won't be creating multiple instances of it.
 public class Database extends SQLiteOpenHelper {
@@ -149,84 +152,6 @@ public class Database extends SQLiteOpenHelper {
         // Create tables again
         onCreate(db);
     }
-    public void addGridSizeColumnsIfNeeded() {
-        addColumnIfNeeded(TABLE_AMSLER_GRID, COLUMN_AG_LEFT_GRID_SIZE, "INTEGER");
-        addColumnIfNeeded(TABLE_AMSLER_GRID, COLUMN_AG_RIGHT_GRID_SIZE, "INTEGER");
-    }
-
-    public void deleteUserData(int userId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_AMSLER_GRID, COLUMN_AG_USER_ID + " = ?", new String[] { String.valueOf(userId) });
-        db.close();
-    }
-    public void addTestDateColumnIfNeeded() {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        Cursor cursor = db.rawQuery("PRAGMA table_info(" + TABLE_SACCADES + ")", null);
-
-        boolean testDateColumnExists = false;
-
-        int nameColumnIndex = cursor.getColumnIndex("name");
-        if (nameColumnIndex != -1) {
-            while (cursor.moveToNext()) {
-                String columnName = cursor.getString(nameColumnIndex);
-                if (columnName.equals(COLUMN_SACCADES_TEST_DATE)) {
-                    testDateColumnExists = true;
-                    break;
-                }
-            }
-        }
-
-        cursor.close();
-
-        if (!testDateColumnExists) {
-            db.execSQL("ALTER TABLE " + TABLE_SACCADES + " ADD COLUMN " + COLUMN_SACCADES_TEST_DATE + " TEXT;");
-        }
-
-        db.close();
-    }
-    public void addDayOfWeekColumnIfNeeded() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String TABLE_NAME = TABLE_REMINDER;
-        String COLUMN_NAME = "day_of_week";
-        String COLUMN_TYPE = "TEXT";
-
-        Cursor cursor = db.rawQuery("PRAGMA table_info(" + TABLE_NAME + ")", null);
-
-        boolean newColumnExists = false;
-
-        int nameColumnIndex = cursor.getColumnIndex("name");
-        if (nameColumnIndex != -1) {
-            while (cursor.moveToNext()) {
-                String columnName = cursor.getString(nameColumnIndex);
-                if (columnName.equals(COLUMN_NAME)) {
-                    newColumnExists = true;
-                    break;
-                }
-            }
-        }
-
-        cursor.close();
-
-        if (!newColumnExists) {
-            db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COLUMN_NAME + " " + COLUMN_TYPE + ";");
-        }
-
-        db.close();
-    }
-
-    public void deleteAllSaccadesData() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_SACCADES);
-        db.close();
-    }
-    public void addHourColumnIfNeeded() {
-        addColumnIfNeeded(TABLE_REMINDER, "hour", "INTEGER");
-    }
-
-    public void addMinuteColumnIfNeeded() {
-        addColumnIfNeeded(TABLE_REMINDER, "minute", "INTEGER");
-    }
 
     public void addColumnIfNeeded(String tableName, String columnName, String columnType) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -251,37 +176,6 @@ public class Database extends SQLiteOpenHelper {
         if (!newColumnExists) {
             db.execSQL("ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + columnType + ";");
         }
-
-        db.close();
-    }
-    public void addReasonColumnIfNeeded() {
-        addColumnIfNeeded(TABLE_REMINDER, "reason", "TEXT");
-    }
-    public void addUserIdColumnIfNeeded() {
-        addColumnIfNeeded(TABLE_REMINDER, "user_id", "INTEGER");
-    }
-    public void addCompletedColumnIfNeeded() {
-        addColumnIfNeeded(TABLE_REMINDER, "completed", "INTEGER");
-    }
-    public void recreateRemindersTable() {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        // Drop reminders table if it exists
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_REMINDER);
-
-        // Create reminders table
-        String CREATE_REMINDER_TABLE = "CREATE TABLE " + TABLE_REMINDER +
-                "(" +
-                COLUMN_REMINDER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                COLUMN_REMINDER_USER_ID + " INTEGER," +
-                COLUMN_REMINDER_DAY_OF_WEEK + " INTEGER," +
-                COLUMN_REMINDER_HOUR + " INTEGER," +
-                COLUMN_REMINDER_MINUTE + " INTEGER," +
-                COLUMN_REMINDER_REASON + " TEXT," +
-                COLUMN_REMINDER_COMPLETED + " INTEGER" +
-                ")";
-
-        db.execSQL(CREATE_REMINDER_TABLE);
 
         db.close();
     }
