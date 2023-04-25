@@ -40,9 +40,9 @@ public class ReminderMethods {
         long id = db.insert(Database.TABLE_REMINDER, null, values);
         db.close();
 
-        // Schedule the reminder using the AlarmManager
+
         ReminderAlarmScheduler reminderAlarmScheduler = new ReminderAlarmScheduler(context);
-        reminder.setId((int) id); // Make sure to set the ID for the reminder object
+        reminder.setId((int) id);
         reminderAlarmScheduler.setReminderAlarm(reminder);
 
         return (int) id;
@@ -59,7 +59,7 @@ public class ReminderMethods {
                 Database.COLUMN_REMINDER_HOUR,
                 Database.COLUMN_REMINDER_MINUTE,
                 Database.COLUMN_REMINDER_REASON,
-                Database.COLUMN_REMINDER_COMPLETED // Add this line
+                Database.COLUMN_REMINDER_COMPLETED
         };
 
 

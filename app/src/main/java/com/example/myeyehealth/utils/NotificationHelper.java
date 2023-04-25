@@ -23,7 +23,7 @@ public class NotificationHelper {
     private static final String TAG = "NotificationHelper";
 
     public static void showNotification(Context context, String reminderReason, String reminderTime) {
-        Log.d(TAG, "showNotification called with reason: " + reminderReason + " and time: " + reminderTime);
+
 
         createNotificationChannel(context);
 
@@ -38,14 +38,13 @@ public class NotificationHelper {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setAutoCancel(true)
-                .setStyle(new NotificationCompat.DecoratedCustomViewStyle()) // Use the custom view style
-                .setCustomContentView(getRemoteViews(context, contentText)); // Set the custom content view
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                .setCustomContentView(getRemoteViews(context, contentText));
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         int notificationId = (int) System.currentTimeMillis();
         notificationManager.notify(notificationId, builder.build());
 
-        Log.d(TAG, "Notification shown with ID: " + notificationId);
     }
 
     private static RemoteViews getRemoteViews(Context context, String contentText) {

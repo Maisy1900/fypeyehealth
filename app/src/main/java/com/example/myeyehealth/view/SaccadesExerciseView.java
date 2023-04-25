@@ -52,11 +52,8 @@ public class SaccadesExerciseView extends View {
 
 //initiates the paint objects tap times distances that will be store d in the database
     private void init() {
-        // Initialize paint objects for the central dot
         centralDotPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         centralDotPaint.setColor(Color.BLUE);
-
-        // Initialize peripheral dots list and active dot index
         peripheralDots = new ArrayList<>();
         currentActiveDotIndex = 0;
         tapTimes = new ArrayList<>();
@@ -72,10 +69,10 @@ public class SaccadesExerciseView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // Draw the central dot
+        // draw the central dot
         canvas.drawCircle(getWidth() / 2f, getHeight() / 2f, 20, centralDotPaint) ;
 
-        // Draw peripheral dots
+        // draw peripheral dots
         for (SaccadesPeripheralDot dot : peripheralDots) {
             PointF position = dot.getPosition();
             canvas.drawCircle(position.x, position.y, 15, dot.getPaint()) ;
@@ -87,7 +84,7 @@ public class SaccadesExerciseView extends View {
         generatePeripheralDotSequence() ;
     }
     private void generatePeripheralDotSequence() {
-        // Generate the sequence of peripheral dots and their positions
+        // generatesthe sequence of peripheral dots
 
         Random random = new Random();
         int width = getWidth();
@@ -116,19 +113,19 @@ public class SaccadesExerciseView extends View {
             peripheralDots.add(dot);
         }
         peripheralDots.get(currentActiveDotIndex).setActive(true);
-        updateActiveDotColor(); // Update this line to use the updateActiveDotColor() method
+        updateActiveDotColor();
     }
 
     private boolean isValidDot(SaccadesPeripheralDot newDot, List<SaccadesPeripheralDot> existingDots, int minDistance) {
         PointF newDotPosition = newDot.getPosition();
         PointF center = new PointF(getWidth() / 2f, getHeight() / 2f) ;
 
-        // Check if the new dot is too close to the central dot
+        // if the new dot is too close to the central dot
         if (distanceBetween(newDotPosition, center) < minDistance) {
             return false;
         }
 
-        // Check if the new dot is too close to existing peripheral dots
+        // if the new dot is too close to existing peripheral dots
         for (SaccadesPeripheralDot existingDot : existingDots) {
             PointF existingDotPosition = existingDot.getPosition() ;
             if (distanceBetween(newDotPosition, existingDotPosition) < minDistance) {
@@ -136,7 +133,7 @@ public class SaccadesExerciseView extends View {
             }
         }
 
-        // If the new dot is not too close to the central dot or existing dots, it's valid
+        //  dot is not too close it's valid
         return true;
     }
 
@@ -148,7 +145,7 @@ public class SaccadesExerciseView extends View {
             SaccadesPeripheralDot activeDot = peripheralDots.get(currentActiveDotIndex);
             PointF activeDotPosition = activeDot.getPosition();
 
-            // Check if the user tapped within a certain radius around the active dot
+            // check if the user tapped within a certain radius around the active dot
             if (distanceBetween(tapPosition, activeDotPosition) <= 30) {
                 // Record tap time
                 long currentTime=System.currentTimeMillis();
@@ -156,7 +153,7 @@ public class SaccadesExerciseView extends View {
                 lastTapTime = currentTime;
 
 
-                // Record tap distance
+                // record tap distance
                 if (currentActiveDotIndex>0) {
                     SaccadesPeripheralDot lastDot = peripheralDots.get(currentActiveDotIndex - 1) ;
                     PointF lastDotPosition =lastDot.getPosition();
@@ -164,7 +161,7 @@ public class SaccadesExerciseView extends View {
                      tapDistances.add(distance);
                 }
 
-                // Update the active dot
+                // update the active dot
                 activeDot.setActive(false) ;
                  activeDot.getPaint().setColor(Color.BLACK);
                 currentActiveDotIndex++;
@@ -176,7 +173,7 @@ public class SaccadesExerciseView extends View {
                 } else {
                     SaccadesPeripheralDot nextActiveDot =peripheralDots.get(currentActiveDotIndex) ;
                     nextActiveDot.setActive(true);
-                    updateActiveDotColor(); // Call this method here instead of setting the color directly
+                    updateActiveDotColor();
                     invalidate();
                 }
             } else {

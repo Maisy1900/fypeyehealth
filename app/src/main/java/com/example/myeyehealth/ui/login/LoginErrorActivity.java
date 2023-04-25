@@ -16,24 +16,23 @@ public class LoginErrorActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_error);
 
-        // Initialize views
         ImageButton backButton = findViewById(R.id.back_button);
         Button retryButton = findViewById(R.id.try_again_button);
 
-        // Set click listener for back button
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Go back to previous activity
+
                 finish();
             }
         });
 
-        // Set click listener for retry button
+
         retryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Go back to LoginEmailActivity
+
                 Intent intent = new Intent(LoginErrorActivity.this, LoginEmailActivity.class);
                 startActivity(intent);
                 finish();

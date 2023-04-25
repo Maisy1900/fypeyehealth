@@ -133,10 +133,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/careremail_label" />
-    <!-- Add an OnTextChangedListener to both EditText fields, which will listen to the changes made in the text fields.
-    In the listener, check if either of the EditText fields has some text in it.
-    If yes, change the text of the button from "Skip" to "Complete".
-    If not, change the text back to "Skip".-->
+
     <Button
         android:id="@+id/complete_button"
         style="@style/ButtonStyle"

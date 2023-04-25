@@ -9,11 +9,6 @@ import com.example.myeyehealth.R;
 import com.example.myeyehealth.utils.BaseActivity;
 import com.example.myeyehealth.utils.SessionManager;
 
-/**
- * This activity displays a splash screen with a logo and a loading bar. The loading bar updates
- * automatically to show the progress of a long-running operation. Once the operation is complete,
- * the activity finishes and launches the main activity.
- */
 public class SplashActivity extends BaseActivity {
     private ProgressBar mProgressBar;
     private int mProgressStatus = 0;

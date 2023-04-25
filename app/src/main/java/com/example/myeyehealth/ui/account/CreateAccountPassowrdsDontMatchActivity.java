@@ -25,7 +25,7 @@ public class CreateAccountPassowrdsDontMatchActivity extends BaseActivity {
         tryAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Pass the name and email extras to the CreateAccountPasswordActivity intent
+
                 Intent intent = new Intent(CreateAccountPassowrdsDontMatchActivity.this, CreateAccountPasswordActivity.class);
                 intent.putExtra("name", getIntent().getStringExtra("name"));
                 intent.putExtra("email", getIntent().getStringExtra("email"));

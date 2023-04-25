@@ -54,7 +54,7 @@
         android:textSize="40sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/back_button" />
-    <!-- Left Eye Title -->
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -66,7 +66,6 @@
         app:layout_constraintEnd_toEndOf="@+id/left_eye_progress"
         android:layout_marginTop="8dp"/>
 
-    <!-- Right Eye Title -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -79,7 +78,7 @@
         android:layout_marginTop="8dp"/>
 
 
-    <!-- Left Eye -->
+
 
     <com.mikhaellopez.circularprogressbar.CircularProgressBar
         android:id="@+id/left_eye_progress"
@@ -95,7 +94,7 @@
         app:layout_constraintTop_toBottomOf="@id/results_subtitle"
         app:layout_constraintWidth_percent="0.4" />
 
-    <!-- Right Eye -->
+
     <TextView
         android:id="@+id/left_eye_percentage"
         android:layout_width="wrap_content"
@@ -124,7 +123,6 @@
         app:layout_constraintWidth_percent="0.4"
         android:layout_marginBottom="16dp"/>
 
-    <!-- Left Eye Baseline -->
 
     <TextView
         android:id="@+id/right_eye_percentage"
@@ -154,7 +152,7 @@
         app:layout_constraintEnd_toEndOf="@+id/left_eye_percentage"
         />
 
-    <!-- Right Eye Baseline -->
+
     <TextView
         android:id="@+id/right_eye_baseline"
         android:layout_width="wrap_content"
@@ -167,9 +165,6 @@
         app:layout_constraintEnd_toEndOf="@+id/right_eye_percentage" />
 
 
-    <!-- TextView to display the results text -->
-
-    <!-- Save Button -->
 
     <TextView
         android:id="@+id/results_text"

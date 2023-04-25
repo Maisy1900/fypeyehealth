@@ -18,7 +18,7 @@ public class CreateAccountEmailActivity extends BaseActivity {
     private EditText emailInput;
 
     private boolean isValidEmail(String email) {
-        // Use a regular expression to validate the email format
+
         String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         Pattern pattern = Pattern.compile(emailRegex);
 
@@ -26,7 +26,6 @@ public class CreateAccountEmailActivity extends BaseActivity {
             return false;
         }
 
-        // Check if the email already exists in the database
         UserMethods userMethods = new UserMethods(CreateAccountEmailActivity.this);
         if (userMethods.checkUserEmailExists(email)) {
             Toast.makeText(CreateAccountEmailActivity.this, "Email address already in use", Toast.LENGTH_SHORT).show();

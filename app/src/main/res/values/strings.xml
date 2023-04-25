@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">MyEyeHealth</string>
     <string name="title_activity_reminders">RemindersActivity</string>
-    <!-- Strings used for fragments for navigation -->
 
     <string name="button_1_text">Button 1</string>
         <string name="button_2_text">Button 2</string>

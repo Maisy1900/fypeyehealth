@@ -87,7 +87,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/change_password" />
-    <!-- Save button -->
+
     <Button
         android:id="@+id/save_button"
         style="@style/CustomButtonStyle"
@@ -100,7 +100,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/password_input" />
 
-    <!-- Cancel button -->
+
     <Button
         android:id="@+id/cancel_button"
         style="@style/CustomButtonStyle"
@@ -131,7 +131,6 @@
         app:layout_constraintTop_toBottomOf="@id/account_insights"
         app:layout_constraintWidth_percent="0.7" />
 
-    <!-- Sign out button -->
     <Button
         android:id="@+id/sign_out_button"
         style="@style/CustomButtonStyle"
@@ -146,7 +145,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/amsler_grid_data_button" />
 
-    <!-- Deactivate button -->
     <Button
         android:id="@+id/deactivate_button"
         style="@style/CustomButtonStyle"

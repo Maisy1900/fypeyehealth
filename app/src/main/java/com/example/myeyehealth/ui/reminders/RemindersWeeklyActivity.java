@@ -19,13 +19,13 @@ import java.util.List;
 
 public class RemindersWeeklyActivity extends BaseActivity {
 
-    private TextView mAmslerTestButton;
-    private TextView mSaccadesExerciseButton;
-    private Button mNextButton;
+    private TextView amslerTestButton;
+    private TextView saccadesExerciseButton;
+    private Button nextButton;
     private Button[] weekdayButtons;
-    private LinearLayout mAmslerTestLayout;
-    private LinearLayout mSaccadesExerciseLayout;
-    private List<String> mReasons;
+    private LinearLayout amslerTestLayout;
+    private LinearLayout saccadesExerciseLayout;
+    private List<String> reasons;
     private String selectedWeekday = null;
 
     @Override
@@ -33,9 +33,9 @@ public class RemindersWeeklyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminders_weekly);
 
-        mAmslerTestLayout = findViewById(R.id.amsler_test_button);
-        mSaccadesExerciseLayout = findViewById(R.id.saccades_exercise_button);
-        mNextButton = findViewById(R.id.next_button);
+        amslerTestLayout = findViewById(R.id.amsler_test_button);
+        saccadesExerciseLayout = findViewById(R.id.saccades_exercise_button);
+        nextButton = findViewById(R.id.next_button);
         weekdayButtons = new Button[]{
                 findViewById(R.id.monday_button),
                 findViewById(R.id.tuesday_button),
@@ -46,11 +46,11 @@ public class RemindersWeeklyActivity extends BaseActivity {
                 findViewById(R.id.sunday_button)
         };
 
-        mReasons = new ArrayList<>();
+        reasons = new ArrayList<>();
 
         List<View> exerciseButtons = new ArrayList<>();
-        exerciseButtons.add(mAmslerTestLayout);
-        exerciseButtons.add(mSaccadesExerciseLayout);
+        exerciseButtons.add(amslerTestLayout);
+        exerciseButtons.add(saccadesExerciseLayout);
 
         for (View view : exerciseButtons) {
             view.setOnClickListener(new View.OnClickListener() {
@@ -60,23 +60,23 @@ public class RemindersWeeklyActivity extends BaseActivity {
                     TextView selectedTextView = (TextView) selectedLayout.getChildAt(1);
                     String reason = selectedTextView.getText().toString().trim().toLowerCase();
 
-                    if (mReasons.contains(reason)) {
-                        mReasons.remove(reason);
+                    if (reasons.contains(reason)) {
+                        reasons.remove(reason);
                         v.getBackground().clearColorFilter();
                     } else {
-                        mReasons.add(reason);
+                        reasons.add(reason);
                         v.getBackground().setColorFilter(Color.argb(100, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
                     }
                 }
             });
         }
 
-        mNextButton.setOnClickListener(new View.OnClickListener() {
+        nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selectedWeekday != null && !mReasons.isEmpty()) {
+                if (selectedWeekday != null && !reasons.isEmpty()) {
                     Intent nextActivityIntent = new Intent(RemindersWeeklyActivity.this, RemindersSaveActivity.class);
-                    nextActivityIntent.putStringArrayListExtra("reasons", new ArrayList<>(mReasons));
+                    nextActivityIntent.putStringArrayListExtra("reasons", new ArrayList<>(reasons));
                     nextActivityIntent.putExtra("weekday", selectedWeekday);
                     startActivity(nextActivityIntent);
                 } else {
@@ -107,7 +107,6 @@ public class RemindersWeeklyActivity extends BaseActivity {
                         selectedButton.getBackground().setColorFilter(Color.argb(100, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
                         selectedButton.setClickable(false);
                     }
-
                     for (Button otherButton : weekdayButtons) {
                         if (otherButton != v) {
                             otherButton.getBackground().clearColorFilter();

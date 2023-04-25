@@ -11,7 +11,7 @@ import com.example.myeyehealth.controller.ReminderMethods;
 import com.example.myeyehealth.controller.SaccadesMethods;
 import com.example.myeyehealth.controller.UserMethods;
 
-//This is because you're using a singleton pattern for your Database class, which means you won't be creating multiple instances of it.
+
 public class Database extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "mydatabase.db";
     private static final int DATABASE_VERSION = 1;
@@ -80,7 +80,6 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // ...
 
         // Create Amsler Grid table
         String CREATE_AMSLER_GRID_TABLE = "CREATE TABLE " + TABLE_AMSLER_GRID +
@@ -143,13 +142,11 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older tables if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_AMSLER_GRID);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SACCADES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_REMINDER);
 
-        // Create tables again
         onCreate(db);
     }
 

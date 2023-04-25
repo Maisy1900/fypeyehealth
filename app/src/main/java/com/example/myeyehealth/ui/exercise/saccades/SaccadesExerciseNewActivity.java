@@ -36,7 +36,7 @@ public class SaccadesExerciseNewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saccades_exercise_new);
 
-        // Initialize views
+
         backButton = findViewById(R.id.back_button);
         titleText = findViewById(R.id.title_text);
         resultsSubtitle = findViewById(R.id.results_subtitle);
@@ -49,7 +49,6 @@ public class SaccadesExerciseNewActivity extends BaseActivity {
         SessionManager sessionManager = SessionManager.getInstance(this);
         User currentUser = sessionManager.getUser();
         int userId = currentUser.getId();
-        System.out.println("this is user" +userId);
 
         SaccadesMethods saccadesMethods = new SaccadesMethods(SaccadesExerciseNewActivity.this);
         SaccadesData pastTestResultsData = saccadesMethods.getPastNSaccadesTests(userId, 20);
@@ -61,57 +60,47 @@ public class SaccadesExerciseNewActivity extends BaseActivity {
             completionTimes.add(testResult / 1000);
         }
 
-        // Print each completion time
-        Log.d("CompletionTimes", "Completion times: ");
-        for (int i = 0; i < completionTimes.size(); i++) {
-            Log.d("CompletionTimes", "Test " + (i + 1) + ": " + completionTimes.get(i) + "s");
-        }
 
-
-
-        Intent intent = getIntent();
         long[] tapTimes = getIntent().getLongArrayExtra("EXTRA_TAP_TIMES");
-        long[] timeDifferences = getIntent().getLongArrayExtra("EXTRA_TIME_DIFFERENCES");
+
         float[] tapDistances = getIntent().getFloatArrayExtra("EXTRA_TAP_DISTANCES");
-        // Check if tapTimes and tapDistances are not null
+
         if (tapTimes == null || tapDistances == null) {
             Toast.makeText(SaccadesExerciseNewActivity.this, "Error: Could not retrieve tap times and distances.", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
-        // Calculate the total time taken for the last test
+
         float lastTestTotalTime = 0;
         for (long tapTime : tapTimes) {
             lastTestTotalTime += tapTime;
         }
         lastTestTotalTime /= 1000; // Convert to seconds
 
-// Add the last test's total time to the completionTimes list
-// Add the last test's total time to the completionTimes list
+
         completionTimes.add(lastTestTotalTime);
-        System.out.println("Current time" + lastTestTotalTime);
+
         List<Integer> saccadesTestNumbers = new ArrayList<>();
 
         for (int i = 0; i < pastTestResultsData.getExerciseNumbers().size(); i++) {
             saccadesTestNumbers.add(pastTestResultsData.getExerciseNumbers().get(i));
         }
 
-// Add the current test number to the saccadesTestNumbers list
+
         int currentTestNumber = saccadesTestNumbers.size() > 0 ? saccadesTestNumbers.get(saccadesTestNumbers.size() - 1) + 1 : 1;
         saccadesTestNumbers.add(currentTestNumber);
 
 
-// Calculate the minimum time (best time) among completionTimes
+
         float bestTimeValue = getBestTotalCompletionTime(completionTimes);
         System.out.println("best full time"+bestTimeValue);
-// Update the bestTime TextView
+
         bestTime.setText("Best Time: " + String.format("%.2f", bestTimeValue) + "s");
 
-// Update the timeTaken TextView
+
         timeTaken.setText("Time Taken: " + String.format("%.2f", lastTestTotalTime) + "s");
 
-// Classify performance and update resultsText and personalRecordProgress
-        // Classify performance and update resultsText and personalRecordProgress
+
         String performance = classifyPerformance(completionTimes, lastTestTotalTime);
 
         int progressValue;
@@ -142,7 +131,7 @@ public class SaccadesExerciseNewActivity extends BaseActivity {
         personalRecordProgress.setProgress(progressValue);
         personalRecordProgress.getProgressDrawable().setColorFilter(progressColor, PorterDuff.Mode.SRC_IN);
 
-        // Handle save button click
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,7 +143,7 @@ public class SaccadesExerciseNewActivity extends BaseActivity {
             }
         });
 
-// Handle back button click
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

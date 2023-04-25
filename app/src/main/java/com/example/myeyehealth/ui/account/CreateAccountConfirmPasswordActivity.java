@@ -34,17 +34,17 @@ public class CreateAccountConfirmPasswordActivity extends BaseActivity {
                 String confirmedPassword = confirmedPasswordInput.getText().toString();
 
                 if (confirmedPassword.equals(password)) {
-                    // Create a new User object with the given details
+
                     User user = new User(-1, name, email, password, "", "", "", "");
 
-                    // Save the user's information to the database and get the ID of the newly inserted row
+
                     UserMethods userMethods = new UserMethods(CreateAccountConfirmPasswordActivity.this);
                     int userId = (int) userMethods.addUser(user);
 
-                    // Set the id of the user object to the generated id
+
                     user.setId(userId);
 
-                    // Start the CreateAccountSuccessActivity and pass the user ID as an extra
+
                     Intent intent = new Intent(CreateAccountConfirmPasswordActivity.this, CreateAccountSuccessActivity.class);
                     intent.putExtra("user_id", userId);
                     startActivity(intent);

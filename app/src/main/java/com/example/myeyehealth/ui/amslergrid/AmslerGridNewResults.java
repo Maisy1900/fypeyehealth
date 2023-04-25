@@ -56,7 +56,7 @@ public class AmslerGridNewResults extends BaseActivity {
         leftEyeBaseline = findViewById(R.id.left_eye_baseline);
         rightEyeBaseline = findViewById(R.id.right_eye_baseline);
 
-        // Assume you have the distortion coordinates for the current Amsler Grid
+
         Intent intent = getIntent();
         HashMap<String, ArrayList<Float>> currentLeftEyeDistortionCoordinates = (HashMap<String, ArrayList<Float>>) intent.getSerializableExtra("leftEyeDistortionCoordinates");
         HashMap<String, ArrayList<Float>> currentRightEyeDistortionCoordinates = (HashMap<String, ArrayList<Float>>) intent.getSerializableExtra("rightEyeDistortionCoordinates");
@@ -66,9 +66,6 @@ public class AmslerGridNewResults extends BaseActivity {
         leftEyeGridSize = getIntent().getIntExtra("leftEyeGridSize", 0);
         rightEyeGridSize = getIntent().getIntExtra("rightEyeGridSize", 0);
 
-        // Add log statements here
-        Log.d("AmslerGridNewResults", "Received Current Left Eye Distortion Coordinates: " + currentLeftEyeDistortionCoordinates.toString());
-        Log.d("AmslerGridNewResults", "Received Current Right Eye Distortion Coordinates: " + currentRightEyeDistortionCoordinates.toString());
 
         AmslerGridMethods amslerResultMethods = new AmslerGridMethods(this);
         InteractiveAmslerGridView interactive = new InteractiveAmslerGridView(this);
@@ -77,26 +74,20 @@ public class AmslerGridNewResults extends BaseActivity {
         int userId = user.getId();
         long currentDate = System.currentTimeMillis();
 
-// Get the baseline coordinates for the left and right eyes
+
         HashMap<String, ArrayList<Float>>[] baselineResults = amslerResultMethods.getBaselineAmslerResults(userId);
 
         leftEyeProgress.setProgressMax(1f);
         rightEyeProgress.setProgressMax(1f);
 
-// Call the printBaselineCoordinates() method
-        printBaselineCoordinates(baselineResults[0], baselineResults[1]);
 
-// Convert HashMap to ArrayList
         ArrayList<ArrayList<Float>> baselineLeftEyeCoordinatesList = baseconvertHashMapToArrayList(baselineResults[0]);
         ArrayList<ArrayList<Float>> baselineRightEyeCoordinatesList = baseconvertHashMapToArrayList(baselineResults[1]);
 
-// Print converted ArrayLists
-        System.out.println("Converted baselineLeftEyeCoordinatesList:");
         for (ArrayList<Float> point : baselineLeftEyeCoordinatesList) {
             System.out.println(point);
         }
 
-        System.out.println("Converted baselineRightEyeCoordinatesList:");
         for (ArrayList<Float> point : baselineRightEyeCoordinatesList) {
             System.out.println(point);
         }
@@ -107,15 +98,15 @@ public class AmslerGridNewResults extends BaseActivity {
         double baselineleftEyeDistortionPercentage = baselineleftEyeDistortionPercentages.get("total");
         double baselinerightEyeDistortionPercentage = baselinerightEyeDistortionPercentages.get("total");
 
-        // Convert HashMap to ArrayList for current coordinates
+
         ArrayList<ArrayList<Float>> currentLeftEyeDistortionCoordinatesList = convertHashMapToArrayList(currentLeftEyeDistortionCoordinates);
         ArrayList<ArrayList<Float>> currentRightEyeDistortionCoordinatesList = convertHashMapToArrayList(currentRightEyeDistortionCoordinates);
 
-        // Calculate the percentage of distortion for each eye based on the current coordinates
+
         HashMap<String, Float> currentLeftEyeDistortionPercentages = interactive.calculateDistortionPercentages(currentLeftEyeDistortionCoordinatesList);
         HashMap<String, Float> currentRightEyeDistortionPercentages = interactive.calculateDistortionPercentages(currentRightEyeDistortionCoordinatesList);
 
-        // Get the total distortion percentages for left and right eyes based on the current coordinates
+
         double currentLeftEyeTotalDistortionPercentage = currentLeftEyeDistortionPercentages.get("total");
         double currentRightEyeTotalDistortionPercentage = currentRightEyeDistortionPercentages.get("total");
         compareDistortions(currentLeftEyeTotalDistortionPercentage, currentRightEyeTotalDistortionPercentage, baselineleftEyeDistortionPercentage, baselinerightEyeDistortionPercentage);
@@ -125,13 +116,13 @@ public class AmslerGridNewResults extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                // Pass both left and right eye HashMaps to the updated saveAmslerGridData() method
+
                 amslerResultMethods.saveAmslerGridData(userId, currentDate, leftEyeDistortionCoordinates, rightEyeDistortionCoordinates,leftEyeGridSize,rightEyeGridSize );
 
-                Log.d("AmslerGridGraph", "Results saved successfully by the save button.foruser" + userId);
+
                 Toast.makeText(AmslerGridNewResults.this, "Results saved successfully", Toast.LENGTH_SHORT).show();
 
-                // Return to the main menu activity
+
                 Intent mainMenuIntent = new Intent(AmslerGridNewResults.this, MainMenuActivity.class);
                 startActivity(mainMenuIntent);
 
@@ -147,51 +138,38 @@ public class AmslerGridNewResults extends BaseActivity {
     }
 
     private void displayDistortionPercentages(double leftEyeDistortionPercentage, double rightEyeDistortionPercentage,double baselineleftEyeDistortionPercentage,double baselinerightEyeDistortionPercentage) {
-        Log.d("AmslerGridNewResults", "Left Eye Distortion Percentage: " + leftEyeDistortionPercentage);
-        Log.d("AmslerGridNewResults", "Right Eye Distortion Percentage: " + rightEyeDistortionPercentage);
-        Log.d("AmslerGridNewResults", "Baseline Left Eye Distortion Percentage: " + baselineleftEyeDistortionPercentage);
-        Log.d("AmslerGridNewResults", "Baseline Right Eye Distortion Percentage: " + baselinerightEyeDistortionPercentage);
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // Calculate the remaining percentage
+
                 double leftEyeRemainingPercentage = 100 - leftEyeDistortionPercentage;
                 double rightEyeRemainingPercentage = 100 - rightEyeDistortionPercentage;
 
-                // Set the progress for each eye's CircularProgressBar
                 leftEyeProgress.setProgress((float) leftEyeRemainingPercentage / 100);
                 rightEyeProgress.setProgress((float) rightEyeRemainingPercentage / 100);
 
-                // Update the TextView in the center of CircularProgressBars with the calculated distortion percentages
                 leftEyePercentageText.setText(String.format("%.1f%%", leftEyeDistortionPercentage));
                 rightEyePercentageText.setText(String.format("%.1f%%", rightEyeDistortionPercentage));
 
-                // Update the TextViews with the baseline distortion percentages
                 leftEyeBaseline.setText(String.format("Baseline: %.1f%%", baselineleftEyeDistortionPercentage));
                 rightEyeBaseline.setText(String.format("Baseline: %.1f%%", baselinerightEyeDistortionPercentage));
-
-                // Add log statements to print baseline percentages
-                Log.d("AmslerGridNewResults", "Baseline Left Eye Distortion Percentage: " + baselineleftEyeDistortionPercentage);
-                Log.d("AmslerGridNewResults", "Baseline Right Eye Distortion Percentage: " + baselinerightEyeDistortionPercentage);
             }
         });
 
-        // Add log statements for the progress text
-        Log.d("AmslerGridNewResults", "Left Eye Progress Text: " + leftEyePercentageText.getText());
-        Log.d("AmslerGridNewResults", "Right Eye Progress Text: " + rightEyePercentageText.getText());
+
     }
 
 
     private void compareDistortions(double leftEyeDistortionPercentage, double rightEyeDistortionPercentage, double baselineLeftEyeDistortionPercentage, double baselineRightEyeDistortionPercentage) {
 
-        // Calculate percentage difference in distortion compared to baseline for left eye
+        // calculates percentage difference distortion compared to baseline
         double leftEyeDifference = leftEyeDistortionPercentage - baselineLeftEyeDistortionPercentage;
 
-        // Calculate percentage difference in distortion compared to baseline for right eye
+        // calculates percentage difference distortion compared to baseline
         double rightEyeDifference = rightEyeDistortionPercentage - baselineRightEyeDistortionPercentage;
 
-        // Define color thresholds for left eye
+        // color thresholds
         String leftEyeColor;
         if (leftEyeDifference >= 10) {
             leftEyeColor = RED_COLOR;
@@ -201,7 +179,7 @@ public class AmslerGridNewResults extends BaseActivity {
             leftEyeColor = GREEN_COLOR;
         }
 
-        // Define color thresholds for right eye
+        //  color thresholds
         String rightEyeColor;
         if (rightEyeDifference >= 10) {
             rightEyeColor = RED_COLOR;
@@ -211,7 +189,7 @@ public class AmslerGridNewResults extends BaseActivity {
             rightEyeColor = GREEN_COLOR;
         }
 
-        // Set the progress colors for left and right eye indicators
+        // set progress colors
         leftEyeProgress.setProgressBarColor(Color.parseColor(leftEyeColor));
         rightEyeProgress.setProgressBarColor(Color.parseColor(rightEyeColor));
 
@@ -261,30 +239,5 @@ public class AmslerGridNewResults extends BaseActivity {
         return coordinatesList;
     }
 
-    private HashMap<String, ArrayList<Float>> convertToHashMap(ArrayList<ArrayList<Float>> coordinates) {
-        HashMap<String, ArrayList<Float>> result = new HashMap<>();
-        for (int i = 0; i < coordinates.size(); i++) {
-            result.put("Quadrant" + (i + 1), coordinates.get(i));
-        }
-        return result;
-    }
-    public HashMap<String, ArrayList<Float>> getLeftEyeDistortionCoordinates() {
-        return leftEyeDistortionCoordinates;
-    }
-
-    public HashMap<String, ArrayList<Float>> getRightEyeDistortionCoordinates() {
-        return rightEyeDistortionCoordinates;
-    }
-    private void printBaselineCoordinates(HashMap<String, ArrayList<Float>> leftEyeCoords, HashMap<String, ArrayList<Float>> rightEyeCoords) {
-        Log.d("AmslerGridNewResults", "Baseline Left Eye Distortion Coordinates:");
-        for (String key : leftEyeCoords.keySet()) {
-            Log.d("AmslerGridNewResults", key + ": " + leftEyeCoords.get(key).toString());
-        }
-
-        Log.d("AmslerGridNewResults", "Baseline Right Eye Distortion Coordinates:");
-        for (String key : rightEyeCoords.keySet()) {
-            Log.d("AmslerGridNewResults", key + ": " + rightEyeCoords.get(key).toString());
-        }
-    }
 
 }

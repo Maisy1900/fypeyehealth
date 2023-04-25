@@ -69,14 +69,13 @@ public class AmslerGridPlotView extends AmslerGridView {
                 canvas.drawCircle(xPos, yPos, 8f, pointPaint);
             }
         } else {
-            Log.d("AmslerGridPlotView", "No coordinates to draw");
         }
     }
 
 
     public void setCoordinates(HashMap<String, ArrayList<Float>> coordinates) {
         this.coordinates = coordinates;
-        Log.d("AmslerGridPlotView", "Received coordinates: " + coordinates.toString());
+
         invalidate();
         postInvalidate();
     }
@@ -84,7 +83,7 @@ public class AmslerGridPlotView extends AmslerGridView {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        plotGridSize = 350; // Set the plot grid size to 300px
+        plotGridSize = 350;
         updateLineSpacing(w, h);
     }
 

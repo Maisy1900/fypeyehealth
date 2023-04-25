@@ -34,7 +34,7 @@ public class CreateAccountPasswordActivity extends BaseActivity {
                     intent.putExtra("password", password);
                     startActivity(intent);
                 } else {
-                    // Show error message to user
+
                     Toast.makeText(CreateAccountPasswordActivity.this, "Please enter a password", Toast.LENGTH_SHORT).show();
                 }
             }

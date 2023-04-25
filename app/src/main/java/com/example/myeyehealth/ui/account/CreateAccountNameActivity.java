@@ -28,12 +28,12 @@ public class CreateAccountNameActivity extends BaseActivity {
             public void onClick(View v) {
                 String name = nameInput.getText().toString();
                 if (name.isEmpty()) {
-                    // Display an error message or disable the confirm button
+
                     Toast.makeText(CreateAccountNameActivity.this, "Please enter a name", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (!isValidName(name)) {
-                    // Display an error message or disable the confirm button
+
                     Toast.makeText(CreateAccountNameActivity.this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -45,7 +45,7 @@ public class CreateAccountNameActivity extends BaseActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // remove the "name" extra data from the Intent object before finishing the activity
+
                 removeExtraDataFromIntent();
                 finish();
             }
@@ -60,14 +60,11 @@ public class CreateAccountNameActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        // remove the "name" extra data from the Intent object before calling super.onBackPressed()
+
         removeExtraDataFromIntent();
         super.onBackPressed();
     }
 
-    /**
-     * Removes the "name" extra data from the Intent object.
-     */
     private void removeExtraDataFromIntent() {
         Intent intent = getIntent();
         intent.removeExtra("name");

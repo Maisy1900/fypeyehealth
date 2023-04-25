@@ -99,7 +99,7 @@ public class RemindersActivity extends BaseActivity {
         ReminderMethods reminderMethods = new ReminderMethods(getApplicationContext());
         List<Reminder> reminders = reminderMethods.getAllReminders(user.getId());
 
-        // Sort the reminders by day of the week and time
+
         Collections.sort(reminders, new Comparator<Reminder>() {
             @Override
             public int compare(Reminder r1, Reminder r2) {
@@ -116,18 +116,18 @@ public class RemindersActivity extends BaseActivity {
         String[] dayNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
         for (int i = 0; i < 7; i++) {
-            // Create container for reminders on this day
+
             LinearLayout dayContainer = new LinearLayout(this);
             dayContainer.setOrientation(LinearLayout.VERTICAL);
             weekdaysContainer.addView(dayContainer);
 
             boolean hasReminderForThisDay = false;
 
-            // Add reminders for this day
+
             for (Reminder reminder : reminders) {
                 if (reminder.getDayOfWeek() == i) {
                     if (!hasReminderForThisDay) {
-                        // Create day title
+
                         TextView dayTitle = new TextView(this);
                         dayTitle.setText(dayNames[i]);
                         dayTitle.setTextSize(18);

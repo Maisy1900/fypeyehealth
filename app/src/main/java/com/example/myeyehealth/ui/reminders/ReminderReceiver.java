@@ -19,7 +19,7 @@ public class ReminderReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction() != null && intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            // Handle device reboot
+
             SessionManager sessionManager = SessionManager.getInstance(context);
             int userId = sessionManager.getUser().getId();
             ReminderMethods reminderMethods = new ReminderMethods(context);
@@ -30,7 +30,7 @@ public class ReminderReceiver extends BroadcastReceiver {
                 reminderAlarmScheduler.setReminderAlarm(reminder);
             }
         } else {
-            // Handle alarm trigger
+
 
 
             int reminderId = intent.getIntExtra("reminderId", -1);
@@ -48,7 +48,7 @@ public class ReminderReceiver extends BroadcastReceiver {
 
                     NotificationHelper.showNotification(context, reminderReason, reminderTime);
 
-                    // Reschedule the next alarm
+
                     ReminderAlarmScheduler reminderAlarmScheduler = new ReminderAlarmScheduler(context);
                     reminderAlarmScheduler.setReminderAlarm(reminder);
                 }

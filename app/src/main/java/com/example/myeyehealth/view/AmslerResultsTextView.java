@@ -2,11 +2,7 @@ package com.example.myeyehealth.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-/**
- * A custom TextView for displaying the results of an Amsler Grid test.
- * Use the setResultsText() method to update the text displayed in this view.
- * The text should be gathered from a database or other source where the test results are stored.
- */
+
 public class AmslerResultsTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     public AmslerResultsTextView(Context context) {

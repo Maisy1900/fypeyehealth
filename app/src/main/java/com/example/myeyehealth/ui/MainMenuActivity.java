@@ -38,8 +38,6 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
         createNotificationChannel();
         Database database = Database.getInstance(this);
 
-
-        // Get references to the ImageButtons and menu buttons
         ScrollUpButton = findViewById(R.id.scroll_up_button);
         ScrollDownButton = findViewById(R.id.scroll_down_button);
 
@@ -51,7 +49,6 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
                 findViewById(R.id.button5)
         };
 
-        // Initialise the menu buttons' tags and texts
         String[] buttonTexts = getResources().getStringArray(R.array.menu_button_texts);
 
         for (int i = 0; i < mMenuButtons.length; i++) {
@@ -60,12 +57,10 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
             mMenuButtons[i].setTextSize(32);
         }
 
-        // Set click listeners for the menu buttons
         for (Button button : mMenuButtons) {
             button.setOnClickListener(this);
         }
 
-        // Set click listeners for the up and down buttons
         ScrollDownButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,14 +75,10 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
             }
         });
 
-        // Check if the user is logged in
         SessionManager sessionManager = SessionManager.getInstance(this);
         if (sessionManager.isLoggedIn()) {
             User user = sessionManager.getUser();
-            System.out.println("Logged in user ID: " + user.getId());
-            // You can get other user information as well, like user.getEmail() or user.getName()
-        } else {
-            // Redirect the user to the login screen or show a message
+
         }
     }
 
@@ -111,7 +102,7 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
             mMenuButtons[i].setTag(newIndex);
             mMenuButtons[i].setText(buttonTexts[newIndex]);
 
-            // Update the intent associated with the button
+
             switch (newIndex) {
                 case 0:
                     mMenuButtons[i].setOnClickListener(new View.OnClickListener() {
@@ -165,11 +156,6 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
     }
 
 
-    private String getMenuButtonText(int position) {
-        String[] buttonTexts = getResources().getStringArray(R.array.menu_button_texts);
-        return buttonTexts[position];
-    }
-
     @Override
     public void onClick(View view) {
         if (view instanceof Button) {
@@ -182,7 +168,7 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
             }
 
             if (position == -1) {
-                return; // No action for other cases
+                return;
             }
 
             Intent intent;
@@ -204,51 +190,12 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
                     intent = new Intent(this, ProfileActivity.class);
                     break;
                 default:
-                    return; // No action for other cases
+                    return;
             }
             startActivity(intent);
         }
     }
-    private void printFormattedResults(HashMap<Integer, List<HashMap<String, String>>> groupedResults) {
-        int testNumber = 1;
-        for (Map.Entry<Integer, List<HashMap<String, String>>> entry : groupedResults.entrySet()) {
-            List<HashMap<String, String>> results = entry.getValue();
 
-            System.out.println("Test Number: " + entry.getKey() + " | Date: " + results.get(0).get("testDate"));
-
-
-            HashMap<String, StringBuilder> coordinates = new HashMap<>();
-            coordinates.put("L", new StringBuilder());
-            coordinates.put("R", new StringBuilder());
-
-            int leftIndex = 1;
-            int rightIndex = 1;
-            for (HashMap<String, String> result : results) {
-                String gridType = result.get("grid");
-                String xCoord = result.get("xCoord");
-                String yCoord = result.get("yCoord");
-
-                if (gridType.equals("L")) {
-                    coordinates.get("L").append(leftIndex).append(":(").append(xCoord).append(",").append(yCoord).append("), ");
-                    leftIndex++;
-                } else if (gridType.equals("R")) {
-                    coordinates.get("R").append(rightIndex).append(":(").append(xCoord).append(",").append(yCoord).append("), ");
-                    rightIndex++;
-                }
-            }
-
-            if (coordinates.get("L").length() > 0) {
-                System.out.println("Left Coordinates: " + coordinates.get("L").substring(0, coordinates.get("L").length() - 2));
-            }
-            if (coordinates.get("R").length() > 0) {
-                System.out.println("Right Coordinates: " + coordinates.get("R").substring(0, coordinates.get("R").length() - 2));
-            }
-
-            System.out.println();
-
-            testNumber++;
-        }
-    }
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Reminder Channel";

@@ -30,7 +30,6 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Set the theme based on the saved preference
         SharedPreferences sharedPreferences = getSharedPreferences("theme_prefs", MODE_PRIVATE);
         String theme = SessionManager.getInstance(this).getThemeName();
         switch (theme) {
@@ -62,7 +61,6 @@ public class SettingsActivity extends BaseActivity {
         themeHighContrast = findViewById(R.id.theme_high_contrast);
 
 
-        // Retrieve the saved settings
         String saccadesColor = SessionManager.getInstance(this).getSaccadesColor();
         String gridThickness = SessionManager.getInstance(this).getGridThickness();
 
@@ -87,7 +85,7 @@ public class SettingsActivity extends BaseActivity {
             setSelected(thicknessLarge);
         }
 
-        // Apply the selected state to the theme buttons
+
         if (theme.equals("Theme.MyEyeHealth.Light")) {
             setSelected(themeLight);
         } else if (theme.equals("Theme.MyEyeHealth.Dark")) {
@@ -100,11 +98,10 @@ public class SettingsActivity extends BaseActivity {
         scroll_container.post(new Runnable() {
             @Override
             public void run() {
-                scroll_container.scrollTo(0, 0); // Set the initial scroll position to 0
+                scroll_container.scrollTo(0, 0);
             }
         });
 
-        // Remove the padding line
        scroll_container.setPadding(0, 500, 0, 1500);
 
         ImageButton backButton = findViewById(R.id.back_button);
@@ -137,7 +134,7 @@ public class SettingsActivity extends BaseActivity {
         settingsScrollView.post(new Runnable() {
             @Override
             public void run() {
-                settingsScrollView.scrollTo(0, 500); // Set the initial scroll position to 500
+                settingsScrollView.scrollTo(0, 500);
             }
         });
         thicknessSmall.setOnClickListener(new View.OnClickListener() {
@@ -209,7 +206,6 @@ public class SettingsActivity extends BaseActivity {
                 recreate();
             }
         });
-        // Set the onClick listeners for the theme buttons
         themeLight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -238,12 +234,6 @@ public class SettingsActivity extends BaseActivity {
         }
         settingsScrollView.smoothScrollTo(0, targetY);
     }
-    private void saveTheme(String theme) {
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(KEY_THEME, theme);
-        editor.apply();
-    }
 
     private void setSelected(Button button) {
         int strokeWidth = 4; // Border width in pixels
@@ -265,19 +255,6 @@ public class SettingsActivity extends BaseActivity {
         for (Button button : buttons) {
             button.setForeground(null);
         }
-    }
-    private void updateTheme(String theme) {
-        SharedPreferences sharedPreferences = getSharedPreferences("appTheme", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("theme", theme);
-        editor.apply();
-        recreate();
-    }
-    private void setThemePreference(String theme) {
-        SharedPreferences sharedPreferences = getSharedPreferences("theme_prefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("theme", theme);
-        editor.apply();
     }
 }
 

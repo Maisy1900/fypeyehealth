@@ -38,21 +38,21 @@ public class ProfileActivity extends SessionActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // Initialize the EditText fields and buttons
+
         mNameInput = findViewById(R.id.name_input);
         mEmailInput = findViewById(R.id.email_input);
         mPasswordInput = findViewById(R.id.password_input);
         mSaveButton = findViewById(R.id.save_button);
         mCancelButton = findViewById(R.id.cancel_button);
 
-        // Initialize the DatabaseHelper and set the user ID
+
         db = new Database(this);
         sessionManager = SessionManager.getInstance(this);
         User user = sessionManager.getUser();
-        mUserId = user.getId(); // Get the user ID from the User object
+        mUserId = user.getId();
         System.out.println("UserID" +mUserId);
 
-        // Fetch the user data and update the EditText fields
+
         mUser = db.getUserById(mUserId);
         if (mUser != null) {
             mNameInput.setText(mUser.getName());
@@ -60,7 +60,7 @@ public class ProfileActivity extends SessionActivity {
             mPasswordInput.setText(mUser.getPassword());
         }
 
-        // Set up a click listener for the save button
+
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +68,7 @@ public class ProfileActivity extends SessionActivity {
             }
         });
 
-        // Set up a click listener for the cancel button
+
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +85,7 @@ public class ProfileActivity extends SessionActivity {
             }
         });
 
-        // Sign out button
+
         Button signOutButton = findViewById(R.id.sign_out_button);
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +113,7 @@ public class ProfileActivity extends SessionActivity {
                                 UserMethods userMethods = new UserMethods(ProfileActivity.this);
                                 userMethods.deleteUser(mUser.getId());
 
-                                // Log the user out and navigate to LoginActivity
+
                                 sessionManager.logout();
                                 Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -125,10 +125,10 @@ public class ProfileActivity extends SessionActivity {
                         .show();
             }
         });
-    // Initialize the back button
+
         ImageButton backButton = findViewById(R.id.back_button);
 
-    // Set up a click listener for the back button
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,38 +144,37 @@ public class ProfileActivity extends SessionActivity {
     }
 
     private void saveUserData() {
-        // Get the updated data from the EditText fields
+
         String updatedName = mNameInput.getText().toString();
         String updatedEmail = mEmailInput.getText().toString();
         String updatedPassword = mPasswordInput.getText().toString();
 
-        // Check if any values have changed
+
         if (updatedName.equals(mUser.getName()) && updatedEmail.equals(mUser.getEmail()) && updatedPassword.equals(mUser.getPassword())) {
             Toast.makeText(ProfileActivity.this, "No changes detected", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Validate the updated data
+
         if (!isValidEmail(updatedEmail)) {
             Toast.makeText(ProfileActivity.this, "Please input a valid email", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Update the user object
         mUser.setName(updatedName);
         mUser.setEmail(updatedEmail);
         mUser.setPassword(updatedPassword);
 
-        // Update the user data in the database
+
         db.updateUser(mUser);
 
-        // Show a success message and refresh the user data
+
         Toast.makeText(ProfileActivity.this, "User information updated", Toast.LENGTH_SHORT).show();
         refreshUserData();
     }
 
     private void refreshUserData() {
-        // Fetch the updated user data and update the EditText fields
+
         mUser = db.getUserById(mUserId);
         if (mUser != null) {
             mNameInput.setText(mUser.getName());
@@ -191,12 +190,12 @@ public class ProfileActivity extends SessionActivity {
     }
 
     private boolean isValidEmail(String email) {
-        // Check if the email field is empty
+
         if (email.isEmpty()) {
             return true;
         }
 
-        // Use a regular expression to validate the email format
+
         String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         Pattern pattern = Pattern.compile(emailRegex);
 
@@ -204,7 +203,7 @@ public class ProfileActivity extends SessionActivity {
             return false;
         }
 
-        // Check if the email already exists in the database, excluding the current user's email
+
         UserMethods userMethods = new UserMethods(ProfileActivity.this);
         User existingUser = userMethods.getUserByEmail(email);
 

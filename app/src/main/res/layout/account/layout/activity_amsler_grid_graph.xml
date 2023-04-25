@@ -41,7 +41,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/title_text" />
 
-    <!-- Graph view -->
     <com.github.mikephil.charting.charts.CombinedChart
         android:id="@+id/combined_chart"
         android:layout_width="0dp"
@@ -54,7 +53,6 @@
         app:layout_constraintTop_toBottomOf="@+id/back_button"
         app:layout_constraintHeight_percent="0.45" />
 
-    <!-- Comparison Text -->
     <TextView
         android:id="@+id/comparison_text"
         android:layout_width="wrap_content"
@@ -65,7 +63,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Export Results Button -->
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -76,7 +73,6 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 
-    <!-- Save Button -->
     <Button
         android:id="@+id/save_button"
         style="@style/ButtonStyle"

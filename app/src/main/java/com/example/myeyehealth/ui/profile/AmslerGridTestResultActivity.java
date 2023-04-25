@@ -66,10 +66,10 @@ public class AmslerGridTestResultActivity extends SessionActivity {
         AmslerGridPlotView leftEyeAmslerGridPlotView = findViewById(R.id.leftEyeAmslerGridPlotView);
         AmslerGridPlotView rightEyeAmslerGridPlotView = findViewById(R.id.rightEyeAmslerGridPlotView);
 
-        testDate = getIntent().getStringExtra(TEST_DATE_KEY); // Move this line to the onCreate method
+        testDate = getIntent().getStringExtra(TEST_DATE_KEY);
 
 
-        // Set the test date as the text of the results_subtitle TextView
+
         TextView resultsSubtitle = findViewById(R.id.results_subtitle);
         resultsSubtitle.setText(testDate);
 
@@ -88,7 +88,7 @@ public class AmslerGridTestResultActivity extends SessionActivity {
         leftEyeGridSize = gridSizes[0];
         rightEyeGridSize = gridSizes[1];
 
-// Remove normalization here
+
         leftEyeCoordinates = coordinates[0];
         rightEyeCoordinates = coordinates[1];
 
@@ -106,13 +106,12 @@ public class AmslerGridTestResultActivity extends SessionActivity {
                 exportAmslerGridDataToPdf();
             }
         });
-        backButton = findViewById(R.id.back_button); // Retrieve the back button
+        backButton = findViewById(R.id.back_button);
 
-        // Set the OnClickListener for the back button
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed(); // Call the onBackPressed() method
+                onBackPressed();
             }
         });
     }
@@ -132,7 +131,7 @@ public class AmslerGridTestResultActivity extends SessionActivity {
         leftEyeAmslerGridPlotView.draw(leftEyeCanvas);
         rightEyeAmslerGridPlotView.draw(rightEyeCanvas);
 
-        // Create PDF file
+
         File outputDir = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "AmslerGridData");
         if (!outputDir.exists()) {
             outputDir.mkdirs();
@@ -156,18 +155,17 @@ public class AmslerGridTestResultActivity extends SessionActivity {
         int leftGridX = (A4_WIDTH - 2 * gridWidth - spacing) / 2;
         int rightGridX = leftGridX + gridWidth + spacing;
 
-        // Draw the left Amsler grid
         canvas.drawBitmap(leftEyeBitmap, null, new Rect(leftGridX, 0, leftGridX + gridWidth, gridHeight), paint);
 
-        // Draw the right Amsler grid
+
         canvas.drawBitmap(rightEyeBitmap, null, new Rect(rightGridX, 0, rightGridX + gridWidth, gridHeight), paint);
 
-        // Add labels above the grids
+
         paint.setTextSize(24);
         canvas.drawText("Left Eye", leftGridX + gridWidth / 2 - 40, gridHeight + 30, paint);
         canvas.drawText("Right Eye", rightGridX + gridWidth / 2 - 40, gridHeight + 30, paint);
 
-        // Add the test date on the PDF
+
         paint.setTextSize(18);
         canvas.drawText("Test Date: " + testDate, A4_WIDTH / 2 - 80, A4_HEIGHT - 40, paint);
 
@@ -188,7 +186,6 @@ public class AmslerGridTestResultActivity extends SessionActivity {
         } finally {
             pdfDocument.close();
         }
-// Open the PDF file
         Uri outputFileUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", outputFile);
         Intent openPdfIntent = new Intent(Intent.ACTION_VIEW);
         openPdfIntent.setDataAndType(outputFileUri, "application/pdf");
@@ -200,17 +197,16 @@ public class AmslerGridTestResultActivity extends SessionActivity {
         } catch (ActivityNotFoundException e) {
             Toast.makeText(this, "No PDF viewer app found. Install one to view the exported PDF.", Toast.LENGTH_LONG).show();
         }
-// Create an image with the same structure as the PDF page
         Bitmap pageImage = Bitmap.createBitmap(A4_WIDTH, A4_HEIGHT, Bitmap.Config.ARGB_8888);
         Canvas pageCanvas = new Canvas(pageImage);
         pageCanvas.drawColor(Color.WHITE); // Set white background
         pageCanvas.drawBitmap(leftEyeBitmap, null, new Rect(leftGridX, 0, leftGridX + gridWidth, gridHeight), paint);
         pageCanvas.drawBitmap(rightEyeBitmap, null, new Rect(rightGridX, 0, rightGridX + gridWidth, gridHeight), paint);
 
-// Save the image to the gallery
+
         String savedImagePath = saveImageToGallery(pageImage);
 
-// Open the image in the gallery app
+
         if (savedImagePath != null) {
             openImageInGallery(savedImagePath);
         } else {
@@ -237,7 +233,7 @@ public class AmslerGridTestResultActivity extends SessionActivity {
             return null;
         }
 
-        // Add the image to the system gallery
+
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File file = new File(savedImagePath);
         Uri contentUri = Uri.fromFile(file);

@@ -11,7 +11,7 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setAppTheme(); // Set the theme before calling super.onCreate()
+        setAppTheme();
         super.onCreate(savedInstanceState);
     }
 

@@ -76,13 +76,12 @@ public class ProfileAmslerDataActivity extends SessionActivity implements com.ex
             }
         });
         resultsRecyclerView.setPadding(0, 500, 0, 1500);
-        backButton = findViewById(R.id.back_button); // Retrieve the back button
+        backButton = findViewById(R.id.back_button);
 
-        // Set the OnClickListener for the back button
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed(); // Call the onBackPressed() method
+                onBackPressed();
             }
         });
 
@@ -106,15 +105,14 @@ public class ProfileAmslerDataActivity extends SessionActivity implements com.ex
     public void onAmslerGridTestClick(int position) {
         AmslerGridTestData data = sortedAmslerGridTestData.get(position);
 
-        // Get the date of the AmslerGridTest
+
         Date testDate = data.getDate();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = sdf.format(testDate);
 
-        // Handle the click event, navigate to the Amsler Grid Test results page for the respective date
         Intent intent = new Intent(this, AmslerGridTestResultActivity.class);
         intent.putExtra(AmslerGridTestResultActivity.TEST_ID_KEY, data.getTestId());
-        intent.putExtra(AmslerGridTestResultActivity.TEST_DATE_KEY, formattedDate); // Pass the date as an extra
+        intent.putExtra(AmslerGridTestResultActivity.TEST_DATE_KEY, formattedDate);
         startActivity(intent);
     }
 }

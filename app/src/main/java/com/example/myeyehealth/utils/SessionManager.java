@@ -21,7 +21,7 @@ public class SessionManager {
         return instance;
     }
 
-    // Change the access modifier from private to public
+
     private SessionManager(Context context) {
         prefs = context.getSharedPreferences("session", Context.MODE_PRIVATE);
     }
@@ -40,7 +40,7 @@ public class SessionManager {
         editor.apply();
     }
 
-    // Add this method to create a login session
+
     public void createLoginSession(User user) {
         startSession(user);
     }
@@ -61,31 +61,6 @@ public class SessionManager {
         return new User(id, name, email, password, doctorName, doctorEmail, carerName, carerEmail);
     }
 
-    public void endSession() {
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("isLoggedIn", false);
-        editor.remove("userId");
-        editor.apply();
-    }
-
-    public void setLineThickness(float thickness) {
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putFloat(LINE_THICKNESS_KEY, thickness);
-        editor.apply();
-    }
-
-    public float getLineThickness() {
-        return prefs.getFloat(LINE_THICKNESS_KEY, 2); // 2 is the default thickness
-    }
-    public void setFontSize(String fontSize) {
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(FONT_SIZE_KEY, fontSize);
-        editor.apply();
-    }
-
-    public String getFontSize() {
-        return prefs.getString(FONT_SIZE_KEY, "M"); // M is the default font size
-    }
 
     public void setGridThickness(String thickness) {
         SharedPreferences.Editor editor = prefs.edit();

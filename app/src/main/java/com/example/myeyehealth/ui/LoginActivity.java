@@ -12,18 +12,18 @@ import com.example.myeyehealth.ui.login.LoginEmailActivity;
 
 public class LoginActivity extends BaseActivity {
 
-    private Button mLoginButton;
-    private Button mCreateAccountButton;
+    private Button loginButton;
+    private Button createAccountButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mLoginButton = findViewById(R.id.login_button);
-        mCreateAccountButton = findViewById(R.id.create_account_button);
+        loginButton = findViewById(R.id.login_button);
+        createAccountButton = findViewById(R.id.create_account_button);
 
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, LoginEmailActivity.class);
@@ -31,7 +31,7 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        mCreateAccountButton.setOnClickListener(new View.OnClickListener() {
+        createAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, CreateAccountNameActivity.class);

@@ -36,9 +36,6 @@ public class AmslerGrid implements Parcelable {
     }
     /**
      * Writes the contents of the AmslerGrid object to a parcel to efficiently pass the amsler grid to the activity ect.
-     *
-     * @param dest  The Parcel to which the AmslerGrid object should be written
-     * @param flags Additional flags about how the object should be written
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {

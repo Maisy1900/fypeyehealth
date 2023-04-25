@@ -45,7 +45,7 @@ public class RemindersSaveActivity extends BaseActivity {
         timeInput = findViewById(R.id.time_input);
         saveButton = findViewById(R.id.save_button);
 
-        // Get the reasons and weekday passed from previous activities
+
         Intent intent = getIntent();
         reasons = intent.getStringArrayListExtra("reasons");
         weekday = intent.getStringExtra("weekday");
@@ -116,15 +116,14 @@ public class RemindersSaveActivity extends BaseActivity {
 
                     }
 
-                    // Iterate through reasons and save a reminder for each activity
+
                     for (String reason : reasons) {
                         int userId = sessionManager.getUser().getId();
                         Reminder reminder = new Reminder(-1, userId, dayOfWeek, hour, minute, reason, false);
                         int reminderId = reminderMethods.addReminder(reminder);
                         reminder.setId(reminderId);
 
-                        // Debug log
-                        Log.d("ReminderSave", "Reminder saved: " + reminder.toString());
+
 
                         ReminderAlarmScheduler reminderAlarmScheduler = new ReminderAlarmScheduler(RemindersSaveActivity.this);
                         reminderAlarmScheduler.setReminderAlarm(reminder);

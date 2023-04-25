@@ -17,7 +17,7 @@ public class AmslerGridLeftEyeTestActivity extends BaseActivity {
 
     private HashMap<String, ArrayList<Float>> distortionCoordinates = new HashMap<>();
     private int numDistortions;
-    private int leftEyeGridSize; // Change the variable name
+    private int leftEyeGridSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,26 +26,23 @@ public class AmslerGridLeftEyeTestActivity extends BaseActivity {
 
         final InteractiveAmslerGridView amslerGridView = findViewById(R.id.amsler_grid_view);
 
-        // get the number of distortions and the grid size from the InteractiveAmslerGridView
+
         numDistortions = amslerGridView.getNumDistortions();
-        leftEyeGridSize = amslerGridView.getGridSize(); // Replace with the appropriate method to get the grid size
+        leftEyeGridSize = amslerGridView.getGridSize();
 
         amslerGridView.setOnCompleteListener(new InteractiveAmslerGridView.OnCompleteListener() {
             @Override
             public void onComplete(ArrayList<ArrayList<Float>> distortionCoordinates) {
-                System.out.println("Left Eye onComplete called");
 
-                // save distortion coordinates and go to next activity
                 for (int i = 0; i < distortionCoordinates.size(); i++) {
                     ArrayList<Float> coordinates = distortionCoordinates.get(i);
                     System.out.println("Left Eye Distortion " + (i + 1) + ": " + coordinates);
                     AmslerGridLeftEyeTestActivity.this.distortionCoordinates.put("distortion" + (i + 1), coordinates);
                 }
-                System.out.println("Left Eye Distortion Coordinates: " + AmslerGridLeftEyeTestActivity.this.distortionCoordinates);
 
                 Intent intent = new Intent(AmslerGridLeftEyeTestActivity.this, AmslerGridRightEyeTestActivity.class);
                 intent.putExtra("leftEyeDistortionCoordinates", AmslerGridLeftEyeTestActivity.this.distortionCoordinates);
-                intent.putExtra("leftEyeGridSize", leftEyeGridSize); // Pass the left eye grid size to the next activity
+                intent.putExtra("leftEyeGridSize", leftEyeGridSize);
                 startActivity(intent);
             }
         });

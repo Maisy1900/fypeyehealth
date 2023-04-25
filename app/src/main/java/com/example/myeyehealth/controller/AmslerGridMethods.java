@@ -79,10 +79,9 @@ public class AmslerGridMethods {
         // Add log message
         Log.d("AmslerGridMethods", "Saving Amsler grid data for user: " + userId + " and date: " + testDate);
 
-        // Retrieve the maximum testId from the AmslerResult table for the current user
+
         int maxTestId = getMaxTestIdForUser(userId);
 
-        // Increment the maximum testId by 1 to generate a new unique testId
         int testId = maxTestId + 1;
 
         if (leftCoordinates != null) {
@@ -108,12 +107,11 @@ public class AmslerGridMethods {
             values.put(Database.COLUMN_AG_GRID, grid);
             values.put(Database.COLUMN_AG_X_COORD, xCoord);
             values.put(Database.COLUMN_AG_Y_COORD, yCoord);
-            values.put(Database.COLUMN_AG_LEFT_GRID_SIZE, leftGridSize); // Add this line to store left grid size
-            values.put(Database.COLUMN_AG_RIGHT_GRID_SIZE, rightGridSize); // Add this line to store right grid size
+            values.put(Database.COLUMN_AG_LEFT_GRID_SIZE, leftGridSize);
+            values.put(Database.COLUMN_AG_RIGHT_GRID_SIZE, rightGridSize);
 
             db.insert(TABLE_AMSLER_GRID, null, values);
-            System.out.println("Saved data with Test ID: " + testId); // Add this line for debugging
-            Log.d("AmslerGridMethods", "Saved data with Test ID: " + testId);
+
         }
     }
 
@@ -139,8 +137,7 @@ public class AmslerGridMethods {
                 } else if (grid.equals("R")) {
                     addCoordinate(rightCoordinates, x_coord, y_coord);
                 }
-                    Log.d("getBaselineAmslerResults", "LeftCoordinates: " + leftCoordinates.toString() + ", RightCoordinates: " + rightCoordinates.toString());
-                } while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
 
@@ -165,7 +162,7 @@ public class AmslerGridMethods {
 
     public List<AmslerGridTestData> getSortedAmslerGridTests(String targetUserId) {
         List<AmslerGridTestData> amslerGridTests = new ArrayList<>();
-        Set<String> seenTestIds = new HashSet<>(); // Create a set to keep track of seen test IDs
+        Set<String> seenTestIds = new HashSet<>();
 
         String selectQuery = "SELECT " + Database.COLUMN_AG_TEST_ID + ", " + Database.COLUMN_AG_USER_ID + ", " + Database.COLUMN_AG_TEST_DATE
                 + " FROM " + Database.TABLE_AMSLER_GRID
@@ -181,10 +178,10 @@ public class AmslerGridMethods {
                 String userId = cursor.getString(cursor.getColumnIndex(Database.COLUMN_AG_USER_ID));
 
                 if (seenTestIds.contains(testId)) {
-                    continue; // If the test ID has already been seen, skip this entry
+                    continue;
                 }
 
-                seenTestIds.add(testId); // Add the test ID to the set of seen test IDs
+                seenTestIds.add(testId);
 
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 Date testDate;
@@ -192,10 +189,10 @@ public class AmslerGridMethods {
                     testDate = dateFormat.parse(cursor.getString(cursor.getColumnIndex(Database.COLUMN_AG_TEST_DATE)));
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    testDate = new Date(); // Default to the current date if there's an error
+                    testDate = new Date();
                 }
 
-                int testNumber = Integer.parseInt(testId); // Use the actual test ID as the test number
+                int testNumber = Integer.parseInt(testId);
 
                 AmslerGridTestData amslerGridTestData = new AmslerGridTestData(testId, userId, testDate, null, testNumber);
 
@@ -228,8 +225,6 @@ public class AmslerGridMethods {
                 float x_coord = cursor.getFloat(cursor.getColumnIndexOrThrow(Database.COLUMN_AG_X_COORD));
                 float y_coord = cursor.getFloat(cursor.getColumnIndexOrThrow(Database.COLUMN_AG_Y_COORD));
 
-                Log.d("AmslerTestResult", "Grid: " + grid + ", X: " + x_coord + ", Y: " + y_coord);
-
                 if (grid.equals("L")) {
                     addCoordinate(leftCoordinates, x_coord, y_coord);
                 } else if (grid.equals("R")) {
@@ -239,8 +234,6 @@ public class AmslerGridMethods {
         }
         cursor.close();
 
-        Log.d("AmslerTestResult", "LeftCoordinates: " + leftCoordinates);
-        Log.d("AmslerTestResult", "RightCoordinates: " + rightCoordinates);
 
         return new HashMap[]{leftCoordinates, rightCoordinates};
     }

@@ -24,36 +24,35 @@ public class LoginPasswordActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_password);
 
-        // Initialize views
+
         passwordInput = findViewById(R.id.password_input);
         loginButton = findViewById(R.id.confirm_button);
         backButton = findViewById(R.id.back_button);
 
-        // Get the email from the previous activity
         email = getIntent().getStringExtra("email");
 
-        // Set click listener for login button
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Check email and password here against database
+
                 String password = passwordInput.getText().toString().trim();
 
-                // Lookup user in the database
+
                 UserMethods userMethods = new UserMethods(LoginPasswordActivity.this);
                 User user = userMethods.getUserByEmail(email);
 
-                // Check if user exists and if password matches
+
                 if (user != null && password.equals(user.getPassword())) {
-                    // Password is correct, create a session for the user
+
                     SessionManager sessionManager = SessionManager.getInstance(LoginPasswordActivity.this);
                     sessionManager.createLoginSession(user);
 
-                    // Go to LoginSuccessActivity
+
                     Intent intent = new Intent(LoginPasswordActivity.this, LoginSuccessActivity.class);
                     startActivity(intent);
                 } else {
-                    // Password is incorrect, go to LoginErrorActivity
+
                     Intent intent = new Intent(LoginPasswordActivity.this, LoginErrorActivity.class);
                     startActivity(intent);
                 }
@@ -61,7 +60,7 @@ public class LoginPasswordActivity extends BaseActivity {
             }
         });
 
-        // Set click listener for back button
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -43,7 +43,7 @@ public class ReminderAlarmScheduler {
         // Debug log
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(reminderTimeMillis);
-        Log.d(TAG, "Alarm set: " + reminder.toString() + ", time: " + calendar.getTime().toString());
+
     }
 
 
@@ -53,9 +53,8 @@ public class ReminderAlarmScheduler {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reminder.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.cancel(pendingIntent);
 
-        Log.d(TAG, "Alarm canceled for reminder: " + reminder.toString());
     }
-//issues
+
     private long getReminderTimeInMillis(Reminder reminder) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, reminder.getHour());
@@ -72,8 +71,6 @@ public class ReminderAlarmScheduler {
         if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
             calendar.add(Calendar.DATE, 7);
         }
-
-        Log.d(TAG, "Reminder time calculated: " + calendar.getTime().toString());
 
         return calendar.getTimeInMillis();
     }
