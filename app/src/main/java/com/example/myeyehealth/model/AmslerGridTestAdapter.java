@@ -16,10 +16,12 @@ import java.util.List;
 import java.util.Locale;
 
 public class AmslerGridTestAdapter extends RecyclerView.Adapter<AmslerGridTestAdapter.AmslerGridTestViewHolder> {
-
+//recycle view responsible for the list of amsler grid test data
+    //binds the AmslerGridTestData objects to the recycler view items handling the click events
     private List<AmslerGridTestData> amslerGridTestDataList;
     private AmslerGridTestClickListener clickListener;
-
+//checks for click events
+    //on the given data list
     public AmslerGridTestAdapter(List<AmslerGridTestData> amslerGridTestDataList, AmslerGridTestClickListener clickListener) {
         this.amslerGridTestDataList = amslerGridTestDataList;
         this.clickListener = clickListener;
@@ -36,8 +38,6 @@ public class AmslerGridTestAdapter extends RecyclerView.Adapter<AmslerGridTestAd
     @Override
     public void onBindViewHolder(@NonNull AmslerGridTestViewHolder holder, int position) {
         AmslerGridTestData data = amslerGridTestDataList.get(position);
-
-        // Assuming there's a method called getTestNumber() in the AmslerGridTestData class
         holder.testNumberTextView.setText(String.valueOf(data.getTestNumber()));
 
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.UK);
@@ -50,6 +50,7 @@ public class AmslerGridTestAdapter extends RecyclerView.Adapter<AmslerGridTestAd
         return amslerGridTestDataList.size();
     }
 
+    //references the view items and handles click events using the click listener.
     public static class AmslerGridTestViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView testNumberTextView;

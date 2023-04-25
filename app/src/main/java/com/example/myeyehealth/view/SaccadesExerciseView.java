@@ -16,7 +16,7 @@ import com.example.myeyehealth.model.SaccadesPeripheralDot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+//custom view for the saccades
 public class SaccadesExerciseView extends View {
     private Paint centralDotPaint;
     private List<SaccadesPeripheralDot> peripheralDots;
@@ -50,7 +50,7 @@ public class SaccadesExerciseView extends View {
         init();
     }
 
-
+//initiates the paint objects tap times distances that will be store d in the database
     private void init() {
         // Initialize paint objects for the central dot
         centralDotPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -67,31 +67,31 @@ public class SaccadesExerciseView extends View {
 
     }
 
-
+//draws central dot and perhiperal dots
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         // Draw the central dot
-        canvas.drawCircle(getWidth() / 2f, getHeight() / 2f, 20, centralDotPaint);
+        canvas.drawCircle(getWidth() / 2f, getHeight() / 2f, 20, centralDotPaint) ;
 
         // Draw peripheral dots
         for (SaccadesPeripheralDot dot : peripheralDots) {
             PointF position = dot.getPosition();
-            canvas.drawCircle(position.x, position.y, 15, dot.getPaint());
+            canvas.drawCircle(position.x, position.y, 15, dot.getPaint()) ;
         }
     }
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        generatePeripheralDotSequence();
+        generatePeripheralDotSequence() ;
     }
     private void generatePeripheralDotSequence() {
         // Generate the sequence of peripheral dots and their positions
 
         Random random = new Random();
         int width = getWidth();
-        int height = getHeight();
+        int height = getHeight() ;
         int padding = 40;
 
         if (width <= 0 || height <= 0) {
@@ -100,13 +100,13 @@ public class SaccadesExerciseView extends View {
         peripheralDots.clear();
 
         for (int i = 0; i < 8; i++) {
-            boolean validDot = false;
+            boolean validDot = false ;
             SaccadesPeripheralDot dot = null;
 
             while (!validDot) {
                 float x = padding + random.nextInt(width - 2 * padding);
                 float y = padding + random.nextInt(height - 2 * padding);
-                dot = new SaccadesPeripheralDot(x, y, Color.BLACK);
+                dot = new SaccadesPeripheralDot(x, y, Color.BLACK) ;
 
                 if (isValidDot(dot, peripheralDots, 60)) {
                     validDot = true;
@@ -121,7 +121,7 @@ public class SaccadesExerciseView extends View {
 
     private boolean isValidDot(SaccadesPeripheralDot newDot, List<SaccadesPeripheralDot> existingDots, int minDistance) {
         PointF newDotPosition = newDot.getPosition();
-        PointF center = new PointF(getWidth() / 2f, getHeight() / 2f);
+        PointF center = new PointF(getWidth() / 2f, getHeight() / 2f) ;
 
         // Check if the new dot is too close to the central dot
         if (distanceBetween(newDotPosition, center) < minDistance) {
@@ -130,7 +130,7 @@ public class SaccadesExerciseView extends View {
 
         // Check if the new dot is too close to existing peripheral dots
         for (SaccadesPeripheralDot existingDot : existingDots) {
-            PointF existingDotPosition = existingDot.getPosition();
+            PointF existingDotPosition = existingDot.getPosition() ;
             if (distanceBetween(newDotPosition, existingDotPosition) < minDistance) {
                 return false;
             }
@@ -140,62 +140,58 @@ public class SaccadesExerciseView extends View {
         return true;
     }
 
-
+    //this is incharge of the  touch events so changes the selected dot when tapped and adds the appropriate paramerets
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            PointF tapPosition = new PointF(event.getX(), event.getY());
+        if (event.getAction() ==MotionEvent.ACTION_DOWN) {
+            PointF tapPosition= new PointF(event.getX(), event.getY()) ;
             SaccadesPeripheralDot activeDot = peripheralDots.get(currentActiveDotIndex);
             PointF activeDotPosition = activeDot.getPosition();
 
             // Check if the user tapped within a certain radius around the active dot
             if (distanceBetween(tapPosition, activeDotPosition) <= 30) {
                 // Record tap time
-                long currentTime = System.currentTimeMillis();
-                tapTimes.add(currentTime - lastTapTime);
+                long currentTime=System.currentTimeMillis();
+                tapTimes.add(currentTime -lastTapTime);
                 lastTapTime = currentTime;
 
-                Log.d("SaccadesExercise", "Tapped on dot " + currentActiveDotIndex + " at position " + tapPosition.toString());
 
                 // Record tap distance
-                if (currentActiveDotIndex > 0) {
-                    SaccadesPeripheralDot lastDot = peripheralDots.get(currentActiveDotIndex - 1);
-                    PointF lastDotPosition = lastDot.getPosition();
+                if (currentActiveDotIndex>0) {
+                    SaccadesPeripheralDot lastDot = peripheralDots.get(currentActiveDotIndex - 1) ;
+                    PointF lastDotPosition =lastDot.getPosition();
                     float distance = distanceBetween(activeDotPosition, lastDotPosition);
-                    tapDistances.add(distance);
-
-                    Log.d("SaccadesExercise", "Distance between dot " + (currentActiveDotIndex - 1) + " and " + currentActiveDotIndex + ": " + distance);
+                     tapDistances.add(distance);
                 }
 
                 // Update the active dot
-                activeDot.setActive(false);
-                activeDot.getPaint().setColor(Color.BLACK);
+                activeDot.setActive(false) ;
+                 activeDot.getPaint().setColor(Color.BLACK);
                 currentActiveDotIndex++;
 
-                if (currentActiveDotIndex == peripheralDots.size()) {
-                    if (onExerciseCompleteListener != null) {
+                if (currentActiveDotIndex== peripheralDots.size()) {
+                    if (onExerciseCompleteListener!= null) {
                         onExerciseCompleteListener.onExerciseComplete();
                     }
                 } else {
-                    SaccadesPeripheralDot nextActiveDot = peripheralDots.get(currentActiveDotIndex);
+                    SaccadesPeripheralDot nextActiveDot =peripheralDots.get(currentActiveDotIndex) ;
                     nextActiveDot.setActive(true);
                     updateActiveDotColor(); // Call this method here instead of setting the color directly
                     invalidate();
                 }
             } else {
-                // If the user clicks outside of the constraints, do nothing and don't store anything
-                Log.d("SaccadesExercise", "Tapped outside the active dot at position " + tapPosition.toString());
+                //when the user taps outside of the vciew
                 return true;
             }
         }
 
         return true;
     }
-
+//updates the new dot
     private void updateActiveDotColor() {
         String color = sessionManager.getSaccadesColor();
-        int parsedColor = Color.parseColor(color);
-        SaccadesPeripheralDot activeDot = peripheralDots.get(currentActiveDotIndex);
+        int parsedColor =Color.parseColor(color);
+        SaccadesPeripheralDot activeDot= peripheralDots.get(currentActiveDotIndex) ;
         activeDot.getPaint().setColor(parsedColor);
         invalidate();
     }
@@ -203,17 +199,17 @@ public class SaccadesExerciseView extends View {
 
 
     private float distanceBetween(PointF p1, PointF p2) {
-        return (float) Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
+        return (float) Math.sqrt(Math.pow(p2.x-p1.x,2) + Math.pow(p2.y - p1.y, 2));
     }
 
     public void setOnExerciseCompleteListener(OnExerciseCompleteListener listener) {
-        this.onExerciseCompleteListener = listener;
+        this.onExerciseCompleteListener =listener ;
     }
-
+//complete list
     public List<Long> getTapTimes() {
-        return tapTimes;
+        return tapTimes ;
     }
-
+    //complete list
     public List<Float> getTapDistances() {
         return tapDistances;
     }

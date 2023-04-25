@@ -20,7 +20,6 @@ public class ReminderReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction() != null && intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
             // Handle device reboot
-            Log.d(TAG, "Device rebooted, rescheduling reminders");
             SessionManager sessionManager = SessionManager.getInstance(context);
             int userId = sessionManager.getUser().getId();
             ReminderMethods reminderMethods = new ReminderMethods(context);
@@ -32,15 +31,12 @@ public class ReminderReceiver extends BroadcastReceiver {
             }
         } else {
             // Handle alarm trigger
-            Log.d(TAG, "Alarm triggered");
+
 
             int reminderId = intent.getIntExtra("reminderId", -1);
 
 
-            // Debug log
-            Log.d("ReminderReceiver", "Received reminderId: " + reminderId);
 
-            Log.d(TAG, "Received alarm for reminderId: " + reminderId);
 
             if (reminderId != -1) {
                 ReminderMethods reminderMethods = new ReminderMethods(context);
@@ -50,7 +46,6 @@ public class ReminderReceiver extends BroadcastReceiver {
                     String reminderReason = reminder.getReason();
                     String reminderTime = String.format("%02d:%02d", reminder.getHour(), reminder.getMinute());
 
-                    Log.d(TAG, "Showing notification for reminder: " + reminderReason + " at " + reminderTime);
                     NotificationHelper.showNotification(context, reminderReason, reminderTime);
 
                     // Reschedule the next alarm

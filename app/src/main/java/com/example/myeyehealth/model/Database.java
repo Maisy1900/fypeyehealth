@@ -93,8 +93,8 @@ public class Database extends SQLiteOpenHelper {
                 COLUMN_AG_X_COORD + " INTEGER," +
                 COLUMN_AG_Y_COORD + " INTEGER," +
                 COLUMN_AG_CREATED_DATE + " TEXT," +
-                COLUMN_AG_LEFT_GRID_SIZE + " INTEGER," + // Add new column for left grid size
-                COLUMN_AG_RIGHT_GRID_SIZE + " INTEGER" + // Add new column for right grid size
+                COLUMN_AG_LEFT_GRID_SIZE + " INTEGER," +
+                COLUMN_AG_RIGHT_GRID_SIZE + " INTEGER" +
                 ")";
 
         db.execSQL(CREATE_AMSLER_GRID_TABLE);
@@ -120,7 +120,7 @@ public class Database extends SQLiteOpenHelper {
                 COLUMN_SACCADES_TEST_NUMBER + " INTEGER," +
                 COLUMN_SACCADES_TIME_TAKEN + " FLOAT," +
                 COLUMN_SACCADES_DISTANCE + " FLOAT," +
-                COLUMN_SACCADES_TEST_DATE + " TEXT" + // add new column to table
+                COLUMN_SACCADES_TEST_DATE + " TEXT" +
                 ");";
         db.execSQL(CREATE_SACCADES_TABLE);
 
@@ -132,7 +132,7 @@ public class Database extends SQLiteOpenHelper {
                 COLUMN_REMINDER_HOUR + " INTEGER," +
                 COLUMN_REMINDER_MINUTE + " INTEGER," +
                 COLUMN_REMINDER_REASON + " TEXT," +
-                COLUMN_REMINDER_COMPLETED + " INTEGER" + // Add this line
+                COLUMN_REMINDER_COMPLETED + " INTEGER" +
                 ")";
 
 
@@ -153,32 +153,7 @@ public class Database extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addColumnIfNeeded(String tableName, String columnName, String columnType) {
-        SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("PRAGMA table_info(" + tableName + ")", null);
-
-        boolean newColumnExists = false;
-
-        int nameColumnIndex = cursor.getColumnIndex("name");
-        if (nameColumnIndex != -1) {
-            while (cursor.moveToNext()) {
-                String currentColumnName = cursor.getString(nameColumnIndex);
-                if (currentColumnName.equals(columnName)) {
-                    newColumnExists = true;
-                    break;
-                }
-            }
-        }
-
-        cursor.close();
-
-        if (!newColumnExists) {
-            db.execSQL("ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " " + columnType + ";");
-        }
-
-        db.close();
-    }
     public User getUserById(int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
 

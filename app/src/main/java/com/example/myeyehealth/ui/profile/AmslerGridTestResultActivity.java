@@ -75,7 +75,7 @@ public class AmslerGridTestResultActivity extends SessionActivity {
 
 
         String testId = getIntent().getStringExtra(TEST_ID_KEY);
-        Log.d("AmslerTestResult", "Test ID: " + testId);
+
         SessionManager sessionManager = SessionManager.getInstance(this);
         User user = sessionManager.getUser();
         int currentUserId = user.getId();
@@ -99,8 +99,6 @@ public class AmslerGridTestResultActivity extends SessionActivity {
         leftEyeAmslerGridPlotView.setCoordinates(leftEyeCoordinates);
         rightEyeAmslerGridPlotView.setCoordinates(rightEyeCoordinates);
 
-        Log.d("AmslerTestResult", "Left Eye Coordinates: " + leftEyeCoordinates);
-        Log.d("AmslerTestResult", "Right Eye Coordinates: " + rightEyeCoordinates);
         Button exportButton = findViewById(R.id.export_button);
         exportButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -220,22 +218,6 @@ public class AmslerGridTestResultActivity extends SessionActivity {
         }
     }
 
-        private void openPdfInViewer (String pdfPath){
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            File pdfFile = new File(pdfPath);
-            Uri contentUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", pdfFile);
-
-            intent.setDataAndType(contentUri, "application/pdf");
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-            try {
-                startActivity(intent);
-            } catch (ActivityNotFoundException e) {
-                Toast.makeText(this, "No PDF viewer app found. Install one to view the exported PDF.", Toast.LENGTH_LONG).show();
-            }
-        }
-
-
     private String saveImageToGallery(Bitmap image) {
         String fileName = "Amsler_Grid_Data_" + testDate + ".jpg";
         OutputStream outputStream;
@@ -277,14 +259,6 @@ public class AmslerGridTestResultActivity extends SessionActivity {
             startActivity(intent);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(this, "No gallery app found to view the image.", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void requestStoragePermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_STORAGE);
-            }
         }
     }
 

@@ -184,7 +184,6 @@ public class AmslerGridNewResults extends BaseActivity {
 
 
     private void compareDistortions(double leftEyeDistortionPercentage, double rightEyeDistortionPercentage, double baselineLeftEyeDistortionPercentage, double baselineRightEyeDistortionPercentage) {
-        Log.d("AmslerGridNewResults", "compareDistortions() called");
 
         // Calculate percentage difference in distortion compared to baseline for left eye
         double leftEyeDifference = leftEyeDistortionPercentage - baselineLeftEyeDistortionPercentage;
@@ -231,11 +230,6 @@ public class AmslerGridNewResults extends BaseActivity {
                 resultsText.invalidate();
             }
         });
-
-
-        // Add log statement for the resultsText
-        Log.d("AmslerGridNewResults", "Results Text: " + resultsText.getText());
-
     }
 
 

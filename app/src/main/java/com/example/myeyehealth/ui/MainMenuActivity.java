@@ -57,6 +57,7 @@ public class MainMenuActivity extends SessionActivity implements View.OnClickLis
         for (int i = 0; i < mMenuButtons.length; i++) {
             mMenuButtons[i].setTag(i);
             mMenuButtons[i].setText(buttonTexts[i]);
+            mMenuButtons[i].setTextSize(32);
         }
 
         // Set click listeners for the menu buttons
